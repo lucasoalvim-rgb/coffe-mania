@@ -1,0 +1,21 @@
+{
+  "id": 9000001,
+  "classname": "mafia_tile_floor",
+  "name": "Piso Máfia",
+  "type": 0,
+  "kind": "decor",
+  "priceGold": 1,
+  "purchasable": true,
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 0,
+  "parts": [
+    {
+      "file": "mafia_tile_floor.png",
+      "width": 164,
+      "height": 84,
+      "left": -82,
+      "top": -2
+    }
+  ]
+}

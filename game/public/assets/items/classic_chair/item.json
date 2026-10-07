@@ -1,0 +1,47 @@
+{
+  "id": 3040001,
+  "classname": "classic_chair",
+  "name": "Cadeira Clássica",
+  "type": 3,
+  "kind": "chair",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "Chair02",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 97.4,
+  "parts": [
+    {
+      "file": "rotation-0.png",
+      "width": 83,
+      "height": 143,
+      "left": -40,
+      "top": -80.2,
+      "rotation": 0
+    },
+    {
+      "file": "rotation-1.png",
+      "width": 83,
+      "height": 143,
+      "left": -40,
+      "top": -80.2,
+      "rotation": 1
+    },
+    {
+      "file": "rotation-2.png",
+      "width": 83,
+      "height": 143,
+      "left": -40,
+      "top": -80.2,
+      "rotation": 2
+    },
+    {
+      "file": "rotation-3.png",
+      "width": 83,
+      "height": 143,
+      "left": -40,
+      "top": -80.2,
+      "rotation": 3
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-07-26T07:25:56.649Z",
+  "files": [
+    {
+      "source": "Loading_screen.png",
+      "output": "frame.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "source": "loading_ad.png",
+      "output": "banner-01.png",
+      "width": 1347,
+      "height": 784
+    },
+    {
+      "source": "loading_ad2.png",
+      "output": "banner-02.png",
+      "width": 1347,
+      "height": 784
+    }
+  ],
+  "geometry": {
+    "window": {
+      "left": 464,
+      "top": 247,
+      "width": 992,
+      "height": 585,
+      "pixels": 571114
+    },
+    "slot": {
+      "left": 564,
+      "top": 888,
+      "width": 786,
+      "height": 46
+    }
+  }
+}

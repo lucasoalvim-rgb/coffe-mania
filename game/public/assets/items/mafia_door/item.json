@@ -1,0 +1,31 @@
+{
+  "id": 3010000,
+  "classname": "mafia_door",
+  "name": "Porta Máfia",
+  "type": 2,
+  "kind": "door",
+  "priceGold": 1,
+  "purchasable": true,
+  "legacyClassName": "Door",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 176,
+  "parts": [
+    {
+      "file": "mafia_door.png",
+      "width": 92,
+      "height": 218,
+      "left": -87,
+      "top": -179
+    }
+  ],
+  "wall_cutter_index": 0.85,
+  "door": {
+    "sourceRotation": 0,
+    "hinge": {
+      "x": 87,
+      "y": 179
+    },
+    "baseSlope": -0.5
+  }
+}

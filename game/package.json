@@ -1,0 +1,24 @@
+{
+  "name": "@coffe-mania/game",
+  "private": true,
+  "version": "0.0.4-19",
+  "gameVersion": "0.0.4.19",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/fredoka": "5.3.0",
+    "pixi.js": "8.19.0",
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/three": "0.185.1",
+    "typescript": "5.9.3",
+    "vite": "7.3.6"
+  }
+}

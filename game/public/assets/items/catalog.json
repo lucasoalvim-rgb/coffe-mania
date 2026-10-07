@@ -1,0 +1,79 @@
+{
+  "items": [
+    {
+      "id": 3000011,
+      "classname": "basic_window",
+      "manifest": "basic_window/item.json"
+    },
+    {
+      "id": 3010000,
+      "classname": "mafia_door",
+      "manifest": "mafia_door/item.json"
+    },
+    {
+      "id": 3020003,
+      "classname": "delicate_bush",
+      "manifest": "delicate_bush/item.json"
+    },
+    {
+      "id": 3030010,
+      "classname": "white_cloth_table",
+      "manifest": "white_cloth_table/item.json"
+    },
+    {
+      "id": 3040001,
+      "classname": "classic_chair",
+      "manifest": "classic_chair/item.json"
+    },
+    {
+      "id": 3050000,
+      "classname": "default_tile_name",
+      "manifest": "default_tile_name/item.json"
+    },
+    {
+      "id": 3060016,
+      "classname": "default_wallpaper_name",
+      "manifest": "default_wallpaper_name/item.json"
+    },
+    {
+      "id": 3070000,
+      "classname": "starter_stove",
+      "manifest": "starter_stove/item.json"
+    },
+    {
+      "id": 3090000,
+      "classname": "room_wall",
+      "manifest": "room_wall/item.json"
+    },
+    {
+      "id": 3090001,
+      "classname": "room_wall_corner",
+      "manifest": "room_wall_corner/item.json"
+    },
+    {
+      "id": 3100000,
+      "classname": "menu_holder",
+      "manifest": "menu_holder/item.json"
+    },
+    {
+      "id": 3200000,
+      "classname": "achievement_panel",
+      "manifest": "achievement_panel/item.json"
+    },
+    {
+      "id": 3300000,
+      "classname": "letter_box",
+      "manifest": "letter_box/item.json"
+    },
+    {
+      "id": 9000001,
+      "classname": "mafia_tile_floor",
+      "manifest": "mafia_tile_floor/item.json"
+    },
+    {
+      "id": 9000002,
+      "classname": "mafia_wall",
+      "manifest": "mafia_wall/item.json"
+    }
+  ]
+}

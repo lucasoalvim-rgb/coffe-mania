@@ -1,0 +1,165 @@
+/* Painel de ajustes: só existe em desenvolvimento. */
+
+.dev-panel {
+  --ui-ink: #38210e;
+  --ui-panel: #f4efe2;
+  --ui-panel-hover: #e5dcc6;
+  --ui-track: #6d4a2b;
+  --ui-thumb: #8ce052;
+
+  position: fixed;
+  right: 16px;
+  top: 80px;
+  box-sizing: border-box;
+  width: 290px;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding: 12px 14px 16px;
+  border: 3px solid var(--ui-ink);
+  border-radius: 12px;
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  box-shadow: 0 6px 0 0 var(--ui-ink);
+  font:
+    13px/1.35 system-ui,
+    sans-serif;
+  overscroll-behavior: contain;
+}
+
+.dev-panel[hidden] {
+  display: none;
+}
+
+.dev-toggle {
+  right: 16px;
+  top: 80px;
+}
+
+.dev-panel h2 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+.dev-panel fieldset {
+  margin: 0 0 12px;
+  padding: 8px 10px 10px;
+  border: 2px solid rgba(56, 33, 14, 0.35);
+  border-radius: 8px;
+}
+
+.dev-panel legend {
+  padding: 0 4px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dev-field {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.dev-field:last-child {
+  margin-bottom: 0;
+}
+
+.dev-field-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.dev-field-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.dev-panel input[type='range'] {
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.dev-panel input[type='range']::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ui-track);
+}
+
+.dev-panel input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -5px;
+  border: 2px solid var(--ui-ink);
+  border-radius: 50%;
+  background: var(--ui-thumb);
+}
+
+.dev-panel input[type='range']::-moz-range-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ui-track);
+}
+
+.dev-panel input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ui-ink);
+  border-radius: 50%;
+  background: var(--ui-thumb);
+}
+
+.dev-panel input[type='range']:focus-visible {
+  outline: 2px solid var(--ui-thumb);
+  outline-offset: 2px;
+}
+
+.dev-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+
+.dev-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--ui-thumb);
+}
+
+.dev-actions {
+  display: grid;
+  gap: 6px;
+}
+
+.dev-action {
+  padding: 7px 10px;
+  border: 2px solid var(--ui-ink);
+  border-radius: 8px;
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  font: inherit;
+  font-weight: 700;
+  box-shadow: 0 3px 0 0 var(--ui-ink);
+  cursor: pointer;
+}
+
+.dev-action:hover {
+  background: var(--ui-panel-hover);
+}
+
+.dev-action:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}

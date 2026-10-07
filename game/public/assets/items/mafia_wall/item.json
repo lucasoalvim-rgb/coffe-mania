@@ -1,0 +1,22 @@
+{
+  "id": 9000002,
+  "classname": "mafia_wall",
+  "name": "Parede Máfia",
+  "type": 1,
+  "kind": "wall",
+  "priceGold": 1,
+  "purchasable": true,
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 233,
+  "parts": [
+    {
+      "file": "mafia_wall.png",
+      "width": 80,
+      "height": 273,
+      "left": -80,
+      "top": -193
+    }
+  ],
+  "wallpaperRotation": 1
+}

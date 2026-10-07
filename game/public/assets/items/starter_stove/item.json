@@ -1,0 +1,22 @@
+{
+  "id": 3070000,
+  "classname": "starter_stove",
+  "name": "Fogão",
+  "type": 3,
+  "kind": "stove",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "Stove01",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 47,
+  "parts": [
+    {
+      "file": "starter_stove.png",
+      "width": 160,
+      "height": 127,
+      "left": -80,
+      "top": -47
+    }
+  ]
+}

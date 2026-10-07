@@ -1,0 +1,91 @@
+.wardrobe-colour-editor-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgb(28 18 12 / 48%);
+  touch-action: auto;
+}
+
+.wardrobe-colour-editor {
+  width: min(360px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 22px;
+  border: 4px solid #e5e2cf;
+  border-radius: 14px;
+  outline: 3px solid #d6d4bf;
+  background: #fff;
+  box-shadow: 0 14px 42px rgb(33 20 9 / 34%);
+  color: #704721;
+  font-family: Fredoka, sans-serif;
+  font-weight: 700;
+  touch-action: auto;
+}
+
+.wardrobe-colour-editor h2 {
+  margin: 0 0 18px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.wardrobe-colour-editor label {
+  display: grid;
+  gap: 7px;
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+
+.wardrobe-colour-editor input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  border: 2px solid #aa8357;
+  border-radius: 7px;
+  background: #fff;
+  color: #50321b;
+  font: 600 18px Fredoka, sans-serif;
+  touch-action: auto;
+}
+
+.wardrobe-colour-editor input[type='color'] {
+  height: 52px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.wardrobe-colour-editor input[type='text'] {
+  padding: 0 12px;
+}
+
+.wardrobe-colour-editor-error {
+  min-height: 20px;
+  margin: 0 0 8px;
+  color: #b42424;
+  font-size: 13px;
+}
+
+.wardrobe-colour-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.wardrobe-colour-editor-actions button {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 2px solid #704721;
+  border-radius: 7px;
+  background: #e5e2cf;
+  color: #50321b;
+  font: 700 16px Fredoka, sans-serif;
+  cursor: pointer;
+}
+
+.wardrobe-colour-editor-actions button[type='submit'] {
+  background: #d6d4bf;
+}

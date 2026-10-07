@@ -1,0 +1,7146 @@
+{
+ "source": "restaurant.bin",
+ "tool": "tools/build-item-catalog.mjs",
+ "generatedAt": "2026-07-27T00:59:51.971Z",
+ "note": "A pegada real vem da caixa da arte (RoomItem.as: numTilesX = max(1, round(bounds.right / 40)); numTilesY = max(1, round(bounds.bottom / 20) - numTilesX)). sizeX/sizeY aqui são o override do catálogo, presente em poucos itens. Sem a arte, o resto é 1x1.",
+ "groups": [
+  {
+   "name": "Wall Decoration",
+   "buttonName": "WallDecoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "name": "Door",
+   "buttonName": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "name": "Decoration",
+   "buttonName": "Decor",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "name": "Table",
+   "buttonName": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "name": "Chair",
+   "buttonName": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "name": "Functional",
+   "buttonName": "Functional",
+   "types": []
+  },
+  {
+   "name": "Floor Tile",
+   "buttonName": "FloorTile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "name": "Wallpaper",
+   "buttonName": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "name": "Kitchen Appliance",
+   "buttonName": "Kitchen",
+   "types": []
+  },
+  {
+   "name": "Drink",
+   "buttonName": null,
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "name": "Outdoor Only",
+   "buttonName": "Outdoor",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "name": "Wall",
+   "buttonName": "Wall",
+   "types": [
+    "wallItem"
+   ]
+  },
+  {
+   "name": "Award",
+   "buttonName": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique"
+   ]
+  },
+  {
+   "name": "Music",
+   "buttonName": null,
+   "types": []
+  },
+  {
+   "name": "CoinsToPfCash",
+   "buttonName": null,
+   "types": []
+  },
+  {
+   "name": "Visit",
+   "buttonName": null,
+   "types": []
+  },
+  {
+   "name": "OutsideAreaSize",
+   "buttonName": null,
+   "types": []
+  },
+  {
+   "name": "DeliveryBike",
+   "buttonName": null,
+   "types": []
+  }
+ ],
+ "items": [
+  {
+   "id": 3000001,
+   "name": "Simple Window",
+   "className": "WindowInside",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000011,
+   "name": "Basic Window",
+   "className": "WindowInside11",
+   "cost": 150,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000002,
+   "name": "Blue Classic Window",
+   "className": "WindowInside2",
+   "cost": 300,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000003,
+   "name": "Pink Classic Window",
+   "className": "WindowInside3",
+   "cost": 350,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000004,
+   "name": "Green Simple Window",
+   "className": "WindowInside4",
+   "cost": 500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000005,
+   "name": "Oak Window",
+   "className": "WindowInside5",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000006,
+   "name": "Elegant Window",
+   "className": "WindowInside6",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000007,
+   "name": "Large Glass Window",
+   "className": "WindowInside7",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000008,
+   "name": "Porthole Window",
+   "className": "WindowInside8",
+   "cost": 1500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000009,
+   "name": "Chinese Window",
+   "className": "WindowInside9",
+   "cost": 700,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000010,
+   "name": "Arced Bamboo Window",
+   "className": "WindowInside10",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000000,
+   "name": "Blue Clock",
+   "className": "Picture",
+   "functions": "ClockArms",
+   "cost": 3000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000012,
+   "name": "Spicy Picture",
+   "className": "ChiliPeppersPicture",
+   "cost": 3000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000013,
+   "name": "Morrocan Window",
+   "className": "WindowInside12",
+   "cost": 1000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000014,
+   "name": "Noren Window",
+   "className": "WindowInside13",
+   "cost": 900,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000015,
+   "name": "Specials Chalkboard",
+   "className": "SpecialsChalkboard",
+   "cost": 1400,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000016,
+   "name": "Dart Board",
+   "className": "DartBoard",
+   "cost": 800,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000017,
+   "name": "Bamboo Wall Scroll",
+   "className": "BambooWallScroll",
+   "cost": 2200,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000018,
+   "name": "Classic Fireplace",
+   "className": "ClassicFireplace",
+   "cost": 1300,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000019,
+   "name": "Silver Mirror",
+   "className": "SilverMirror",
+   "cost": 2500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000021,
+   "name": "Female Toilet Sign",
+   "className": "FemaleToiletSign",
+   "cost": 250,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000022,
+   "name": "Male Toilet Sign",
+   "className": "MaleToiletSign",
+   "cost": 250,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000020,
+   "name": "Red Drapery",
+   "className": "RedDrapery",
+   "cost": 1500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000023,
+   "name": "Blue Drapery",
+   "className": "BlueDrapery",
+   "cost": 1250,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000024,
+   "name": "White Drapery",
+   "className": "WhiteDrapery",
+   "cost": 1000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000025,
+   "name": "Black Drapery",
+   "className": "BlackDrapery",
+   "cost": 1200,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000026,
+   "name": "Green Drapery",
+   "className": "GreenDrapery",
+   "cost": 900,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000027,
+   "name": "Brown Drapery",
+   "className": "BrownDrapery",
+   "cost": 1000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000028,
+   "name": "Plant Picture",
+   "className": "PlantPicture",
+   "cost": 10000,
+   "invisible": true,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000029,
+   "name": "Ship Wheel Decor",
+   "className": "ShipWheelDecor",
+   "cost": 1100,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000030,
+   "name": "Tribal Mask",
+   "className": "TribalMask",
+   "cost": 1350,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000031,
+   "name": "Tribal Shield",
+   "className": "TribalShield",
+   "cost": 1500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000032,
+   "name": "Knight's Shield",
+   "className": "KnightShield",
+   "cost": 2200,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000033,
+   "name": "Wall Candles",
+   "className": "WallTriCandleHolder",
+   "cost": 1000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000034,
+   "name": "Hanging Flower Pot",
+   "className": "FlowerDecor",
+   "cost": 850,
+   "invisible": true,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000035,
+   "name": "Persian Wall Rug",
+   "className": "PersianWallRug",
+   "cost": 1500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000036,
+   "name": "Vent",
+   "className": "Vent",
+   "cost": 700,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000037,
+   "name": "Wall Oil Lamp",
+   "className": "WallOilLamp",
+   "cost": 1250,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000038,
+   "name": "White Classic Fireplace",
+   "className": "ClassicWhiteFireplace",
+   "cost": 1150,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000039,
+   "name": "Red Retail Window",
+   "className": "WindowInside14",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000040,
+   "name": "Deer Wall Decor",
+   "className": "DeerWallDecor",
+   "cost": 1900,
+   "invisible": true,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000041,
+   "name": "Monster Clock",
+   "className": "MonsterClock",
+   "functions": "ClockArms",
+   "cost": 2300,
+   "invisible": true,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000042,
+   "name": "Halloween Window",
+   "className": "WindowInside15",
+   "cost": 800,
+   "invisible": true,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000043,
+   "name": "Large Shield",
+   "className": "LargeSheild",
+   "cost": 4500,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000044,
+   "name": "Large Ocean Painting",
+   "className": "LargeOceanPainting",
+   "cost": 10000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000045,
+   "name": "Chestnut Picture",
+   "className": "ChestnutPicture",
+   "cost": 2000,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000046,
+   "name": "Fall Wreath",
+   "className": "FallWreath",
+   "cost": 3500,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000047,
+   "name": "Gingerbread Window",
+   "className": "WindowInside16",
+   "cost": 1200,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000048,
+   "name": "Igloo Window",
+   "className": "WindowInside17",
+   "cost": 1800,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000049,
+   "name": "Egyptian Painting",
+   "className": "EgyptianPainting",
+   "cost": 1700,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000050,
+   "name": "King Tut Wall Decor",
+   "className": "KingTutWallDecor",
+   "cost": 900,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000051,
+   "name": "Egyptian Wall Decor",
+   "className": "EgyptianWallDecor",
+   "cost": 700,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000052,
+   "name": "Saloon Window",
+   "className": "WindowInside18",
+   "cost": 1400,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000053,
+   "name": "Wall Mounted Oil Lamp",
+   "className": "WallMountedOilLamp",
+   "cost": 1300,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000054,
+   "name": "Cow Skull",
+   "className": "WallMountedCowSkull",
+   "cost": 1400,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000055,
+   "name": "Wagon Wheel",
+   "className": "WagonWheel",
+   "cost": 900,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000056,
+   "name": "Pirate Flag",
+   "className": "PirateFlag",
+   "cost": 1200,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000057,
+   "name": "Swords Wall Decor",
+   "className": "SwordsWallDecor",
+   "cost": 2400,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000058,
+   "name": "Pirate Porthole",
+   "className": "WindowInside19",
+   "cost": 650,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000059,
+   "name": "Bullet Holes",
+   "className": "BulletHoles",
+   "cost": 650,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000060,
+   "name": "Lucky Wall Sticker",
+   "className": "LuckyWallSticker",
+   "cost": 800,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000061,
+   "name": "Good Fortune Calligraphy",
+   "className": "GoodFortuneCalligraphy",
+   "cost": 1600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000062,
+   "name": "Heart Wreath",
+   "className": "HeartWreath",
+   "cost": 600,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000063,
+   "name": "Pink Drapery",
+   "className": "PinkDrapery",
+   "cost": 1500,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000064,
+   "name": "Pink Heart Window",
+   "className": "WindowInside20",
+   "cost": 1000,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3000065,
+   "name": "White Heart Window",
+   "className": "WindowInside21",
+   "cost": 900,
+   "group": "Wall Decoration",
+   "types": [
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010000,
+   "name": "Mafia Door",
+   "className": "Door",
+   "cost": 200,
+   "group": "Door",
+   "types": [
+    "doorItem"
+   ]
+  },
+  {
+   "id": 3010001,
+   "name": "Chinese Double Door",
+   "className": "Door2",
+   "cost": 1800,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010004,
+   "name": "Green Door",
+   "className": "Door5",
+   "cost": 400,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010005,
+   "name": "Red Door",
+   "className": "Door6",
+   "cost": 600,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010006,
+   "name": "White Door",
+   "className": "Door7",
+   "cost": 400,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010007,
+   "name": "Classy Door",
+   "className": "Door8",
+   "cost": 900,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010016,
+   "name": "Classy Double Door",
+   "className": "Door3",
+   "cost": 1400,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010008,
+   "name": "Space Door",
+   "className": "SpaceDoor",
+   "cost": 5000,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010009,
+   "name": "Medieval Door",
+   "className": "Door4",
+   "cost": 1000,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010010,
+   "name": "Glass Door",
+   "className": "Door9",
+   "cost": 800,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010013,
+   "name": "Glass Double Door",
+   "className": "DoubleGlassDoor",
+   "cost": 2200,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010011,
+   "name": "Moroccan Doorway",
+   "className": "MorrocanDoorway",
+   "cost": 1000,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010012,
+   "name": "Noren Door",
+   "className": "InDoor10",
+   "cost": 1200,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010014,
+   "name": "Solid Metal Double Door",
+   "className": "MetalDoubleDoor",
+   "cost": 2000,
+   "invisible": true,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010015,
+   "name": "Red Retail Double Door",
+   "className": "RedRetailDoubleDoors",
+   "cost": 1200,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010017,
+   "name": "Halloween Door",
+   "className": "HalloweenDoor",
+   "cost": 1100,
+   "invisible": true,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010018,
+   "name": "Metal Double Door",
+   "className": "MetalDoubleDoor",
+   "cost": 2800,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010019,
+   "name": "Gingerbread Double Door",
+   "className": "GingerbreadDoubleDoors",
+   "cost": 2200,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010020,
+   "name": "Igloo Door",
+   "className": "IgloDoor",
+   "cost": 1100,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010021,
+   "name": "Saloon Door",
+   "className": "SaloonDoubleDoor",
+   "cost": 1300,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010022,
+   "name": "Ship Door",
+   "className": "ShipDoor",
+   "cost": 700,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3010023,
+   "name": "Valentine Door",
+   "className": "VdayDoor",
+   "cost": 1500,
+   "group": "Door",
+   "types": [
+    "doorItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3020000,
+   "name": "Blooming Bush",
+   "className": "BloomingBush",
+   "cost": 200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020001,
+   "name": "LushBush",
+   "className": "LushBush",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020002,
+   "name": "ElegantPine",
+   "className": "ElegantPine",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020003,
+   "name": "DelicateBush",
+   "className": "DelicateBush",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020004,
+   "name": "PleasantPalm",
+   "className": "PleasantPalm",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020005,
+   "name": "CatTails",
+   "className": "CatTails",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020006,
+   "name": "FlourishingPine",
+   "className": "FlourishingPine",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020008,
+   "name": "Tiny Fish Tank",
+   "className": "FishTankSmall",
+   "cost": 3000,
+   "sizeX": 1,
+   "sizeY": 1,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020009,
+   "name": "Speaker",
+   "className": "Speaker",
+   "cost": 1500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020011,
+   "name": "White Table Lamp",
+   "className": "TableLamp",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020012,
+   "name": "Blue Table Lamp",
+   "className": "TableLampBlue",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020013,
+   "name": "Pink Table Lamp",
+   "className": "TableLampPink",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020014,
+   "name": "Silver Bubble Tube",
+   "className": "BubbleTubeSilver",
+   "cost": 3600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020015,
+   "name": "Gold Bubble Tube",
+   "className": "BubbleTubeGold",
+   "cost": 5000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020016,
+   "name": "White Room Divider Block",
+   "className": "PinkBlock",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020017,
+   "name": "White Room Divider",
+   "className": "PinkWall",
+   "cost": 200,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020018,
+   "name": "Oak Room Divider Block",
+   "className": "WoodenBlock",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020019,
+   "name": "Oak Room Divider",
+   "className": "WoodenWall",
+   "cost": 180,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020020,
+   "name": "Luxurious Room Divider Block",
+   "className": "LuxuriousBlock",
+   "cost": 1000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020021,
+   "name": "Luxurious Room Divider",
+   "className": "LuxuriousWall",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020022,
+   "name": "Chrome Room Divider Block",
+   "className": "ChromeBlock",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020023,
+   "name": "Chrome Room Divider",
+   "className": "ChromeWall",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020024,
+   "name": "Chrome Glass Room Divider",
+   "className": "ChromeGlassWall",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020025,
+   "name": "Classic Room Divider Block",
+   "className": "ClassicBlock",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020026,
+   "name": "Classic Room Divider",
+   "className": "ClassicWall",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020027,
+   "name": "Barrel",
+   "className": "Barrel",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020028,
+   "name": "Barrel with Tap",
+   "className": "BarrelWithTap",
+   "cost": 3000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020029,
+   "name": "Greek Column",
+   "className": "GreekColumn",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020030,
+   "name": "Red Brick Pillar",
+   "className": "BrickPillar",
+   "cost": 1100,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020031,
+   "name": "WoodenPillar",
+   "className": "WoodenPillar",
+   "cost": 1300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020032,
+   "name": "White Trash Cabinet",
+   "className": "WhiteTrashCabinet",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020033,
+   "name": "Wooden Trash Cabinet",
+   "className": "WoodenTrashCabinet",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020035,
+   "name": "Rustic Fireplace",
+   "className": "RusticFireplace",
+   "cost": 2000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020036,
+   "name": "Modern Fireplace",
+   "className": "ModernFireplace",
+   "cost": 4000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020037,
+   "name": "Traditional Brick Fireplace",
+   "className": "TraditionalBrickFireplace",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020038,
+   "name": "Ming Vase",
+   "className": "MingVase",
+   "cost": 8000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020039,
+   "name": "Dragon Vase",
+   "className": "DragonVase",
+   "cost": 5000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020040,
+   "name": "White Ceramic Vase",
+   "className": "WhiteCeramicVase",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020041,
+   "name": "Black Ceramic Vase",
+   "className": "BlackCeramicVase",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020042,
+   "name": "Brown Ceramic Vase",
+   "className": "BrownCeramicVase",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020044,
+   "name": "Blue Power Core",
+   "className": "BluePowerCoreBase",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020045,
+   "name": "Green Power Core",
+   "className": "GreenPowerCoreBase",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020046,
+   "name": "Yellow Power Core",
+   "className": "YellowPowerCoreBase",
+   "cost": 3500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020047,
+   "name": "Red Power Core",
+   "className": "RedPowerCoreBase",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020048,
+   "name": "Giant Cactus",
+   "className": "GiantCactus",
+   "cost": 2000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020049,
+   "name": "White Wall",
+   "className": "WhiteWall",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "wallDivider"
+   ]
+  },
+  {
+   "id": 3020050,
+   "name": "White Wall Corner",
+   "className": "WhiteWallCorner",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "wallDivider"
+   ]
+  },
+  {
+   "id": 3020051,
+   "name": "White Wall Cross",
+   "className": "WhiteWallCross",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "wallDivider"
+   ]
+  },
+  {
+   "id": 3020052,
+   "name": "White wall T",
+   "className": "WhiteWallT",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "wallDivider"
+   ]
+  },
+  {
+   "id": 3020055,
+   "name": "Japanese Lamp",
+   "className": "JapaneseLamp",
+   "cost": 1600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "wallDivider"
+   ]
+  },
+  {
+   "id": 3020056,
+   "name": "Sake Keg",
+   "className": "SakeKeg",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020057,
+   "name": "Classic White Block",
+   "className": "ClassicWhiteDividerBlock",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020058,
+   "name": "Classic White Divider",
+   "className": "ClassicWhiteDivider",
+   "cost": 300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020059,
+   "name": "Red Rope Barrier",
+   "className": "RedRopeBarrier",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020060,
+   "name": "Flat Screen TV",
+   "className": "FlatScreenTv",
+   "cost": 2000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020061,
+   "name": "Red Rose",
+   "className": "RedRose",
+   "cost": 750,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020062,
+   "name": "Blue Iris",
+   "className": "BlueIris",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020063,
+   "name": "Calla Lily",
+   "className": "CallaLily",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020065,
+   "name": "White Round Side Table",
+   "className": "WhiteRoundSideTable",
+   "cost": 350,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020066,
+   "name": "Black Round Side Table",
+   "className": "BlackRoundSideTable",
+   "cost": 450,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020067,
+   "name": "Bamboo Plant",
+   "className": "BambooPlant",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020068,
+   "name": "Golden Fan Decor",
+   "className": "GoldenFanDecor",
+   "cost": 650,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020069,
+   "name": "Stainless Steel Counter",
+   "className": "StainlessSteelKitchenCounter",
+   "cost": 650,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020070,
+   "name": "Stainless Steel Cabinet",
+   "className": "StainlessSteelKitchenCabinet",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020071,
+   "name": "Stainless Steel Drawer",
+   "className": "StainlessSteelKitchenDrawer",
+   "cost": 550,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020072,
+   "name": "Party Balloons",
+   "className": "PartyBalloons",
+   "cost": 850,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020073,
+   "name": "Large Fish Tank",
+   "className": "FishTankLarge",
+   "cost": 5500,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020074,
+   "name": "Shoji Folding Screen",
+   "className": "ShojiFoldingScreen",
+   "cost": 4750,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020075,
+   "name": "Djembe Drum",
+   "className": "DjembeDrum",
+   "cost": 1400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020076,
+   "name": "Allamanda Flower Basket",
+   "className": "AllamandaFlowerBasket",
+   "cost": 550,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020077,
+   "name": "White Orchid",
+   "className": "WhiteOrchid",
+   "cost": 650,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020078,
+   "name": "Classic Floor Lamp",
+   "className": "ClassicFloorLamp",
+   "cost": 850,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020079,
+   "name": "Classic Bookshelf",
+   "className": "ClassicBookshelf",
+   "cost": 4300,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020080,
+   "name": "Palmtree",
+   "className": "InsidePalmtree",
+   "cost": 1300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020081,
+   "name": "Japanese Garden Lamp",
+   "className": "JapaneseLight",
+   "cost": 1600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020082,
+   "name": "Red Vase",
+   "className": "RedVase",
+   "cost": 750,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020083,
+   "name": "Tall Vase",
+   "className": "TallVase",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020084,
+   "name": "Red Rose Trellis",
+   "className": "FlowerPot",
+   "cost": 950,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020085,
+   "name": "Yellow Rose Trellis",
+   "className": "FlowerPot1",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020086,
+   "name": "Water Fountain",
+   "className": "WaterFountain",
+   "cost": 12500,
+   "sizeX": 3,
+   "sizeY": 3,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020087,
+   "name": "Huge Fish Tank",
+   "className": "FishTankHuge",
+   "cost": 10000,
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020088,
+   "name": "Potted Palm",
+   "className": "PottedPalmtree",
+   "cost": 1100,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020089,
+   "name": "Large Flower Pot",
+   "className": "LargeFlowerPot",
+   "cost": 550,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020090,
+   "name": "Candle Holder",
+   "className": "CandleHolder",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020091,
+   "name": "Small Water Fountain",
+   "className": "SmallWaterFountain",
+   "cost": 3800,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020092,
+   "name": "Lucky Cat Decor",
+   "className": "LuckyCatDecor",
+   "cost": 2300,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020093,
+   "name": "Camel Figurine",
+   "className": "CamelFigurine",
+   "cost": 1600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020094,
+   "name": "Elephant Figurine",
+   "className": "ElephantFigurine",
+   "cost": 1800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020095,
+   "name": "Dark Greek Column",
+   "className": "DarkGreekColumn",
+   "cost": 1100,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020096,
+   "name": "Ornate Folding Screen",
+   "className": "FoldingScreen2",
+   "cost": 5200,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020097,
+   "name": "Classic White Bookshelf",
+   "className": "ClassicWhiteBookshelf",
+   "cost": 4500,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020098,
+   "name": "Green Locker",
+   "className": "Greenlocker",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020099,
+   "name": "Grey Fireplace",
+   "className": "GreyFireplace",
+   "cost": 2300,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020103,
+   "name": "Jar of Eyeballs",
+   "className": "JarOfEyeballs",
+   "cost": 800,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020102,
+   "name": "Gothic Divider",
+   "className": "GothicDivider",
+   "cost": 850,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020104,
+   "name": "Tentacle Jar",
+   "className": "JarTentacle",
+   "cost": 500,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020105,
+   "name": "Evil Pumpkin Decor",
+   "className": "EvilPumpkinDecor",
+   "cost": 1500,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020106,
+   "name": "Gravestone",
+   "className": "Gravestone",
+   "cost": 1300,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020107,
+   "name": "Black Piano",
+   "className": "BlackPiano",
+   "cost": 4800,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020108,
+   "name": "Black Bubble Tube",
+   "className": "BubbleTubeRed",
+   "cost": 4500,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020109,
+   "name": "Candles",
+   "className": "Candles",
+   "cost": 500,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020110,
+   "name": "Gothic Divider Block",
+   "className": "GothicDividerBlock",
+   "cost": 850,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020111,
+   "name": "Rocking Horse Decor",
+   "className": "RockingHorseDecor",
+   "cost": 1800,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020112,
+   "name": "Greek Pot",
+   "className": "GreekPot",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020113,
+   "name": "Golden Column",
+   "className": "GoldenGreekColumn",
+   "cost": 1600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020114,
+   "name": "Column Divider Block",
+   "className": "ColumnDividerBlock",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020115,
+   "name": "Column Divider",
+   "className": "ColumnDivider",
+   "cost": 950,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020116,
+   "name": "Sardine",
+   "className": "FloatingFish01",
+   "cost": 1000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020117,
+   "name": "Butterflyfish",
+   "className": "FloatingFish02",
+   "cost": 6000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020118,
+   "name": "Pinkfish",
+   "className": "FloatingFish03",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020119,
+   "name": "Treasure Chest",
+   "className": "TreasureChest",
+   "cost": 8000,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020120,
+   "name": "Brown Seaweed",
+   "className": "Seaweed1",
+   "cost": 500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020121,
+   "name": "Green Seaweed",
+   "className": "Seaweed2",
+   "cost": 1500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020122,
+   "name": "Purple Seaweed",
+   "className": "Seaweed3",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020123,
+   "name": "Koi Pond",
+   "className": "Fishpond",
+   "cash": 15,
+   "sizeX": 3,
+   "sizeY": 3,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020124,
+   "name": "Wedding Cake",
+   "className": "WeddingCake",
+   "cash": 12,
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020125,
+   "name": "Turkey Decor",
+   "className": "TurkeyDecor",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020126,
+   "name": "Candy Jar",
+   "className": "CandyJar",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020127,
+   "name": "Festive Tree",
+   "className": "FestiveTree",
+   "cost": 2000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020128,
+   "name": "Giant Festive Tree",
+   "className": "GiantFestiveTree",
+   "cost": 15000,
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020129,
+   "name": "Red Present",
+   "className": "RedPresent",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020130,
+   "name": "White Present",
+   "className": "WhitePresent",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020131,
+   "name": "Blue Present",
+   "className": "BluePresent",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020132,
+   "name": "Green Present",
+   "className": "GreenPresent",
+   "cost": 650,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020133,
+   "name": "Gold Present",
+   "className": "GoldPresent",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020134,
+   "name": "Pink Present",
+   "className": "PinkPresent",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020135,
+   "name": "Giant Present",
+   "className": "GiantPresent",
+   "cost": 4500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020136,
+   "name": "Candy Pole",
+   "className": "CandyCanePole",
+   "cost": 2100,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020137,
+   "name": "Gingerbread Divider Block",
+   "className": "GingerbreadDividerBlock",
+   "cost": 1100,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020138,
+   "name": "Gingerbread Divider",
+   "className": "GingerbreadDivider",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020139,
+   "name": "Ice Sculpture",
+   "className": "IceSculpture",
+   "cost": 8000,
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020140,
+   "name": "Festive FirePlace",
+   "className": "FestiveFireplace",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020141,
+   "name": "Santa's Boot",
+   "className": "SantasBoot",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020142,
+   "name": "Ice Tree",
+   "className": "IceTree",
+   "cost": 2200,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020143,
+   "name": "Giant Snow Globe",
+   "className": "GiantSnowglobe",
+   "cost": 1,
+   "sizeX": 2,
+   "sizeY": 2,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020144,
+   "name": "Pink Glow Tube",
+   "className": "GlowTubePink",
+   "cost": 2100,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020145,
+   "name": "Blue Glow Tube",
+   "className": "GlowTubeBlue",
+   "cost": 1600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020146,
+   "name": "Green Glow Tube",
+   "className": "GlowTubeGreen",
+   "cost": 1800,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020147,
+   "name": "Golden Hat Decor",
+   "className": "GoldenHatDecor",
+   "cost": 1900,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020148,
+   "name": "Rocket Decor",
+   "className": "RocketDecor",
+   "cost": 2200,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020149,
+   "name": "Bottle Decor",
+   "className": "BottleDecor",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020150,
+   "name": "Egyptian Divider Block",
+   "className": "EgyptianDividerBlock",
+   "cost": 1100,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020151,
+   "name": "Egyptian Divider",
+   "className": "EgyptianDivider",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020152,
+   "name": "Egyptian Pillar",
+   "className": "EqyptianPillar",
+   "cost": 1100,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020153,
+   "name": "Egyptian Candle Stand",
+   "className": "EqyptianCandleStand",
+   "cost": 1400,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020154,
+   "name": "Golden Cobra Candlelight",
+   "className": "GoldenCobraCandlelight",
+   "cost": 1250,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020155,
+   "name": "Egyptian Pot",
+   "className": "EgyptianPot",
+   "cost": 800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020156,
+   "name": "Jackal Statue",
+   "className": "JackalStatue",
+   "cost": 2900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020157,
+   "name": "Old Piano",
+   "className": "OldPiano",
+   "cost": 3500,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020158,
+   "name": "Spit Jar",
+   "className": "SpitJar",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020159,
+   "name": "Saloon Divider",
+   "className": "SaloonDivider",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020160,
+   "name": "Saloon Divider Block",
+   "className": "SaloonDividerBlock",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020161,
+   "name": "Cacti Joe",
+   "className": "CactiJoe",
+   "cost": 1900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020162,
+   "name": "Old Oil Lamp",
+   "className": "OldOilLamp",
+   "cost": 1400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020163,
+   "name": "Cannon",
+   "className": "Cannon",
+   "cost": 2000,
+   "sizeX": 2,
+   "sizeY": 1,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020164,
+   "name": "Ship Railing",
+   "className": "ShipRailing",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020165,
+   "name": "Ship Railing Block",
+   "className": "ShipRailingBlock",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020166,
+   "name": "Gold Doubloons",
+   "className": "GoldDoubloons",
+   "cost": 1500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020167,
+   "name": "Fake Skeleton Decor",
+   "className": "FakeSkeletonDecor",
+   "cost": 1400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020168,
+   "name": "Miniture Ship Model",
+   "className": "MinitureShipModel",
+   "cost": 1600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020169,
+   "name": "Cannon Balls",
+   "className": "CannonBalls",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020170,
+   "name": "Dig Site",
+   "className": "Digsite",
+   "cost": 800,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020171,
+   "name": "Pirate Decoration",
+   "className": "PirateDecor",
+   "cost": 1800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020172,
+   "name": "Classic Black Bookshelf",
+   "className": "ClassicBlackBookshelf",
+   "cost": 4400,
+   "sizeX": 1,
+   "sizeY": 2,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020173,
+   "name": "Poker Cards Decor",
+   "className": "PokerCardsDecor",
+   "cost": 800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020174,
+   "name": "Gold Bars",
+   "className": "Goldbars",
+   "cost": 3800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020175,
+   "name": "Money Bag",
+   "className": "MoneyBag",
+   "cost": 1800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020176,
+   "name": "Crate",
+   "className": "Crate",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020177,
+   "name": "White Brick Pillar",
+   "className": "WhiteBrickPillar",
+   "cost": 1000,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020178,
+   "name": "Black Sidetable",
+   "className": "BlackSideTable",
+   "cost": 350,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3020179,
+   "name": "Violin Case",
+   "className": "ViolinCase",
+   "cost": 1600,
+   "sizeX": 1,
+   "sizeY": 1,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020180,
+   "name": "Black Divider",
+   "className": "ClassicBlackWall",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020181,
+   "name": "Black Divider Block",
+   "className": "ClassicBlackBlock",
+   "cost": 1300,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "surface",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020182,
+   "name": "Classy Table Lamp",
+   "className": "ClassyTableLamp",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020183,
+   "name": "Classy Plant",
+   "className": "ClassyPlant",
+   "cost": 800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020184,
+   "name": "Classy Bush",
+   "className": "ClassyBush",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020185,
+   "name": "Elegant Rope Barrier",
+   "className": "ElegantRopeBarrier",
+   "cost": 900,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020186,
+   "name": "Fu Orange Basket",
+   "className": "FuOrangeBasket",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020187,
+   "name": "Wealth Statue",
+   "className": "WealthStatue",
+   "cost": 800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020188,
+   "name": "Dragon Decor",
+   "className": "DragonDecor",
+   "cost": 2000,
+   "sizeX": 2,
+   "sizeY": 1,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020189,
+   "name": "Gold Ingot",
+   "className": "GoldIngot",
+   "cost": 2200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020190,
+   "name": "Flowering Bonsai",
+   "className": "FloweringBonsai",
+   "cost": 1500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020191,
+   "name": "Tiger",
+   "className": "Tiger",
+   "cost": 4500,
+   "sizeX": 2,
+   "sizeY": 1,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020192,
+   "name": "Tiger Cub",
+   "className": "TigerCub",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020193,
+   "name": "Red Valentine Present",
+   "className": "RedValentinesPresent",
+   "cost": 1200,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020194,
+   "name": "Turquoise Valentine Present",
+   "className": "TurquoiseValentinesPresent",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020195,
+   "name": "Fu Orange Tree",
+   "className": "FuOrangeTree",
+   "cost": 1000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020196,
+   "name": "Purple Heart Balloon",
+   "className": "HeartBalloonPurple",
+   "cost": 850,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020197,
+   "name": "Red Heart Balloon",
+   "className": "HeartBalloonRed",
+   "cost": 850,
+   "invisible": true,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020198,
+   "name": "Rose Bucket",
+   "className": "RoseBucket",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020199,
+   "name": "Rose Bunch",
+   "className": "RoseBunch",
+   "cost": 800,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020200,
+   "name": "Single Rose",
+   "className": "SingleRose",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020201,
+   "name": "Valentine Decor",
+   "className": "VdayDecorHeart",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020202,
+   "name": "Romantic Cats",
+   "className": "RomanticCats",
+   "cost": 2500,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020203,
+   "name": "Romantic Swans",
+   "className": "RomanticSwans",
+   "cost": 2000,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020204,
+   "name": "Romantic Table Lamp",
+   "className": "RomanticTableLamp",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020205,
+   "name": "Valentine Present",
+   "className": "VdayPresent",
+   "cost": 700,
+   "group": "Decoration",
+   "types": [
+    "decorItem",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020206,
+   "name": "Heart Divider Block",
+   "className": "HeartDividerBlock",
+   "cost": 600,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020207,
+   "name": "Heart Divider",
+   "className": "HeartDivider",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020208,
+   "name": "Heart Divider Corner",
+   "className": "HeartDividerCorner",
+   "cost": 400,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3020100,
+   "name": "Garden Pond",
+   "className": "GardenPond",
+   "cost": 1,
+   "group": "Decoration",
+   "types": [
+    "decorItem"
+   ]
+  },
+  {
+   "id": 3030000,
+   "name": "Simple Table",
+   "className": "Table",
+   "cost": 150,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030001,
+   "name": "Oak Table",
+   "className": "Bench",
+   "cost": 200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030002,
+   "name": "White Table",
+   "className": "WhiteTable1x1",
+   "cost": 300,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030003,
+   "name": "Blue Table",
+   "className": "BlueTable",
+   "cost": 350,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030004,
+   "name": "Black Table",
+   "className": "BlackTable",
+   "cost": 400,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030005,
+   "name": "Princess Table",
+   "className": "PrincessTable",
+   "cost": 1000,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030006,
+   "name": "Astro Table",
+   "className": "ChromeTable",
+   "cost": 1000,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030007,
+   "name": "Glass Table",
+   "className": "GlassTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030008,
+   "name": "Chinese Table",
+   "className": "ChineseTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030009,
+   "name": "Princess Table",
+   "className": "PinkTableCloth",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030010,
+   "name": "White Cloth Table",
+   "className": "WhiteTableCloth",
+   "cost": 500,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030011,
+   "name": "Round Glass Table",
+   "className": "RoundGlassTable",
+   "cost": 800,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030012,
+   "name": "Round Antique Table",
+   "className": "RoundAntiqueTable",
+   "cost": 2000,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030013,
+   "name": "Wooden Table",
+   "className": "WoodenTable",
+   "cost": 500,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030014,
+   "name": "Pink Wooden Table",
+   "className": "WoodenTablePink",
+   "cost": 800,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030015,
+   "name": "Blue Wooden Table",
+   "className": "WoodenTableBlue",
+   "cost": 550,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030016,
+   "name": "Red Eastern Table",
+   "className": "RedEasternTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030017,
+   "name": "Purple Eastern Table",
+   "className": "PurpleEasternTable",
+   "cost": 1000,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030018,
+   "name": "White Diner Table",
+   "className": "WhiteDinerTable",
+   "cost": 800,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030019,
+   "name": "Green Cloth Table",
+   "className": "GreenTableCloth",
+   "cost": 750,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030020,
+   "name": "Golden Cloth Table",
+   "className": "GoldenTableCloth",
+   "cost": 900,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030021,
+   "name": "Picnic Cloth Table",
+   "className": "PicnicTableCloth",
+   "cost": 800,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030022,
+   "name": "Pink Cloth Table",
+   "className": "WhitePinkTable",
+   "cost": 800,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030023,
+   "name": "Black Cloth Table",
+   "className": "BlackTableCloth",
+   "cost": 1300,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030024,
+   "name": "Mushroom Table",
+   "className": "MushroomTable",
+   "cost": 1100,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030025,
+   "name": "Gothic Table",
+   "className": "GothicTable",
+   "cost": 1100,
+   "invisible": true,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030026,
+   "name": "Orange Table",
+   "className": "OrangeSliceTable",
+   "cost": 1300,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030027,
+   "name": "Kiwi Table",
+   "className": "KiwiSliceTable",
+   "cost": 1300,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030028,
+   "name": "Greek Table",
+   "className": "GreekTable",
+   "cost": 750,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030029,
+   "name": "Rock Table",
+   "className": "RockTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030030,
+   "name": "Autumn Table",
+   "className": "AutumnTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030031,
+   "name": "Festive Table",
+   "className": "FestiveTable",
+   "cost": 1300,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030032,
+   "name": "Candy Table",
+   "className": "CandyTable",
+   "cost": 1100,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030033,
+   "name": "Tree Trunk Table",
+   "className": "TreeTrunkTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030034,
+   "name": "Icy Table",
+   "className": "IceTable",
+   "cost": 1400,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030035,
+   "name": "Red Fancy Table",
+   "className": "RedAndGreenTable",
+   "cost": 1400,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030036,
+   "name": "Egyptian Table",
+   "className": "EgyptianTable",
+   "cost": 1400,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030037,
+   "name": "Saloon Table",
+   "className": "SaloonTable",
+   "cost": 700,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030038,
+   "name": "Pirate Table",
+   "className": "PirateTable",
+   "cost": 600,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030039,
+   "name": "Classy Black Table",
+   "className": "ClassyBlackTable",
+   "cost": 1400,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030040,
+   "name": "Lucky Chinese Table",
+   "className": "LuckyChineseTable",
+   "cost": 650,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030041,
+   "name": "Red Valentine Table",
+   "className": "VdayRedTable",
+   "cost": 1200,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030042,
+   "name": "White Valentine Table",
+   "className": "VdayWhiteTable",
+   "cost": 1500,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3030043,
+   "name": "Romantic Table",
+   "className": "RomanticTable",
+   "cost": 900,
+   "group": "Table",
+   "types": [
+    "tableItem",
+    "surface"
+   ]
+  },
+  {
+   "id": 3040000,
+   "name": "Oak Chair",
+   "className": "Chair01",
+   "cost": 150,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040001,
+   "name": "Classic Chair",
+   "className": "Chair02",
+   "cost": 200,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040002,
+   "name": "Elegant Chair",
+   "className": "Chair03",
+   "cost": 350,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040003,
+   "name": "Luxurious Chair",
+   "className": "Chair04",
+   "cost": 700,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040004,
+   "name": "Princess Chair",
+   "className": "Chair05",
+   "cost": 1200,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040005,
+   "name": "Modern Chair",
+   "className": "Chair06",
+   "cost": 550,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040006,
+   "name": "Astro Chair",
+   "className": "Chair07",
+   "cost": 700,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040007,
+   "name": "Chinese Chair",
+   "className": "Chair08",
+   "cost": 650,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040008,
+   "name": "Natural Wooden Chair",
+   "className": "Chair09",
+   "cost": 400,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040009,
+   "name": "Pink Wooden Chair",
+   "className": "Chair10",
+   "cost": 700,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040010,
+   "name": "Blue Wooden Chair",
+   "className": "Chair11",
+   "cost": 650,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040011,
+   "name": "Red Chinese Chair",
+   "className": "Chair12",
+   "cost": 600,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040012,
+   "name": "Purple Chinese Chair",
+   "className": "Chair13",
+   "cost": 700,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040013,
+   "name": "White Modern Chair",
+   "className": "Chair14",
+   "cost": 1200,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040014,
+   "name": "Black Modern Chair",
+   "className": "Chair15",
+   "cost": 750,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040015,
+   "name": "Red Diner Chair",
+   "className": "Chair17",
+   "cost": 500,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040016,
+   "name": "Chrome Chair",
+   "className": "Chair16",
+   "cost": 750,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040017,
+   "name": "Red Diner Sofa",
+   "className": "Chair18",
+   "cost": 1000,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040018,
+   "name": "White Modern Sofa",
+   "className": "Chair19",
+   "cost": 900,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040019,
+   "name": "Black Modern Sofa",
+   "className": "Chair20",
+   "cost": 1100,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040020,
+   "name": "Purple Chair",
+   "className": "Chair21",
+   "cost": 950,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040021,
+   "name": "Mushroom Chair",
+   "className": "Chair22",
+   "cost": 800,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040022,
+   "name": "Gothic Chair",
+   "className": "Chair23",
+   "cost": 900,
+   "invisible": true,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040023,
+   "name": "Kiwi Green Chair",
+   "className": "Chair24",
+   "cost": 900,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040024,
+   "name": "Orange Chair",
+   "className": "Chair25",
+   "cost": 900,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040025,
+   "name": "Greek Chair",
+   "className": "Chair26",
+   "cost": 650,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040026,
+   "name": "Clam Chair",
+   "className": "Chair27",
+   "cost": 1300,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040027,
+   "name": "Autumn Chair",
+   "className": "Chair28",
+   "cost": 750,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040028,
+   "name": "Festive Chair",
+   "className": "Chair29",
+   "cost": 1200,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040029,
+   "name": "Festive Bench",
+   "className": "Chair30",
+   "cost": 1400,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040030,
+   "name": "Candy Chair",
+   "className": "Chair31",
+   "cost": 1100,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040031,
+   "name": "Tree Stump Chair",
+   "className": "Chair32",
+   "cost": 900,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040032,
+   "name": "Icy Chair",
+   "className": "Chair35",
+   "cost": 900,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040033,
+   "name": "Fancy Red Chair",
+   "className": "Chair33",
+   "cost": 1300,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040034,
+   "name": "Pink Bench",
+   "className": "Chair34",
+   "cost": 1500,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040035,
+   "name": "Egyptian Chair",
+   "className": "Chair36",
+   "cost": 1100,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040036,
+   "name": "Stool",
+   "className": "Chair37",
+   "cost": 400,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040037,
+   "name": "Saloon Chair",
+   "className": "Chair38",
+   "cost": 600,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040038,
+   "name": "Buffalo Chair",
+   "className": "Chair39",
+   "cost": 1300,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040039,
+   "name": "Captain's Chair",
+   "className": "Chair41",
+   "cost": 850,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040040,
+   "name": "Pirate Chair",
+   "className": "Chair40",
+   "cost": 400,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040041,
+   "name": "Classy Black Chair",
+   "className": "Chair42",
+   "cost": 1100,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040042,
+   "name": "Lucky Chinese Chair",
+   "className": "Chair43",
+   "cost": 500,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040043,
+   "name": "Red Valentine Chair",
+   "className": "Chair44",
+   "cost": 1000,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040044,
+   "name": "White Valentine Chair",
+   "className": "Chair45",
+   "cost": 1300,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3040045,
+   "name": "Romantic Chair",
+   "className": "Chair46",
+   "cost": 700,
+   "group": "Chair",
+   "types": [
+    "chairItem"
+   ]
+  },
+  {
+   "id": 3020007,
+   "name": "Arcade Machine",
+   "className": "ArcadeMachine",
+   "cost": 1500,
+   "breakCount": 6,
+   "invisible": true,
+   "group": "Functional",
+   "types": [
+    "interactive"
+   ]
+  },
+  {
+   "id": 3020043,
+   "name": "Retro Arcade Machine",
+   "className": "ArcadeMachineSnake",
+   "cost": 8000,
+   "breakCount": 6,
+   "infoText": true,
+   "arcadeGame": false,
+   "group": "Functional",
+   "types": [
+    "interactive"
+   ]
+  },
+  {
+   "id": 3500021,
+   "name": "Basic Toilet",
+   "className": "Toilet05",
+   "cost": 600,
+   "breakCount": 4,
+   "group": "Functional",
+   "types": [
+    "chairItem",
+    "toilet"
+   ]
+  },
+  {
+   "id": 3500017,
+   "name": "White Toilet",
+   "className": "Toilet01",
+   "cost": 900,
+   "breakCount": 4,
+   "group": "Functional",
+   "types": [
+    "chairItem",
+    "toilet"
+   ]
+  },
+  {
+   "id": 3500018,
+   "name": "Red Toilet",
+   "className": "Toilet02",
+   "cost": 1200,
+   "breakCount": 4,
+   "group": "Functional",
+   "types": [
+    "chairItem",
+    "toilet"
+   ]
+  },
+  {
+   "id": 3500019,
+   "name": "Black Toilet",
+   "className": "Toilet03",
+   "cost": 1400,
+   "breakCount": 4,
+   "group": "Functional",
+   "types": [
+    "chairItem",
+    "toilet"
+   ]
+  },
+  {
+   "id": 3500020,
+   "name": "Pink Toilet",
+   "className": "Toilet04",
+   "cost": 1000,
+   "breakCount": 4,
+   "group": "Functional",
+   "types": [
+    "chairItem",
+    "toilet"
+   ]
+  },
+  {
+   "id": 3020053,
+   "name": "White Sink",
+   "className": "WhiteSink",
+   "cost": 2000,
+   "group": "Functional",
+   "types": [
+    "sink"
+   ]
+  },
+  {
+   "id": 3020054,
+   "name": "Basin Cabinet",
+   "className": "BasinCabinet",
+   "cost": 4000,
+   "group": "Functional",
+   "types": [
+    "sink"
+   ]
+  },
+  {
+   "id": 3020010,
+   "name": "Jukebox",
+   "className": "JukeBox",
+   "cost": 5000,
+   "group": "Functional",
+   "types": [
+    "musicPlayer",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3020064,
+   "name": "Music Stereo",
+   "className": "MusicStereo",
+   "cost": 1500,
+   "group": "Functional",
+   "types": [
+    "musicPlayer",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3500070,
+   "name": "Mermaid Statue",
+   "className": "CoralReefMermaidStatue",
+   "functions": "SeaShellTrash",
+   "cash": 12,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500071,
+   "name": "Monkey Statue",
+   "className": "MonkeyStatue",
+   "functions": "BananaTrash",
+   "cash": 10,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500072,
+   "name": "Brain Jar",
+   "className": "BrainJar",
+   "functions": "ZombieCustomers",
+   "cash": 15,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500073,
+   "name": "Giant Carrot",
+   "className": "GiantCarrot",
+   "functions": "BunnyCustomers",
+   "cash": 12,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500074,
+   "name": "Grandiose Gold Statue",
+   "className": "PoshStatue",
+   "functions": "PoshCustomers",
+   "cash": 12,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3020100,
+   "name": "Red Sink",
+   "className": "RedSink",
+   "cost": 2000,
+   "group": "Functional",
+   "types": [
+    "sink"
+   ]
+  },
+  {
+   "id": 3020101,
+   "name": "Black Basin Cabinet",
+   "className": "BlackBasinCabinet",
+   "cost": 4000,
+   "group": "Functional",
+   "types": [
+    "sink"
+   ]
+  },
+  {
+   "id": 3500075,
+   "name": "Deep Sea Arcade",
+   "className": "ArcadeMachineBlue",
+   "cash": 12,
+   "breakCount": 12,
+   "infoText": true,
+   "arcadeGame": false,
+   "group": "Functional",
+   "types": [
+    "interactive"
+   ]
+  },
+  {
+   "id": 3500076,
+   "name": "Slot Machine",
+   "className": "Slotmachine",
+   "cash": 8,
+   "breakCount": 10,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "interactive"
+   ]
+  },
+  {
+   "id": 3500077,
+   "name": "Bubble Geyser",
+   "className": "AirGeyser",
+   "functions": "BubbleGeyser",
+   "cash": 15,
+   "sizeX": 2,
+   "sizeY": 2,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500078,
+   "name": "Autumn Leaves",
+   "className": "StackOfLeaves",
+   "functions": "LeafFootprint",
+   "cash": 8,
+   "sizeX": 2,
+   "sizeY": 2,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500079,
+   "name": "Pet Society Claw Machine",
+   "className": "ClawMachine",
+   "cash": 15,
+   "breakCount": 10,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "interactive"
+   ]
+  },
+  {
+   "id": 3500080,
+   "name": "Crazy Planets Pinball",
+   "className": "PinballMachine",
+   "cost": 12000,
+   "sizeX": 2,
+   "sizeY": 1,
+   "breakCount": 10,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "interactive"
+   ]
+  },
+  {
+   "id": 3500081,
+   "name": "Frosty the Snowman",
+   "className": "Snowman",
+   "functions": "SnowFootprint",
+   "cash": 10,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500082,
+   "name": "Floating Crystal",
+   "className": "GiantCrystal",
+   "functions": "CrystalTrash",
+   "cost": 60000,
+   "unlockLevel": 35,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "notGiftable"
+   ]
+  },
+  {
+   "id": 3500083,
+   "name": "Giant TV",
+   "className": "GiantTV",
+   "functions": "AddCustomerWaitTime",
+   "cost": 120000,
+   "unlockLevel": 45,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "notGiftable"
+   ]
+  },
+  {
+   "id": 3500084,
+   "name": "Wishing Well",
+   "className": "WishingWell",
+   "cost": 240000,
+   "sizeX": 3,
+   "sizeY": 3,
+   "unlockLevel": 55,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "notGiftable",
+    "interactive"
+   ]
+  },
+  {
+   "id": 3500085,
+   "name": "Egyptian Obelisk",
+   "className": "EgyptianObelisk",
+   "functions": "AddMaxDemand2",
+   "cost": 500000,
+   "sizeX": 2,
+   "sizeY": 2,
+   "unlockLevel": 65,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "notGiftable"
+   ]
+  },
+  {
+   "id": 3500086,
+   "name": "Gingerbread Basin",
+   "className": "GingerbreadBasin",
+   "cost": 4500,
+   "group": "Functional",
+   "types": [
+    "sink"
+   ]
+  },
+  {
+   "id": 3500087,
+   "name": "Gingerbread Toilet",
+   "className": "Toilet06",
+   "cost": 15000,
+   "breakCount": 12,
+   "operateTimePercentage": 50,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "chairItem",
+    "toilet"
+   ]
+  },
+  {
+   "id": 3500088,
+   "name": "Gingerbread Bed",
+   "className": "GingerbreadBed",
+   "cash": 12,
+   "operateTimePercentage": 50,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "bed"
+   ]
+  },
+  {
+   "id": 3500089,
+   "name": "Snow Machine",
+   "className": "SnowMachine",
+   "functions": "SnowGenerator",
+   "cash": 15,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500090,
+   "name": "Reindeer",
+   "className": "Reindeer",
+   "functions": "AddMaxDemand2",
+   "cash": 15,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500091,
+   "name": "Santa Statue",
+   "className": "SantaStatue",
+   "functions": "SantaElfCustomers",
+   "cash": 12,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500092,
+   "name": "Basic Red Bed",
+   "className": "BasicMattressBedRed",
+   "cost": 4500,
+   "operateTimePercentage": 75,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": [
+    "bed"
+   ]
+  },
+  {
+   "id": 3500093,
+   "name": "3 Million Fans Statue",
+   "className": "FanStatue",
+   "functions": "AddMaxDemand1",
+   "cost": 1,
+   "sizeX": 2,
+   "sizeY": 2,
+   "invisible": true,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3500094,
+   "name": "Chocolate Fountain",
+   "className": "RomanticChocolateFountain",
+   "functions": "HeartGenerator",
+   "cash": 12,
+   "sizeX": 2,
+   "sizeY": 2,
+   "infoText": true,
+   "group": "Functional",
+   "types": []
+  },
+  {
+   "id": 3050020,
+   "name": "White Flooring",
+   "className": "FloorTile21",
+   "cost": 8,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050000,
+   "name": "Wood Panel",
+   "className": "FloorTile",
+   "cost": 10,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050001,
+   "name": "Checker",
+   "className": "FloorTile2",
+   "cost": 12,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050002,
+   "name": "Black Tiles",
+   "className": "FloorTile3",
+   "cost": 10,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050003,
+   "name": "White Tiles",
+   "className": "FloorTile4",
+   "cost": 9,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050004,
+   "name": "Red Brick",
+   "className": "FloorTile5",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050005,
+   "name": "Red Carpet",
+   "className": "FloorTile6",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050006,
+   "name": "White Wicker Pattern",
+   "className": "FloorTile7",
+   "cost": 12,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050007,
+   "name": "Metal Flooring",
+   "className": "FloorTile8",
+   "cost": 28,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050008,
+   "name": "Ceramic Tiles",
+   "className": "FloorTile9",
+   "cost": 10,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050009,
+   "name": "Yellow Carpet",
+   "className": "FloorTile10",
+   "cost": 8,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050010,
+   "name": "Pink Brick",
+   "className": "FloorTile11",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050011,
+   "name": "Aqua Blue",
+   "className": "FloorTile12",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050012,
+   "name": "Green Twirl Carpet",
+   "className": "FloorTile13",
+   "cost": 8,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050013,
+   "name": "Mahogany Wood",
+   "className": "FloorTile14",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050014,
+   "name": "Classy Tiles",
+   "className": "FloorTile15",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050015,
+   "name": "Cheesy Pattern",
+   "className": "FloorTile16",
+   "cost": 12,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050016,
+   "name": "Blue Star Pattern",
+   "className": "FloorTile17",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050017,
+   "name": "Pink Flower Pattern",
+   "className": "FloorTile18",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050018,
+   "name": "White Stripes",
+   "className": "FloorTile19",
+   "cost": 18,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050019,
+   "name": "Glass Flooring",
+   "className": "FloorTile20",
+   "cost": 60,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050021,
+   "name": "Metal Deck Flooring",
+   "className": "FloorTile22",
+   "cost": 40,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050022,
+   "name": "Simple Terracotta Tile",
+   "className": "FloorTile23",
+   "cost": 18,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050023,
+   "name": "Red Checker",
+   "className": "FloorTile24",
+   "cost": 14,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050024,
+   "name": "Grey Brick",
+   "className": "FloorTile25",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050025,
+   "name": "Rubble",
+   "className": "FloorTile26",
+   "cost": 12,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050026,
+   "name": "Sand",
+   "className": "FloorTile27",
+   "cost": 13,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050027,
+   "name": "Dirt",
+   "className": "FloorTile28",
+   "cost": 10,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050028,
+   "name": "Grass",
+   "className": "FloorTile29",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050029,
+   "name": "Water",
+   "className": "FloorTile30",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050030,
+   "name": "Pink Tile",
+   "className": "FloorTile31",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050031,
+   "name": "Blue Tile",
+   "className": "FloorTile32",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050032,
+   "name": "Green Tile",
+   "className": "FloorTile33",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050033,
+   "name": "Wooden Flooring",
+   "className": "FloorTile34",
+   "cost": 18,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050034,
+   "name": "Orange Tile",
+   "className": "FloorTile35",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050035,
+   "name": "White Stone Tile",
+   "className": "FloorTile36",
+   "cost": 30,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050036,
+   "name": "Ocean Floor Tile",
+   "className": "FloorTile37",
+   "cost": 20,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050037,
+   "name": "Autumn Tile",
+   "className": "FloorTile38",
+   "cost": 30,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050038,
+   "name": "Snowy Floor",
+   "className": "FloorTile39",
+   "cost": 40,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050039,
+   "name": "Gingerbread Floor",
+   "className": "FloorTile40",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050040,
+   "name": "Icy Floor",
+   "className": "FloorTile41",
+   "cost": 35,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050041,
+   "name": "Glossy Star Tile",
+   "className": "FloorTile42",
+   "cost": 50,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050042,
+   "name": "Stone Flooring",
+   "className": "FloorTile43",
+   "cost": 30,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050043,
+   "name": "Wooden Planks",
+   "className": "FloorTile44",
+   "cost": 10,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050044,
+   "name": "Classy White Tiles",
+   "className": "FloorTile45",
+   "cost": 55,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050045,
+   "name": "Classy Grey Tiles",
+   "className": "FloorTile46",
+   "cost": 50,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050046,
+   "name": "Yellow Glossy Tile",
+   "className": "FloorTile47",
+   "cost": 25,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050047,
+   "name": "Red Lucky Tile",
+   "className": "FloorTile48",
+   "cost": 55,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050048,
+   "name": "Grey Lucky Tile",
+   "className": "FloorTile49",
+   "cost": 35,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050049,
+   "name": "Pink Lucky Tile",
+   "className": "FloorTile50",
+   "cost": 45,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050050,
+   "name": "Beige Carpet",
+   "className": "FloorTile51",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050051,
+   "name": "Pink Carpet",
+   "className": "FloorTile52",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050052,
+   "name": "Red Carpet",
+   "className": "FloorTile53",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050053,
+   "name": "Purple Carpet",
+   "className": "FloorTile54",
+   "cost": 15,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3050054,
+   "name": "Hearts Tile",
+   "className": "FloorTile55",
+   "cost": 40,
+   "group": "Floor Tile",
+   "types": [
+    "floorTileItem"
+   ]
+  },
+  {
+   "id": 3060000,
+   "name": "Green Wallpaper",
+   "className": "Wall1",
+   "cost": 150,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060014,
+   "name": "Neutral Green",
+   "className": "Wall18",
+   "cost": 200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060015,
+   "name": "Neutral Beige",
+   "className": "Wall19",
+   "cost": 200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060016,
+   "name": "Neutral Blue",
+   "className": "Wall17",
+   "cost": 200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060001,
+   "name": "Grey Stripes",
+   "className": "Wall3",
+   "cost": 200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060002,
+   "name": "Wooden Planks",
+   "className": "Wall4",
+   "cost": 500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060003,
+   "name": "Cement Wall",
+   "className": "Wall5",
+   "cost": 250,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060004,
+   "name": "Large Grey Brickwall",
+   "className": "Wall6",
+   "cost": 600,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060005,
+   "name": "Ceramic Tiles",
+   "className": "Wall7",
+   "cost": 400,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060006,
+   "name": "Pink Stripes",
+   "className": "Wall8",
+   "cost": 450,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060007,
+   "name": "Cream Wallpaper",
+   "className": "Wall9",
+   "cost": 300,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060008,
+   "name": "Dark Brown Wallpaper",
+   "className": "Wall10",
+   "cost": 300,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060009,
+   "name": "White and Blue Stripes",
+   "className": "Wall11",
+   "cost": 450,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060010,
+   "name": "Metal Plating",
+   "className": "Wall12",
+   "cost": 1400,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060011,
+   "name": "Brown Stripes",
+   "className": "Wall13",
+   "cost": 400,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060012,
+   "name": "Pink Brickwall",
+   "className": "Wall14",
+   "cost": 500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060013,
+   "name": "Wood panel Wall",
+   "className": "Wall15",
+   "cost": 450,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060017,
+   "name": "Grey",
+   "className": "Wall16",
+   "cost": 500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060018,
+   "name": "Dark Red",
+   "className": "Wall20",
+   "cost": 800,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060019,
+   "name": "Charcoal Black",
+   "className": "Wall21",
+   "cost": 700,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060020,
+   "name": "Dark Green",
+   "className": "Wall22",
+   "cost": 500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060021,
+   "name": "Dark Blue",
+   "className": "Wall23",
+   "cost": 550,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060022,
+   "name": "Dark Pink",
+   "className": "Wall24",
+   "cost": 1000,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060023,
+   "name": "Metal Panel",
+   "className": "Wall25",
+   "cost": 1500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060024,
+   "name": "White Brick",
+   "className": "Wall26",
+   "cost": 600,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060025,
+   "name": "White Wood Panel wall",
+   "className": "Wall27",
+   "cost": 700,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060026,
+   "name": "Taco House",
+   "className": "Wall28",
+   "cost": 1000,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060027,
+   "name": "Drive-in Diner Wallpaper",
+   "className": "Wall29",
+   "cost": 1800,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060028,
+   "name": "Red Brick Wall",
+   "className": "Wall30",
+   "cost": 700,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060029,
+   "name": "Ornate Wall",
+   "className": "Wall31",
+   "cost": 1300,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060030,
+   "name": "Black Brick",
+   "className": "Wall32",
+   "cost": 600,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060031,
+   "name": "Blue Stripes",
+   "className": "Wall33",
+   "cost": 450,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060032,
+   "name": "Red and White Stripes",
+   "className": "Wall34",
+   "cost": 450,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060033,
+   "name": "Greek Wallpaper",
+   "className": "Wall35",
+   "cost": 850,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060034,
+   "name": "Seabed Wallpaper",
+   "className": "Wall36",
+   "cost": 1200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060035,
+   "name": "Autumn Wallpaper",
+   "className": "Wall37",
+   "cost": 1250,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060036,
+   "name": "Festive Wallpaper",
+   "className": "Wall38",
+   "cost": 1200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060037,
+   "name": "Gingerbread Wall",
+   "className": "Wall39",
+   "cost": 1000,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060038,
+   "name": "Iceblock Wallpaper",
+   "className": "Wall41",
+   "cost": 1400,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060039,
+   "name": "Tinsel Wallpaper",
+   "className": "Wall40",
+   "cost": 1100,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060040,
+   "name": "Glyph Wallpaper",
+   "className": "Wall42",
+   "cost": 1800,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060041,
+   "name": "Wooden Walls",
+   "className": "Wall43",
+   "cost": 600,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060042,
+   "name": "Ship Walls",
+   "className": "Wall44",
+   "cost": 1100,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060043,
+   "name": "Classy Black Wallpaper",
+   "className": "Wall45",
+   "cost": 1500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060044,
+   "name": "Lucky Wallpaper",
+   "className": "Wall46",
+   "cost": 1500,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060045,
+   "name": "Hearts Wallpaper",
+   "className": "Wall47",
+   "cost": 1000,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060046,
+   "name": "Red Bow Wallpaper",
+   "className": "Wall48",
+   "cost": 1200,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3060047,
+   "name": "Pink Bow Wallpaper",
+   "className": "Wall49",
+   "cost": 1400,
+   "group": "Wallpaper",
+   "types": [
+    "wallpaperItem"
+   ]
+  },
+  {
+   "id": 3070000,
+   "name": "Stove",
+   "className": "Stove01",
+   "cost": 200,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070001,
+   "name": "Ruby Stove",
+   "className": "Stove02",
+   "cost": 400,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070003,
+   "name": "Grill",
+   "className": "Stove5",
+   "cost": 750,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070004,
+   "name": "Hot Plate",
+   "className": "Stove7",
+   "cost": 1500,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070002,
+   "name": "TelePort Stove",
+   "className": "Stove04",
+   "cost": 4000,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070006,
+   "name": "Atomic Stove",
+   "className": "Stove03",
+   "cost": 8000,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070005,
+   "name": "Cauldron Stove",
+   "className": "Stove10",
+   "cost": 4000,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070007,
+   "name": "Halloween Stove",
+   "className": "HalloweenStove01",
+   "cost": 3000,
+   "invisible": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070008,
+   "name": "Festive Stove",
+   "className": "Stove11",
+   "cash": 15,
+   "operateTimePercentage": 90,
+   "invisible": true,
+   "infoText": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3020034,
+   "name": "Soda Dispenser",
+   "className": "SodaDispenser",
+   "cost": 1200,
+   "group": "Kitchen Appliance",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3110001,
+   "name": "Drinks Fridge",
+   "className": "DrinksFridge",
+   "cost": 2400,
+   "group": "Kitchen Appliance",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3110002,
+   "name": "Festive Fridge",
+   "className": "FestiveDrinksFridge",
+   "cost": 25000,
+   "operateTimePercentage": 90,
+   "invisible": true,
+   "infoText": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3110003,
+   "name": "Saloon Drinks Dispenser",
+   "className": "DrinksShelf",
+   "cost": 5000,
+   "operateTimePercentage": 95,
+   "infoText": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3070009,
+   "name": "Grill",
+   "className": "Stove13",
+   "cost": 10000,
+   "operateTimePercentage": 95,
+   "infoText": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3070010,
+   "name": "Valentine Stove",
+   "className": "Stove14",
+   "cash": 12,
+   "operateTimePercentage": 92,
+   "infoText": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "kitchen"
+   ]
+  },
+  {
+   "id": 3110004,
+   "name": "Valentine Fridge",
+   "className": "DrinksFridgeVday",
+   "cash": 5,
+   "operateTimePercentage": 92,
+   "infoText": true,
+   "group": "Kitchen Appliance",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3020034,
+   "name": "Soda Dispenser",
+   "className": "SodaDispenser",
+   "cost": 1200,
+   "group": "Drink",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3110001,
+   "name": "Drinks Fridge",
+   "className": "DrinksFridge",
+   "cost": 2400,
+   "group": "Drink",
+   "types": [
+    "drink"
+   ]
+  },
+  {
+   "id": 3120000,
+   "name": "Green Bush",
+   "className": "GreenBush",
+   "cost": 500,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120001,
+   "name": "Red Berry Bush",
+   "className": "RedBerryBush",
+   "cost": 1200,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120002,
+   "name": "WhiteFlower Bush",
+   "className": "WhiteFlowerBush",
+   "cost": 1000,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120003,
+   "name": "Iris",
+   "className": "Iris",
+   "cost": 800,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120004,
+   "name": "Pink Tulips",
+   "className": "PinkTulips",
+   "cost": 700,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120005,
+   "name": "Sunflowers",
+   "className": "Sunflowers",
+   "cost": 2000,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120006,
+   "name": "Blue Daisy",
+   "className": "Blueflowers",
+   "cost": 500,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120007,
+   "name": "Pine Tree",
+   "className": "PineTree",
+   "cost": 1800,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120008,
+   "name": "Snowy Pine Tree",
+   "className": "SnowyPineTree",
+   "cost": 3000,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120009,
+   "name": "Daffodils",
+   "className": "Daffodils",
+   "cost": 1200,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120010,
+   "name": "White Flowers",
+   "className": "WhiteFlowers",
+   "cost": 600,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120011,
+   "name": "Mushrooms",
+   "className": "Mushrooms",
+   "cost": 400,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120012,
+   "name": "Vriesea",
+   "className": "Vriesea",
+   "cost": 2400,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120013,
+   "name": "Anthurium",
+   "className": "Anthurium",
+   "cost": 1400,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120014,
+   "name": "Yellow Daisy",
+   "className": "YellowDaisy",
+   "cost": 1100,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120015,
+   "name": "Pansy",
+   "className": "Pansy",
+   "cost": 900,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120016,
+   "name": "Balsamine",
+   "className": "Balsamine",
+   "cost": 700,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120017,
+   "name": "Blooming Cactus",
+   "className": "BloomingCactus",
+   "cost": 700,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120018,
+   "name": "Palm Tree",
+   "className": "PalmTreeGarden",
+   "cost": 950,
+   "sizeX": 1,
+   "sizeY": 1,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120019,
+   "name": "Desert Plant",
+   "className": "DesertPalm",
+   "cost": 850,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120020,
+   "name": "Romantic Tree",
+   "className": "RomanticTree",
+   "cost": 1200,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3120021,
+   "name": "Heart Tree",
+   "className": "HeartTree",
+   "cost": 1800,
+   "group": "Outdoor Only",
+   "types": [
+    "outdoor"
+   ]
+  },
+  {
+   "id": 3090000,
+   "name": "White Walls",
+   "className": "Wall2",
+   "cost": 0,
+   "group": "Wall",
+   "types": [
+    "wallItem"
+   ]
+  },
+  {
+   "id": 3090001,
+   "name": "Wall Corner",
+   "className": "WallCorner",
+   "cost": 0,
+   "group": "Wall",
+   "types": [
+    "wallItem"
+   ]
+  },
+  {
+   "id": 3100000,
+   "name": "Menu Holder",
+   "className": "MenuHolder",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "menuItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3200000,
+   "name": "Achievement Panel",
+   "className": "AchievementPanel",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "achievementItem",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3300000,
+   "name": "Letter Box",
+   "className": "LetterBox",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "mailItem"
+   ]
+  },
+  {
+   "id": 3400000,
+   "name": "Socialite",
+   "className": "AwardVisitGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400001,
+   "name": "Familiar Face",
+   "className": "AwardVisitSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400002,
+   "name": "Tourist",
+   "className": "AwardVisitBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400003,
+   "name": "Restaurant Critic",
+   "className": "AwardRatingGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400004,
+   "name": "Evaluation Expert",
+   "className": "AwardRatingSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400005,
+   "name": "Estate Agent",
+   "className": "AwardRatingBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400006,
+   "name": "Big Spender",
+   "className": "AwardSpendGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400007,
+   "name": "Shopaholic",
+   "className": "AwardSpendSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400008,
+   "name": "Spending Spree",
+   "className": "AwardSpendBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400009,
+   "name": "Santa Claus",
+   "className": "AwardGiftGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400010,
+   "name": "Generous Gifter",
+   "className": "AwardGiftSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400011,
+   "name": "Charitable Chum",
+   "className": "AwardGiftBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400012,
+   "name": "Grand Architect",
+   "className": "AwardOutdoorGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400013,
+   "name": "Exterior Decorator",
+   "className": "AwardOutdoorSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400014,
+   "name": "DIY Expert",
+   "className": "AwardOutdoorBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400015,
+   "name": "Interior Designer",
+   "className": "AwardIndoorGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400016,
+   "name": "Feng Shui Expert",
+   "className": "AwardIndoorSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400017,
+   "name": "Modernizer",
+   "className": "AwardIndoorBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400018,
+   "name": "Fashion Icon",
+   "className": "AwardAvatarGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400019,
+   "name": "Trendsetter",
+   "className": "AwardAvatarSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400020,
+   "name": "Bling!",
+   "className": "AwardAvatarBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400021,
+   "name": "Garbage Guru",
+   "className": "AwardTrashGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3400022,
+   "name": "Rubbish Raider",
+   "className": "AwardTrashSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3400023,
+   "name": "Trash Talker",
+   "className": "AwardTrashBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3400024,
+   "name": "Gourmet Chef",
+   "className": "AwardDishGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3400025,
+   "name": "Culinary Artist",
+   "className": "AwardDishSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3400026,
+   "name": "Classy Cook",
+   "className": "AwardDishBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "wallDecorationItem"
+   ]
+  },
+  {
+   "id": 3400027,
+   "name": "Trading Expert",
+   "className": "AwardTradeGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400028,
+   "name": "Sales Sage",
+   "className": "AwardTradeSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400029,
+   "name": "Barter Buddy",
+   "className": "AwardTradeBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400030,
+   "name": "Glorious Gardener",
+   "className": "AwardGardenGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400031,
+   "name": "First-Class Forester",
+   "className": "AwardGardenSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400032,
+   "name": "Greenskeeper",
+   "className": "AwardGardenBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400033,
+   "name": "Washing Machine",
+   "className": "AwardPlatesGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400034,
+   "name": "Plate Prince",
+   "className": "AwardPlatesSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400035,
+   "name": "Head Waiter",
+   "className": "AwardPlatesBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400036,
+   "name": "Drain Fame",
+   "className": "AwardToiletGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400037,
+   "name": "Pipe Dreams",
+   "className": "AwardToiletSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400038,
+   "name": "Plumb Role",
+   "className": "AwardToiletBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400039,
+   "name": "Master Mechanic",
+   "className": "AwardRepairGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400040,
+   "name": "Repairman",
+   "className": "AwardRepairSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400041,
+   "name": "Fixer",
+   "className": "AwardRepairBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400042,
+   "name": "Aide Of Honor",
+   "className": "AwardHelpGold",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400043,
+   "name": "Search And Rescue",
+   "className": "AwardHelpSilver",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3400044,
+   "name": "A Friend Indeed",
+   "className": "AwardHelpBronze",
+   "cost": 0,
+   "invisible": true,
+   "group": "Award",
+   "types": [
+    "notSellable",
+    "notGiftable",
+    "unique",
+    "stackable"
+   ]
+  },
+  {
+   "id": 3600000,
+   "name": "No Music",
+   "className": "",
+   "coverName": "",
+   "cost": 0,
+   "group": "Music",
+   "types": []
+  },
+  {
+   "id": 3600001,
+   "name": "Default",
+   "className": "MusicRestaurant",
+   "coverName": "CoverDefault",
+   "cost": 0,
+   "group": "Music",
+   "types": []
+  },
+  {
+   "id": 3600002,
+   "name": "Pineapple Overture",
+   "className": "MusicClassical",
+   "coverName": "CoverClassical",
+   "cost": 4000,
+   "group": "Music",
+   "types": []
+  },
+  {
+   "id": 3600003,
+   "name": "My Irish Heart",
+   "className": "MusicIrish",
+   "coverName": "CoverIrish",
+   "cost": 4000,
+   "group": "Music",
+   "types": []
+  },
+  {
+   "id": 3600004,
+   "name": "Delicate Spring",
+   "className": "MusicOriental",
+   "coverName": "CoverOriental",
+   "cost": 4000,
+   "group": "Music",
+   "types": []
+  },
+  {
+   "id": 3600005,
+   "name": "The Fiesta Brothers",
+   "className": "MusicMexican",
+   "coverName": "CoverMexican",
+   "cost": 4000,
+   "group": "Music",
+   "types": []
+  },
+  {
+   "id": 3700000,
+   "name": "Big Bag",
+   "cost": 5000,
+   "cash": 10,
+   "group": "CoinsToPfCash",
+   "types": []
+  },
+  {
+   "id": 3700001,
+   "name": "Small Bag",
+   "cost": 1000,
+   "cash": 2,
+   "group": "CoinsToPfCash",
+   "types": []
+  },
+  {
+   "id": 3800000,
+   "name": "BigFire",
+   "className": "BigFireItem",
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800001,
+   "name": "LostCow",
+   "className": "LostCow",
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800002,
+   "name": "PlotBug",
+   "className": "LadyBug",
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800003,
+   "name": "VisitFire",
+   "className": "VisitFireItem",
+   "sizeX": 2,
+   "sizeY": 2,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800004,
+   "name": "WaterLeak",
+   "className": "WaterLeakItem",
+   "sizeX": 1,
+   "sizeY": 1,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800005,
+   "name": "WaterLeakTile",
+   "className": "WaterleakTile",
+   "sizeX": 1,
+   "sizeY": 1,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800006,
+   "name": "PoisonousMushroom",
+   "className": "PoisonousMushroom",
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800007,
+   "name": "Skunk",
+   "className": "SkunkItem",
+   "sizeX": 1,
+   "sizeY": 1,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3800008,
+   "name": "VisitBear",
+   "className": "Bear",
+   "sizeX": 3,
+   "sizeY": 2,
+   "group": "Visit",
+   "types": []
+  },
+  {
+   "id": 3900000,
+   "name": "OutsideArea 7x6",
+   "cost": 2500,
+   "sizeX": 7,
+   "sizeY": 6,
+   "unlockLevel": 10,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3900001,
+   "name": "OutsideArea 9x8",
+   "cost": 7500,
+   "sizeX": 9,
+   "sizeY": 8,
+   "unlockLevel": 15,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3900002,
+   "name": "OutsideArea 11x10",
+   "cost": 16000,
+   "sizeX": 11,
+   "sizeY": 10,
+   "unlockLevel": 20,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3900003,
+   "name": "OutsideArea 13x12",
+   "cost": 35000,
+   "sizeX": 13,
+   "sizeY": 12,
+   "unlockLevel": 25,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3900004,
+   "name": "OutsideArea 15x14",
+   "cost": 75000,
+   "sizeX": 15,
+   "sizeY": 14,
+   "unlockLevel": 30,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3900005,
+   "name": "OutsideArea 17x16",
+   "cost": 155000,
+   "sizeX": 17,
+   "sizeY": 16,
+   "unlockLevel": 40,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3900006,
+   "name": "OutsideArea 19x18",
+   "cost": 275000,
+   "sizeX": 19,
+   "sizeY": 18,
+   "unlockLevel": 50,
+   "group": "OutsideAreaSize",
+   "types": []
+  },
+  {
+   "id": 3910000,
+   "name": "Bike 1",
+   "cost": 5000,
+   "unlockLevel": 10,
+   "group": "DeliveryBike",
+   "types": []
+  },
+  {
+   "id": 3910001,
+   "name": "Bike 2",
+   "cost": 15000,
+   "unlockLevel": 15,
+   "group": "DeliveryBike",
+   "types": []
+  },
+  {
+   "id": 3910002,
+   "name": "Bike 3",
+   "cost": 32000,
+   "unlockLevel": 20,
+   "group": "DeliveryBike",
+   "types": []
+  },
+  {
+   "id": 3910003,
+   "name": "Bike 4",
+   "cost": 70000,
+   "unlockLevel": 25,
+   "group": "DeliveryBike",
+   "types": []
+  },
+  {
+   "id": 3910004,
+   "name": "Bike 5",
+   "cost": 150000,
+   "unlockLevel": 30,
+   "group": "DeliveryBike",
+   "types": []
+  },
+  {
+   "id": 3910005,
+   "name": "Bike 6",
+   "cost": 310000,
+   "unlockLevel": 40,
+   "group": "DeliveryBike",
+   "types": []
+  }
+ ],
+ "duplicateIds": [
+  {
+   "id": 3020100,
+   "primeiro": {
+    "name": "Garden Pond",
+    "className": "GardenPond",
+    "group": "Decoration"
+   },
+   "repetido": {
+    "name": "Red Sink",
+    "className": "RedSink",
+    "group": "Functional"
+   },
+   "mesmoItem": false
+  },
+  {
+   "id": 3020034,
+   "primeiro": {
+    "name": "Soda Dispenser",
+    "className": "SodaDispenser",
+    "group": "Kitchen Appliance"
+   },
+   "repetido": {
+    "name": "Soda Dispenser",
+    "className": "SodaDispenser",
+    "group": "Drink"
+   },
+   "mesmoItem": true
+  },
+  {
+   "id": 3110001,
+   "primeiro": {
+    "name": "Drinks Fridge",
+    "className": "DrinksFridge",
+    "group": "Kitchen Appliance"
+   },
+   "repetido": {
+    "name": "Drinks Fridge",
+    "className": "DrinksFridge",
+    "group": "Drink"
+   },
+   "mesmoItem": true
+  }
+ ],
+ "itemsWithoutClassName": [
+  {
+   "id": 3600000,
+   "name": "No Music",
+   "group": "Music"
+  },
+  {
+   "id": 3700000,
+   "name": "Big Bag",
+   "group": "CoinsToPfCash"
+  },
+  {
+   "id": 3700001,
+   "name": "Small Bag",
+   "group": "CoinsToPfCash"
+  },
+  {
+   "id": 3900000,
+   "name": "OutsideArea 7x6",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3900001,
+   "name": "OutsideArea 9x8",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3900002,
+   "name": "OutsideArea 11x10",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3900003,
+   "name": "OutsideArea 13x12",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3900004,
+   "name": "OutsideArea 15x14",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3900005,
+   "name": "OutsideArea 17x16",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3900006,
+   "name": "OutsideArea 19x18",
+   "group": "OutsideAreaSize"
+  },
+  {
+   "id": 3910000,
+   "name": "Bike 1",
+   "group": "DeliveryBike"
+  },
+  {
+   "id": 3910001,
+   "name": "Bike 2",
+   "group": "DeliveryBike"
+  },
+  {
+   "id": 3910002,
+   "name": "Bike 3",
+   "group": "DeliveryBike"
+  },
+  {
+   "id": 3910003,
+   "name": "Bike 4",
+   "group": "DeliveryBike"
+  },
+  {
+   "id": 3910004,
+   "name": "Bike 5",
+   "group": "DeliveryBike"
+  },
+  {
+   "id": 3910005,
+   "name": "Bike 6",
+   "group": "DeliveryBike"
+  }
+ ]
+}

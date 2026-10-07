@@ -1,0 +1,22 @@
+{
+  "id": 3050000,
+  "classname": "default_tile_name",
+  "name": "Piso Padrão",
+  "type": 0,
+  "kind": "decor",
+  "priceGold": 1,
+  "purchasable": true,
+  "legacyClassName": "FloorTile",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 0,
+  "parts": [
+    {
+      "file": "default_tile_name.png",
+      "width": 164,
+      "height": 84,
+      "left": -82,
+      "top": -2
+    }
+  ]
+}

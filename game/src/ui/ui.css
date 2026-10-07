@@ -1,0 +1,226 @@
+/*
+ * UI em HTML puro, fora do canvas: não escala com a stage, então tem o mesmo
+ * tamanho em qualquer resolução.
+ */
+
+.ui-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ui-layer > * {
+  pointer-events: auto;
+}
+
+.ui-button {
+  --ui-ink: #38210e;
+  --ui-panel: #f4efe2;
+  --ui-panel-hover: #e5dcc6;
+
+  position: fixed;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 3px solid var(--ui-ink);
+  border-radius: 12px;
+  background: var(--ui-panel);
+  color: var(--ui-ink);
+  box-shadow: 0 4px 0 0 var(--ui-ink);
+  cursor: pointer;
+  transition:
+    background-color 120ms ease-out,
+    transform 60ms ease-out,
+    box-shadow 60ms ease-out;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ui-button:hover {
+  background: var(--ui-panel-hover);
+}
+
+.ui-button:active,
+.ui-button[data-pressed='true'] {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+.ui-button:focus-visible {
+  outline: 3px solid #8ce052;
+  outline-offset: 2px;
+}
+
+.ui-button svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fullscreen-control {
+  --fullscreen-action-size: 48px;
+  position: fixed;
+  right: var(--fullscreen-right, 16px);
+  top: var(--fullscreen-top, 16px);
+  box-sizing: content-box;
+  width: 24px;
+  min-height: 48px;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  transition: width 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fullscreen-control.is-expanded {
+  width: calc(24px + 8px + var(--fullscreen-action-size));
+}
+
+.fullscreen-control.is-wardrobe {
+  --fullscreen-action-size: 33.6px;
+}
+
+.fullscreen-control > button {
+  pointer-events: auto;
+}
+
+.fullscreen-reveal {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #01a9fd;
+  cursor: pointer;
+  transition: transform 60ms ease-out;
+  touch-action: manipulation;
+}
+
+.fullscreen-reveal::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
+.fullscreen-reveal svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(90deg);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fullscreen-reveal .fullscreen-reveal-outline {
+  stroke: #015495;
+  stroke-width: 5;
+}
+
+.is-expanded .fullscreen-reveal svg {
+  transform: rotate(270deg);
+}
+
+.fullscreen-reveal:hover {
+  transform: scale(1.1);
+}
+
+.fullscreen-reveal:active {
+  transform: scale(0.9);
+}
+
+.fullscreen-reveal:focus-visible {
+  outline: 2px solid #0084ed;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.ui-fullscreen {
+  --ui-ink: #015495;
+  --ui-panel: #01a9fd;
+  --ui-panel-hover: #22b7ff;
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  flex: none;
+  box-sizing: border-box;
+  color: #fff;
+  box-shadow: inset 0 0 0 3px #0084ed, inset 0 3px 0 3px #45c3ff, 0 2px 0 #015495;
+  touch-action: manipulation;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%) translateX(10px) scale(0.86);
+  transition:
+    opacity 180ms ease-out,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 240ms,
+    background-color 80ms ease-out;
+}
+
+.ui-fullscreen[hidden] {
+  /* Keep the drawing alive for the closing transition; interaction is disabled in TS. */
+  display: grid;
+  pointer-events: none;
+}
+
+.fullscreen-control.is-expanded .ui-fullscreen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0) scale(1);
+  transition-delay: 50ms, 0s, 0s, 0s;
+}
+
+.fullscreen-control.is-expanded .ui-fullscreen:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+.fullscreen-control.is-expanded .ui-fullscreen:active {
+  transform: translateY(-50%) scale(0.9);
+  box-shadow: inset 0 0 0 3px #0084ed;
+}
+
+.ui-fullscreen:focus-visible {
+  outline-color: #b3e7ff;
+}
+
+.is-wardrobe .ui-fullscreen {
+  width: 33.6px;
+  height: 33.6px;
+  border-width: 2.1px;
+  border-radius: 8.4px;
+  box-shadow: inset 0 0 0 2.1px #0084ed, inset 0 2.1px 0 2.1px #45c3ff, 0 1.4px 0 #015495;
+}
+
+.is-wardrobe .ui-fullscreen:active {
+  box-shadow: inset 0 0 0 2.1px #0084ed;
+}
+
+.is-wardrobe .ui-fullscreen svg {
+  width: 16.8px;
+  height: 16.8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-button,
+  .fullscreen-reveal,
+  .fullscreen-reveal svg,
+  .fullscreen-control {
+    transition: none;
+  }
+}

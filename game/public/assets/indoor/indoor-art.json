@@ -1,0 +1,454 @@
+{
+ "source": "indoor_asset.swf",
+ "tool": "tools/build-indoor-art.mjs",
+ "exportScale": 2,
+ "generatedAt": "2026-10-02T02:35:58.898Z",
+ "note": "A origem do símbolo é o canto de cima do tile (getScreenX/Y(tileX, tileY)). Desenhe a textura em (left, top) relativo a esse ponto. left/top vêm do transform do SVG exportado pelo FFDec; o PNG vem cortado na caixa. Exceção: FloorTile é centralizado no tile para remover o deslocamento vertical do símbolo original, respeitando as dimensões e margens do PNG atual. Cada frame é uma rotação: RoomItem.rotate() faz nextFrame() e troca numTilesX com numTilesY, e getMaxRotationCount() é content.totalFrames.",
+ "tile": {
+  "width": 160,
+  "height": 80,
+  "sourceWidth": 80,
+  "sourceHeight": 40
+ },
+ "sceneBackground": {
+  "file": "CityBackground.png",
+  "left": -3200,
+  "top": -1630,
+  "width": 6400,
+  "height": 3600,
+  "tiles": [
+   {
+    "file": "CityBackground.png",
+    "left": -3200,
+    "top": -1630,
+    "width": 3200,
+    "height": 3600
+   },
+   {
+    "file": "CityBackground-East.png",
+    "left": 0,
+    "top": -1630,
+    "width": 3200,
+    "height": 3600
+   },
+   {
+    "file": "CityBackground-West.png",
+    "left": -4028,
+    "top": -1630,
+    "width": 828,
+    "height": 3600
+   },
+   {
+    "file": "CityBackground-FarEast.png",
+    "left": 3200,
+    "top": -1630,
+    "width": 800,
+    "height": 3600
+   }
+  ],
+  "sources": [
+   {
+    "className": "Road",
+    "characterId": 2055,
+    "left": -4028.9,
+    "top": -1914.4
+   },
+   {
+    "className": "RoadTrees",
+    "characterId": 2039,
+    "left": -2519.5,
+    "top": -1056.7
+   }
+  ]
+ },
+ "items": {
+  "WhiteTableCloth": {
+   "characterId": 541,
+   "frames": [
+    {
+     "file": "WhiteTableCloth-1.png",
+     "width": 176,
+     "height": 127,
+     "left": -90,
+     "top": -49.2
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 51.4,
+   "item": {
+    "id": 3030010,
+    "name": "White Cloth Table",
+    "group": "Table"
+   }
+  },
+  "Chair02": {
+   "characterId": 1217,
+   "frames": [
+    {
+     "file": "Chair02-1.png",
+     "width": 83,
+     "height": 143,
+     "left": -40,
+     "top": -80.2
+    },
+    {
+     "file": "Chair02-2.png",
+     "width": 83,
+     "height": 143,
+     "left": -40,
+     "top": -80.2
+    },
+    {
+     "file": "Chair02-3.png",
+     "width": 83,
+     "height": 143,
+     "left": -40,
+     "top": -80.2
+    },
+    {
+     "file": "Chair02-4.png",
+     "width": 83,
+     "height": 143,
+     "left": -40,
+     "top": -80.2
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 97.4,
+   "item": {
+    "id": 3040001,
+    "name": "Classic Chair",
+    "group": "Chair"
+   }
+  },
+  "Stove01": {
+   "characterId": 2112,
+   "frames": [
+    {
+     "file": "pink_stove.png",
+     "width": 160,
+     "height": 127,
+     "left": -80,
+     "top": -47
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 47,
+   "item": {
+    "id": 3070000,
+    "name": "Stove",
+    "group": "Kitchen Appliance"
+   }
+  },
+  "DelicateBush": {
+   "characterId": 1680,
+   "frames": [
+    {
+     "file": "DelicateBush-1.png",
+     "width": 74,
+     "height": 165,
+     "left": -36.7,
+     "top": -106.1
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 127.2,
+   "item": {
+    "id": 3020003,
+    "name": "DelicateBush",
+    "group": "Decoration"
+   }
+  },
+  "LetterBox": {
+   "characterId": 2242,
+   "frames": [
+    {
+     "file": "LetterBox-1.png",
+     "width": 123,
+     "height": 181,
+     "left": -58.8,
+     "top": -112.4
+    },
+    {
+     "file": "LetterBox-2.png",
+     "width": 123,
+     "height": 181,
+     "left": -58.8,
+     "top": -112.4
+    },
+    {
+     "file": "LetterBox-3.png",
+     "width": 123,
+     "height": 181,
+     "left": -58.8,
+     "top": -112.4
+    },
+    {
+     "file": "LetterBox-4.png",
+     "width": 123,
+     "height": 181,
+     "left": -58.8,
+     "top": -112.4
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 123.8,
+   "item": {
+    "id": 3300000,
+    "name": "Letter Box",
+    "group": "Award"
+   }
+  },
+  "MenuHolder": {
+   "characterId": 588,
+   "frames": [
+    {
+     "file": "MenuHolder-1.png",
+     "width": 309,
+     "height": 167,
+     "left": -153.3,
+     "top": -120.1
+    },
+    {
+     "file": "MenuHolder-2.png",
+     "width": 309,
+     "height": 167,
+     "left": -153.3,
+     "top": -120.1
+    }
+   ],
+   "sizeX": 2,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 2,
+    "sizeY": 1
+   },
+   "itemHeight": 153.2,
+   "item": {
+    "id": 3100000,
+    "name": "Menu Holder",
+    "group": "Award"
+   }
+  },
+  "AchievementPanel": {
+   "characterId": 593,
+   "frames": [
+    {
+     "file": "AchievementPanel-1.png",
+     "width": 322,
+     "height": 170,
+     "left": -161.1,
+     "top": -146.8
+    },
+    {
+     "file": "AchievementPanel-2.png",
+     "width": 322,
+     "height": 170,
+     "left": -161.1,
+     "top": -146.8
+    }
+   ],
+   "sizeX": 2,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 2,
+    "sizeY": 1
+   },
+   "itemHeight": 203.6,
+   "item": {
+    "id": 3200000,
+    "name": "Achievement Panel",
+    "group": "Award"
+   }
+  },
+  "WindowInside11": {
+   "characterId": 206,
+   "frames": [
+    {
+     "file": "WindowInside11-1.png",
+     "width": 146,
+     "height": 125,
+     "left": -74,
+     "top": -120.1
+    },
+    {
+     "file": "WindowInside11-2.png",
+     "width": 146,
+     "height": 125,
+     "left": -74,
+     "top": -120.1
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 195.2,
+   "item": {
+    "id": 3000011,
+    "name": "Basic Window",
+    "group": "Wall Decoration"
+   }
+  },
+  "Door": {
+   "characterId": 1396,
+   "frames": [
+    {
+     "file": "mafia_door.png",
+     "width": 92,
+     "height": 218,
+     "left": -87,
+     "top": -179
+    }
+   ],
+   "door": {
+    "sourceRotation": 0,
+    "hinge": { "x": 87, "y": 179 },
+    "baseSlope": -0.5
+   },
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 176,
+   "item": {
+    "id": 3010000,
+    "name": "Mafia Door",
+    "group": "Door"
+   }
+  },
+  "Wall2": {
+   "characterId": 737,
+   "frames": [
+    {
+     "file": "Wall2-1.png",
+     "width": 160,
+     "height": 282,
+     "left": -80,
+     "top": -202
+    },
+    {
+     "file": "Wall2-2.png",
+     "width": 160,
+     "height": 282,
+     "left": -80,
+     "top": -202
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 202,
+   "item": {
+    "id": 3090000,
+    "name": "White Walls",
+    "group": "Wall"
+   }
+  },
+  "WallCorner": {
+   "characterId": 734,
+   "frames": [
+    {
+     "file": "WallCorner-1.png",
+     "width": 36,
+     "height": 251,
+     "left": -18,
+     "top": -170
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 169,
+   "item": {
+    "id": 3090001,
+    "name": "Wall Corner",
+    "group": "Wall"
+   }
+  },
+  "Wall17": {
+   "characterId": 689,
+   "wallpaperRotation": 1,
+   "frames": [
+    {
+     "file": "Wall17-2.png",
+     "width": 80,
+     "height": 273,
+     "left": -80,
+     "top": -193
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 192.4,
+   "item": {
+    "id": 3060016,
+    "name": "Neutral Blue",
+    "group": "Wallpaper"
+   }
+  },
+  "FloorTile": {
+   "characterId": 829,
+   "frames": [
+    {
+     "file": "FloorTile-1.png",
+     "width": 164,
+     "height": 84,
+     "left": -82,
+     "top": -2
+    }
+   ],
+   "sizeX": 1,
+   "sizeY": 1,
+   "sizeFromArt": {
+    "sizeX": 1,
+    "sizeY": 1
+   },
+   "itemHeight": 0,
+   "item": {
+    "id": 3050000,
+    "name": "Wood Panel",
+    "group": "Floor Tile"
+   }
+  }
+ }
+}

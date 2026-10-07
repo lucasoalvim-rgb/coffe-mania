@@ -1,0 +1,3213 @@
+{
+ "source": "avatar.xml (avatar[1].bin)",
+ "tool": "tools/build-avatar-assets.mjs",
+ "generatedAt": "2026-07-27T03:23:13.608Z",
+ "note": "object = nós da malha que o item acende (vestir não troca malha, liga e desliga visibilidade). texture = símbolo no atlas, desenhado na textura 256x256 na ordem de priority (menor primeiro). hideGroup esconde grupos inteiros. Grupo com parent compartilha o slot do pai. default = item que vem vestido, tabela do Avatar3D e não do XML. alwaysVisible = malhas que nenhum item pede e que ficam sempre acesas.",
+ "alwaysVisible": [
+  "face0"
+ ],
+ "groups": [
+  {
+   "name": "SkinColour",
+   "buttonName": null,
+   "parent": null,
+   "priority": 0,
+   "kind": "color",
+   "default": 1100000
+  },
+  {
+   "name": "HairColour",
+   "buttonName": null,
+   "parent": null,
+   "priority": 0,
+   "kind": "color",
+   "default": 1200000
+  },
+  {
+   "name": "Eyes",
+   "buttonName": null,
+   "parent": null,
+   "priority": 1,
+   "kind": "item",
+   "default": 1050000
+  },
+  {
+   "name": "Mouth",
+   "buttonName": null,
+   "parent": null,
+   "priority": 1,
+   "kind": "item",
+   "default": 1060000
+  },
+  {
+   "name": "Pants",
+   "buttonName": null,
+   "parent": null,
+   "priority": 0,
+   "kind": "item",
+   "default": 1000009
+  },
+  {
+   "name": "Skirt",
+   "buttonName": null,
+   "parent": "Pants",
+   "priority": 0,
+   "kind": "item",
+   "default": null
+  },
+  {
+   "name": "Shirt",
+   "buttonName": null,
+   "parent": null,
+   "priority": 0,
+   "kind": "item",
+   "default": 1020027
+  },
+  {
+   "name": "Hat",
+   "buttonName": null,
+   "parent": null,
+   "priority": 0,
+   "kind": "item",
+   "default": 1030000
+  },
+  {
+   "name": "Hair",
+   "buttonName": null,
+   "parent": null,
+   "priority": 0,
+   "kind": "item",
+   "default": 1040005
+  },
+  {
+   "name": "Facial Hair",
+   "buttonName": "Beard",
+   "parent": null,
+   "priority": 2,
+   "kind": "item",
+   "default": 1090000
+  },
+  {
+   "name": "Miscellaneous",
+   "buttonName": "FacialFeature",
+   "parent": null,
+   "priority": 0,
+   "kind": "item",
+   "default": 1080000
+  },
+  {
+   "name": "Eyebrows",
+   "buttonName": null,
+   "parent": null,
+   "priority": 2,
+   "kind": "item",
+   "default": 1070001
+  }
+ ],
+ "items": [
+  {
+   "id": 1000000,
+   "group": "Pants",
+   "name": "Placeholder Pants",
+   "object": "pants01",
+   "cost": -1,
+   "invisible": true,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000009,
+   "group": "Pants",
+   "name": "Classic Pants",
+   "iconName": "PantsIcon",
+   "texture": "PantsClassic",
+   "object": "pants01",
+   "cost": 0,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000001,
+   "group": "Pants",
+   "name": "Classic Shorts",
+   "iconName": "Pants2Icon",
+   "texture": "Pants2",
+   "object": "pants01",
+   "cost": 400,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000002,
+   "group": "Pants",
+   "name": "Elegant Jeans",
+   "iconName": "Pants4Icon",
+   "texture": "Pants4",
+   "object": "pants01",
+   "cost": 700,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000003,
+   "group": "Pants",
+   "name": "Beige Pants",
+   "iconName": "Pants7Icon",
+   "texture": "Pants7",
+   "object": "pants01",
+   "cost": 250,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000004,
+   "group": "Pants",
+   "name": "Barman Pants",
+   "iconName": "Pants8Icon",
+   "texture": "Pants8",
+   "object": "pants01",
+   "cost": 500,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000005,
+   "group": "Pants",
+   "name": "Torn Blue Shorts",
+   "iconName": "Pants12Icon",
+   "texture": "Pants12",
+   "object": "pants01",
+   "cost": 400,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000006,
+   "group": "Pants",
+   "name": "Black Pants",
+   "iconName": "Pants15Icon",
+   "texture": "Pants15",
+   "object": "pants01",
+   "cost": 400,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000007,
+   "group": "Pants",
+   "name": "Prison Pants",
+   "iconName": "Pants16Icon",
+   "texture": "Pants16",
+   "object": "pants01",
+   "cost": 1200,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000008,
+   "group": "Pants",
+   "name": "Green Baseball Pants",
+   "iconName": "Pants17Icon",
+   "texture": "Pants17",
+   "object": "pants01",
+   "cost": 350,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000010,
+   "group": "Pants",
+   "name": "Lucky Green Pants",
+   "iconName": "Pants20Icon",
+   "texture": "Pants20",
+   "object": "pants01",
+   "cost": 600,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000011,
+   "group": "Pants",
+   "name": "Black Ninja Pants",
+   "iconName": "Pants22Icon",
+   "texture": "Pants22",
+   "object": "pants01",
+   "cost": 1200,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000012,
+   "group": "Pants",
+   "name": "Scout Shorts",
+   "iconName": "Pants23Icon",
+   "texture": "Pants23",
+   "object": "pants01",
+   "cost": 600,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000013,
+   "group": "Pants",
+   "name": "Blue Tang Pants",
+   "iconName": "Pants24Icon",
+   "texture": "Pants24",
+   "object": "pants01",
+   "cost": 450,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000014,
+   "group": "Pants",
+   "name": "Orange Shorts",
+   "iconName": "Pants27Icon",
+   "texture": "Pants27",
+   "object": "pants01",
+   "cost": 500,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000015,
+   "group": "Pants",
+   "name": "Dark Pants",
+   "iconName": "Pants29Icon",
+   "texture": "Pants29",
+   "object": "pants01",
+   "cost": 600,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000016,
+   "group": "Pants",
+   "name": "Blue Shorts and Boots",
+   "iconName": "Pants31Icon",
+   "texture": "Pants31",
+   "object": "pants01",
+   "cost": 500,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000017,
+   "group": "Pants",
+   "name": "Sushi Chef Pants",
+   "iconName": "Pants33Icon",
+   "texture": "Pants33",
+   "object": "pants01",
+   "cost": 300,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000018,
+   "group": "Pants",
+   "name": "Elf Stockings",
+   "iconName": "Pants37Icon",
+   "texture": "Pants37",
+   "object": "pants01",
+   "cost": 450,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000019,
+   "group": "Pants",
+   "name": "Festive Red Pants",
+   "iconName": "Pants38Icon",
+   "texture": "Pants38",
+   "object": "pants01",
+   "cost": 550,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1000020,
+   "group": "Pants",
+   "name": "Pirate Pants",
+   "iconName": "Pants39Icon",
+   "texture": "Pants39",
+   "object": "pants01",
+   "cost": 300,
+   "objects": [
+    "pants01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010010,
+   "group": "Skirt",
+   "name": "Classic Skirt",
+   "iconName": "Pants19Icon",
+   "texture": "Pants19",
+   "object": "pants01, dress",
+   "cost": 0,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010000,
+   "group": "Skirt",
+   "name": "Cute Blue Skirt",
+   "iconName": "Pants1Icon",
+   "texture": "Pants1",
+   "object": "pants01, dress",
+   "cost": 100,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010001,
+   "group": "Skirt",
+   "name": "Elegant Skirt",
+   "iconName": "Pants3Icon",
+   "texture": "Pants3",
+   "object": "pants01, dress",
+   "cost": 200,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010002,
+   "group": "Skirt",
+   "name": "School Girl Skirt",
+   "iconName": "Pants5Icon",
+   "texture": "Pants5",
+   "object": "pants01, dress",
+   "cost": 900,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010003,
+   "group": "Skirt",
+   "name": "Red Skirt",
+   "iconName": "Pants6Icon",
+   "texture": "Pants6",
+   "object": "pants01, dress",
+   "cost": 500,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010004,
+   "group": "Skirt",
+   "name": "Purple Skirt",
+   "iconName": "Pants9Icon",
+   "texture": "Pants9",
+   "object": "pants01, dress",
+   "cost": 400,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010005,
+   "group": "Skirt",
+   "name": "Barmaid Skirt",
+   "iconName": "Pants10Icon",
+   "texture": "Pants10",
+   "object": "pants01, dress",
+   "cost": 600,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010006,
+   "group": "Skirt",
+   "name": "Hula Skirt",
+   "iconName": "Pants11Icon",
+   "texture": "Pants11",
+   "object": "pants01, dress",
+   "cost": 800,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010007,
+   "group": "Skirt",
+   "name": "BunnyGirl Skirt",
+   "iconName": "Pants13Icon",
+   "texture": "Pants13",
+   "object": "pants01, dress",
+   "cost": 800,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010008,
+   "group": "Skirt",
+   "name": "Black Skirt",
+   "iconName": "Pants14Icon",
+   "texture": "Pants14",
+   "object": "pants01, dress",
+   "cost": 400,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010009,
+   "group": "Skirt",
+   "name": "Red Baseball Skirt",
+   "iconName": "Pants18Icon",
+   "texture": "Pants18",
+   "object": "pants01, dress",
+   "cost": 400,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010011,
+   "group": "Skirt",
+   "name": "Kimono Bottom",
+   "iconName": "Pants21Icon",
+   "texture": "Pants21",
+   "object": "pants01, dress",
+   "cost": 500,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010012,
+   "group": "Skirt",
+   "name": "Red Blossom Skirt",
+   "iconName": "Pants25Icon",
+   "texture": "Pants25",
+   "object": "pants01, dress",
+   "cost": 550,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010013,
+   "group": "Skirt",
+   "name": "Maid Skirt",
+   "iconName": "Pants26Icon",
+   "texture": "Pants26",
+   "object": "pants01, dress",
+   "cost": 1800,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010014,
+   "group": "Skirt",
+   "name": "Elegant Black Skirt",
+   "iconName": "Pants30Icon",
+   "texture": "Pants30",
+   "object": "pants01, dress",
+   "cost": 800,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010015,
+   "group": "Skirt",
+   "name": "Ruby Red Skirt",
+   "iconName": "Pants32Icon",
+   "texture": "Pants32",
+   "object": "pants01, dress",
+   "cost": 800,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010016,
+   "group": "Skirt",
+   "name": "Witch Skirt",
+   "iconName": "Pants34Icon",
+   "texture": "Pants34",
+   "object": "pants01, dress",
+   "cost": 1200,
+   "invisible": true,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010017,
+   "group": "Skirt",
+   "name": "Toga Bottom",
+   "iconName": "Pants35Icon",
+   "texture": "Pants35",
+   "object": "pants01, dress",
+   "cost": 700,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010018,
+   "group": "Skirt",
+   "name": "Goddess Skirt",
+   "iconName": "Pants36Icon",
+   "texture": "Pants36",
+   "object": "pants01, dress",
+   "cost": 700,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1010019,
+   "group": "Skirt",
+   "name": "Pirate Skirt",
+   "iconName": "Pants40Icon",
+   "texture": "Pants40",
+   "object": "pants01, dress",
+   "cost": 300,
+   "objects": [
+    "pants01",
+    "dress"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020000,
+   "group": "Shirt",
+   "name": "Placeholder Shirt",
+   "object": "shirt01, armleft, armright",
+   "cost": -1,
+   "invisible": true,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020027,
+   "group": "Shirt",
+   "name": "Blue Fish Shirt",
+   "iconName": "ShirtIcon",
+   "texture": "Shirt",
+   "object": "shirt01, armleft, armright",
+   "cost": 0,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020012,
+   "group": "Shirt",
+   "name": "Hot Pink Fish Shirt",
+   "iconName": "Shirt12Icon",
+   "texture": "Shirt12",
+   "object": "shirt01, armleft, armright",
+   "cost": 0,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020001,
+   "group": "Shirt",
+   "name": "Stewardess Shirt",
+   "iconName": "Shirt1Icon",
+   "texture": "Shirt1",
+   "object": "shirt01, armleft, armright",
+   "cost": 100,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020002,
+   "group": "Shirt",
+   "name": "Red Star Shirt",
+   "iconName": "Shirt2Icon",
+   "texture": "Shirt2",
+   "object": "shirt01, armleft, armright",
+   "cost": 200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020003,
+   "group": "Shirt",
+   "name": "Chef Shirt",
+   "iconName": "Shirt3Icon",
+   "texture": "Shirt3",
+   "object": "shirt01, armleft, armright",
+   "cost": 600,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020004,
+   "group": "Shirt",
+   "name": "Black Skull Shirt",
+   "iconName": "Shirt4Icon",
+   "texture": "Shirt4",
+   "object": "shirt01, armleft, armright",
+   "cost": 1200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020005,
+   "group": "Shirt",
+   "name": "Shirt and Tie",
+   "iconName": "Shirt5Icon",
+   "texture": "Shirt5",
+   "object": "shirt01, armleft, armright",
+   "cost": 300,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020006,
+   "group": "Shirt",
+   "name": "Pretty Pink",
+   "iconName": "Shirt6Icon",
+   "texture": "Shirt6",
+   "object": "shirt01, armleft, armright",
+   "cost": 200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020007,
+   "group": "Shirt",
+   "name": "Karate Outfit",
+   "iconName": "Shirt7Icon",
+   "texture": "Shirt7",
+   "object": "shirt01, armleft, armright",
+   "cost": 600,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020008,
+   "group": "Shirt",
+   "name": "Chinese Shirt",
+   "iconName": "Shirt8Icon",
+   "texture": "Shirt8",
+   "object": "shirt01, armleft, armright",
+   "cost": 250,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020009,
+   "group": "Shirt",
+   "name": "School Girl Shirt",
+   "iconName": "Shirt9Icon",
+   "texture": "Shirt9",
+   "object": "shirt01, armleft, armright",
+   "cost": 1000,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020010,
+   "group": "Shirt",
+   "name": "Black Shirt and Tie",
+   "iconName": "Shirt10Icon",
+   "texture": "Shirt10",
+   "object": "shirt01, armleft, armright",
+   "cost": 200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020011,
+   "group": "Shirt",
+   "name": "Black Striped Shirt",
+   "iconName": "Shirt11Icon",
+   "texture": "Shirt11",
+   "object": "shirt01, armleft, armright",
+   "cost": 300,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020013,
+   "group": "Shirt",
+   "name": "Cafe Shirt",
+   "iconName": "Shirt13Icon",
+   "texture": "Shirt13",
+   "object": "shirt01, armleft, armright",
+   "cost": 200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020014,
+   "group": "Shirt",
+   "name": "Cow Shirt",
+   "iconName": "Shirt14Icon",
+   "texture": "Shirt14",
+   "object": "shirt01, armleft, armright",
+   "cost": 200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020015,
+   "group": "Shirt",
+   "name": "Pink Sweater",
+   "iconName": "Shirt15Icon",
+   "texture": "Shirt15",
+   "object": "shirt01, armleft, armright",
+   "cost": 250,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020016,
+   "group": "Shirt",
+   "name": "Green Sweater",
+   "iconName": "Shirt16Icon",
+   "texture": "Shirt16",
+   "object": "shirt01, armleft, armright",
+   "cost": 250,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020017,
+   "group": "Shirt",
+   "name": "Barman Top",
+   "iconName": "Shirt17Icon",
+   "texture": "Shirt17",
+   "object": "shirt01, armleft, armright",
+   "cost": 350,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020018,
+   "group": "Shirt",
+   "name": "Barmaid Top",
+   "iconName": "Shirt18Icon",
+   "texture": "Shirt18",
+   "object": "shirt01, armleft, armright",
+   "cost": 400,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020019,
+   "group": "Shirt",
+   "name": "Red Hawaii Shirt",
+   "iconName": "Shirt19Icon",
+   "texture": "Shirt19",
+   "object": "shirt01, armleft, armright",
+   "cost": 800,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020020,
+   "group": "Shirt",
+   "name": "Orange Hawaii Shirt",
+   "iconName": "Shirt20Icon",
+   "texture": "Shirt20",
+   "object": "shirt01, armleft, armright",
+   "cost": 1200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020021,
+   "group": "Shirt",
+   "name": "Prison Shirt",
+   "iconName": "Shirt21Icon",
+   "texture": "Shirt21",
+   "object": "shirt01, armleft, armright",
+   "cost": 800,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020022,
+   "group": "Shirt",
+   "name": "BunnyGirl Top",
+   "iconName": "Shirt22Icon",
+   "texture": "Shirt22",
+   "object": "shirt01, armleft, armright",
+   "cost": 1600,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020023,
+   "group": "Shirt",
+   "name": "Grey Waiter Shirt",
+   "iconName": "Shirt23Icon",
+   "texture": "Shirt23",
+   "object": "shirt01, armleft, armright",
+   "cost": 250,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020024,
+   "group": "Shirt",
+   "name": "Purple Waiter Shirt",
+   "iconName": "Shirt24Icon",
+   "texture": "Shirt24",
+   "object": "shirt01, armleft, armright",
+   "cost": 250,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020025,
+   "group": "Shirt",
+   "name": "Red Baseball Shirt",
+   "iconName": "Shirt25Icon",
+   "texture": "Shirt25",
+   "object": "shirt01, armleft, armright",
+   "cost": 500,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020026,
+   "group": "Shirt",
+   "name": "Green Baseball Shirt",
+   "iconName": "Shirt26Icon",
+   "texture": "Shirt26",
+   "object": "shirt01, armleft, armright",
+   "cost": 500,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020034,
+   "group": "Shirt",
+   "name": "Green Lucky Coat",
+   "iconName": "Shirt27Icon",
+   "texture": "Shirt27",
+   "object": "shirt01, armleft, armright",
+   "cost": 1000,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020028,
+   "group": "Shirt",
+   "name": "Kimono Top",
+   "iconName": "Shirt28Icon",
+   "texture": "Shirt28",
+   "object": "shirt01, armleft, armright",
+   "cost": 750,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020029,
+   "group": "Shirt",
+   "name": "Black Ninja Top",
+   "iconName": "Shirt29Icon",
+   "texture": "Shirt29",
+   "object": "shirt01, armleft, armright",
+   "cost": 1500,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020030,
+   "group": "Shirt",
+   "name": "Scout Shirt",
+   "iconName": "Shirt30Icon",
+   "texture": "Shirt30",
+   "object": "shirt01, armleft, armright",
+   "cost": 800,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020031,
+   "group": "Shirt",
+   "name": "Blue Tang Shirt",
+   "iconName": "Shirt31Icon",
+   "texture": "Shirt31",
+   "object": "shirt01, armleft, armright",
+   "cost": 600,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020032,
+   "group": "Shirt",
+   "name": "Red Blossom Top",
+   "iconName": "Shirt32Icon",
+   "texture": "Shirt32",
+   "object": "shirt01, armleft, armright",
+   "cost": 700,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020033,
+   "group": "Shirt",
+   "name": "Maid Top",
+   "iconName": "Shirt33Icon",
+   "texture": "Shirt33",
+   "object": "shirt01, armleft, armright",
+   "cost": 2000,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020035,
+   "group": "Shirt",
+   "name": "Black And White Jersey",
+   "iconName": "Shirt34Icon",
+   "texture": "Shirt34",
+   "object": "shirt01, armleft, armright",
+   "cost": 500,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020036,
+   "group": "Shirt",
+   "name": "Brown And Orange Jersey",
+   "iconName": "Shirt35Icon",
+   "texture": "Shirt35",
+   "object": "shirt01, armleft, armright",
+   "cost": 1000,
+   "invisible": true,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020037,
+   "group": "Shirt",
+   "name": "Yellow And Black Shirt",
+   "iconName": "Shirt36Icon",
+   "texture": "Shirt36",
+   "object": "shirt01, armleft, armright",
+   "cost": 600,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020038,
+   "group": "Shirt",
+   "name": "Blue Top with Belt",
+   "iconName": "Shirt37Icon",
+   "texture": "Shirt37",
+   "object": "shirt01, armleft, armright",
+   "cost": 800,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020039,
+   "group": "Shirt",
+   "name": "Ruby Red Top with Belt",
+   "iconName": "Shirt38Icon",
+   "texture": "Shirt38",
+   "object": "shirt01, armleft, armright",
+   "cost": 1000,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020040,
+   "group": "Shirt",
+   "name": "Red Shirt with Apron",
+   "iconName": "Shirt39Icon",
+   "texture": "Shirt39",
+   "object": "shirt01, armleft, armright",
+   "cost": 1200,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020041,
+   "group": "Shirt",
+   "name": "Elegant Top",
+   "iconName": "Shirt40Icon",
+   "texture": "Shirt40",
+   "object": "shirt01, armleft, armright",
+   "cost": 1400,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020042,
+   "group": "Shirt",
+   "name": "...",
+   "iconName": "Shirt36Icon",
+   "texture": "Shirt41",
+   "object": "shirt01, armleft, armright",
+   "cost": 100000,
+   "invisible": true,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020043,
+   "group": "Shirt",
+   "name": "Sushi Chef Shirt",
+   "iconName": "Shirt42Icon",
+   "texture": "Shirt42",
+   "object": "shirt01, armleft, armright",
+   "cost": 900,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020044,
+   "group": "Shirt",
+   "name": "Basketball Shirt",
+   "iconName": "Shirt43Icon",
+   "texture": "Shirt43",
+   "object": "shirt01, armleft2, armright2",
+   "cost": 500,
+   "objects": [
+    "shirt01",
+    "armleft2",
+    "armright2"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020045,
+   "group": "Shirt",
+   "name": "Black Tux",
+   "iconName": "Shirt44Icon",
+   "texture": "Shirt44",
+   "object": "shirt01, armleft, armright",
+   "cost": 750,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020046,
+   "group": "Shirt",
+   "name": "Witch Shirt",
+   "iconName": "Shirt45Icon",
+   "texture": "Shirt45",
+   "object": "shirt01, armleft, armright",
+   "cost": 1300,
+   "invisible": true,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020047,
+   "group": "Shirt",
+   "name": "Dracula Shirt",
+   "iconName": "Shirt47Icon",
+   "texture": "Shirt47",
+   "object": "shirt01, armleft2, armright2",
+   "cost": 1200,
+   "invisible": true,
+   "objects": [
+    "shirt01",
+    "armleft2",
+    "armright2"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020048,
+   "group": "Shirt",
+   "name": "Skull Shirt",
+   "iconName": "Shirt46Icon",
+   "texture": "Shirt46",
+   "object": "shirt01, armleft, armright",
+   "cost": 1500,
+   "invisible": true,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020049,
+   "group": "Shirt",
+   "name": "Toga",
+   "iconName": "Shirt48Icon",
+   "texture": "Shirt48",
+   "object": "shirt01, armleft2, armright2",
+   "cost": 1100,
+   "objects": [
+    "shirt01",
+    "armleft2",
+    "armright2"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020050,
+   "group": "Shirt",
+   "name": "Goddess Top",
+   "iconName": "Shirt49Icon",
+   "texture": "Shirt49",
+   "object": "shirt01, armleft, armright",
+   "cost": 1100,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020051,
+   "group": "Shirt",
+   "name": "Elf Costume",
+   "iconName": "Shirt50Icon",
+   "texture": "Shirt50",
+   "object": "shirt01, armleft, armright",
+   "cost": 1000,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020052,
+   "group": "Shirt",
+   "name": "Festive Red Coat",
+   "iconName": "Shirt51Icon",
+   "texture": "Shirt51",
+   "object": "shirt01, armleft, armright",
+   "cost": 1100,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020053,
+   "group": "Shirt",
+   "name": "Pirate Shirt",
+   "iconName": "Shirt52Icon",
+   "texture": "Shirt52",
+   "object": "shirt01, armleft, armright",
+   "cost": 300,
+   "objects": [
+    "shirt01",
+    "armleft",
+    "armright"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020054,
+   "group": "Shirt",
+   "name": "The Don's Black Suit",
+   "iconName": "Shirt53Icon",
+   "texture": "Shirt53",
+   "object": "shirt01, armleft2, armright2",
+   "cost": 2200,
+   "objects": [
+    "shirt01",
+    "armleft2",
+    "armright2"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1020055,
+   "group": "Shirt",
+   "name": "The Don's White Suit",
+   "iconName": "Shirt54Icon",
+   "texture": "Shirt54",
+   "object": "shirt01, armleft2, armright2",
+   "cost": 2400,
+   "objects": [
+    "shirt01",
+    "armleft2",
+    "armright2"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030000,
+   "group": "Hat",
+   "name": "No Hat",
+   "object": "",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030001,
+   "group": "Hat",
+   "name": "Chef Hat",
+   "iconName": "HatIconChef01",
+   "texture": "Hat101",
+   "object": "hat01",
+   "cost": 1500,
+   "objects": [
+    "hat01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030003,
+   "group": "Hat",
+   "name": "Clown hat",
+   "iconName": "HatIconCone01",
+   "texture": "Hat301",
+   "object": "hat03",
+   "cost": 300,
+   "objects": [
+    "hat03"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030004,
+   "group": "Hat",
+   "name": "White Bunny Ears",
+   "iconName": "HatIconBunny01",
+   "texture": "Hat401",
+   "object": "hat04",
+   "cost": 700,
+   "objects": [
+    "hat04"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030005,
+   "group": "Hat",
+   "name": "Black Bunny Ears",
+   "iconName": "HatIconBunny04",
+   "texture": "Hat402",
+   "object": "hat04",
+   "cost": 1200,
+   "objects": [
+    "hat04"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030007,
+   "group": "Hat",
+   "name": "Dark Brown Bunny Ears",
+   "iconName": "HatIconBunny03",
+   "texture": "Hat403",
+   "object": "hat04",
+   "cost": 600,
+   "objects": [
+    "hat04"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030006,
+   "group": "Hat",
+   "name": "Brown Bunny Ears",
+   "iconName": "HatIconBunny02",
+   "texture": "Hat404",
+   "object": "hat04",
+   "cost": 750,
+   "objects": [
+    "hat04"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030008,
+   "group": "Hat",
+   "name": "Top Hat",
+   "iconName": "HatIconTopHat01",
+   "texture": "Hat201",
+   "object": "hat05",
+   "cost": 500,
+   "objects": [
+    "hat05"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030009,
+   "group": "Hat",
+   "name": "Tiara",
+   "iconName": "HatIconTiara01",
+   "texture": "Hat",
+   "object": "hat06",
+   "cost": 1000,
+   "objects": [
+    "hat06"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030011,
+   "group": "Hat",
+   "name": "Red Fez",
+   "iconName": "HatIconFez01",
+   "texture": "Hat801",
+   "object": "hat08",
+   "cost": 600,
+   "objects": [
+    "hat08"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030012,
+   "group": "Hat",
+   "name": "Wooden Bucket",
+   "iconName": "HatIconFez02",
+   "texture": "Hat802",
+   "object": "hat08",
+   "cost": 400,
+   "objects": [
+    "hat08"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030013,
+   "group": "Hat",
+   "name": "Golden Cow Helmet",
+   "iconName": "HatIconViking01",
+   "texture": "Hat901",
+   "object": "hat09",
+   "cost": 1000,
+   "objects": [
+    "hat09"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030014,
+   "group": "Hat",
+   "name": "Red Star Helmet",
+   "iconName": "HatIconViking02",
+   "texture": "Hat902",
+   "object": "hat09",
+   "cost": 800,
+   "objects": [
+    "hat09"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030015,
+   "group": "Hat",
+   "name": "Lucky Green Top Hat",
+   "iconName": "HatIconTopHat03",
+   "texture": "Hat202",
+   "object": "hat05",
+   "cost": 1100,
+   "objects": [
+    "hat05"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030016,
+   "group": "Hat",
+   "name": "Red Hot Top Hat",
+   "iconName": "HatIconTopHat02",
+   "texture": "Hat203",
+   "object": "hat05",
+   "cost": 1000,
+   "objects": [
+    "hat05"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030017,
+   "group": "Hat",
+   "name": "Cheesy Hat",
+   "iconName": "HatIconCheese01",
+   "texture": "Hat501",
+   "object": "hat02",
+   "cost": 3000,
+   "objects": [
+    "hat02"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030018,
+   "group": "Hat",
+   "name": "Black Space Helmet",
+   "iconName": "HatIconSpaceHelmet01",
+   "texture": "SpaceHelmet",
+   "object": "hat07",
+   "hideGroup": "Hair",
+   "cost": 3000,
+   "objects": [
+    "hat07"
+   ],
+   "hideGroups": [
+    "Hair"
+   ],
+   "priority": 0
+  },
+  {
+   "id": 1030019,
+   "group": "Hat",
+   "name": "White Cat Ears",
+   "iconName": "HatIconCat03",
+   "texture": "Hat601",
+   "object": "hat10",
+   "cost": 700,
+   "objects": [
+    "hat10"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030020,
+   "group": "Hat",
+   "name": "Fox Ears",
+   "iconName": "HatIconCat02",
+   "texture": "Hat602",
+   "object": "hat10",
+   "cost": 500,
+   "objects": [
+    "hat10"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030021,
+   "group": "Hat",
+   "name": "Black Cat Ears",
+   "iconName": "HatIconCat01",
+   "texture": "Hat603",
+   "object": "hat10",
+   "cost": 600,
+   "objects": [
+    "hat10"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030022,
+   "group": "Hat",
+   "name": "Black Top Hat",
+   "iconName": "HatIconTopHat04",
+   "texture": "Hat204",
+   "object": "hat05",
+   "cost": 750,
+   "objects": [
+    "hat05"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030023,
+   "group": "Hat",
+   "name": "Elf Hat",
+   "iconName": "HatIconCone02",
+   "texture": "Hat302",
+   "object": "hat03",
+   "cost": 1500,
+   "objects": [
+    "hat03"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1030024,
+   "group": "Hat",
+   "name": "Festive Hat",
+   "iconName": "HatIconCone03",
+   "texture": "Hat303",
+   "object": "hat03",
+   "cost": 2500,
+   "objects": [
+    "hat03"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040000,
+   "group": "Hair",
+   "name": "Placeholder Hair",
+   "iconName": "Hair02",
+   "object": "hair05",
+   "cost": 0,
+   "invisible": true,
+   "objects": [
+    "hair05"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040005,
+   "group": "Hair",
+   "name": "Classic",
+   "iconName": "Hair03",
+   "object": "hair05",
+   "cost": 0,
+   "objects": [
+    "hair05"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040007,
+   "group": "Hair",
+   "name": "Ponytail",
+   "iconName": "Hair08",
+   "object": "hair07",
+   "cost": 0,
+   "objects": [
+    "hair07"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040008,
+   "group": "Hair",
+   "name": "Shoulder Long Hair",
+   "iconName": "Hair05",
+   "object": "hair08",
+   "cost": 0,
+   "objects": [
+    "hair08"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040001,
+   "group": "Hair",
+   "name": "Fringe",
+   "iconName": "Hair01",
+   "object": "hair01",
+   "cost": 300,
+   "objects": [
+    "hair01"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040002,
+   "group": "Hair",
+   "name": "Spike",
+   "iconName": "Hair07",
+   "object": "hair02",
+   "cost": 400,
+   "objects": [
+    "hair02"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040003,
+   "group": "Hair",
+   "name": "Emo",
+   "iconName": "Hair04",
+   "object": "hair03",
+   "cost": 300,
+   "objects": [
+    "hair03"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040004,
+   "group": "Hair",
+   "name": "Manga",
+   "iconName": "Hair02",
+   "object": "hair04",
+   "cost": 500,
+   "objects": [
+    "hair04"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040006,
+   "group": "Hair",
+   "name": "Pigtails",
+   "iconName": "Hair09",
+   "object": "hair06",
+   "cost": 500,
+   "objects": [
+    "hair06"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040009,
+   "group": "Hair",
+   "name": "Long Hair",
+   "iconName": "Hair06",
+   "object": "hair09",
+   "cost": 400,
+   "objects": [
+    "hair09"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040010,
+   "group": "Hair",
+   "name": "Leah",
+   "iconName": "Hair10",
+   "object": "hair10",
+   "cost": 500,
+   "objects": [
+    "hair10"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040011,
+   "group": "Hair",
+   "name": "Afro",
+   "iconName": "Hair11",
+   "object": "hair13",
+   "cost": 500,
+   "noHat": true,
+   "objects": [
+    "hair13"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040012,
+   "group": "Hair",
+   "name": "Mohawk",
+   "iconName": "Hair12",
+   "object": "hair14",
+   "cost": 400,
+   "noHat": true,
+   "objects": [
+    "hair14"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040013,
+   "group": "Hair",
+   "name": "Waxy",
+   "iconName": "Hair13",
+   "object": "hair15",
+   "cost": 500,
+   "noHat": true,
+   "objects": [
+    "hair15"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040014,
+   "group": "Hair",
+   "name": "Granny",
+   "iconName": "Hair14",
+   "object": "hair17",
+   "cost": 300,
+   "objects": [
+    "hair17"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1040015,
+   "group": "Hair",
+   "name": "Glamour",
+   "iconName": "Hair15",
+   "object": "hair18",
+   "cost": 600,
+   "objects": [
+    "hair18"
+   ],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1050000,
+   "group": "Eyes",
+   "name": "Simple Eyes",
+   "texture": "Eyes",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050001,
+   "group": "Eyes",
+   "name": "Basic Eyes",
+   "texture": "Eyes1",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050005,
+   "group": "Eyes",
+   "name": "Dashing Eyes",
+   "texture": "Eyes5",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050004,
+   "group": "Eyes",
+   "name": "Puppy Eyes",
+   "texture": "Eyes4",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050002,
+   "group": "Eyes",
+   "name": "Luxurious Eyes",
+   "texture": "Eyes2",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050003,
+   "group": "Eyes",
+   "name": "Zombie Eyes",
+   "texture": "Eyes3",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050006,
+   "group": "Eyes",
+   "name": "Pretty Eyes",
+   "texture": "Eyes6",
+   "cost": 100,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050007,
+   "group": "Eyes",
+   "name": "Villain Eyes",
+   "texture": "Eyes7",
+   "cost": 1000,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050008,
+   "group": "Eyes",
+   "name": "Green Eyes",
+   "texture": "Eyes8",
+   "cost": 1000,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050009,
+   "group": "Eyes",
+   "name": "Beady Eyes",
+   "texture": "Eyes9",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050010,
+   "group": "Eyes",
+   "name": "Serious Eyes",
+   "texture": "Eyes10",
+   "cost": 500,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050011,
+   "group": "Eyes",
+   "name": "Happy Eyes",
+   "texture": "Eyes11",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050012,
+   "group": "Eyes",
+   "name": "Angry Eyes",
+   "texture": "Eyes12",
+   "cost": 350,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050013,
+   "group": "Eyes",
+   "name": "Blue Eyes",
+   "texture": "Eyes13",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050014,
+   "group": "Eyes",
+   "name": "Light Brown Eyes",
+   "texture": "Eyes14",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050015,
+   "group": "Eyes",
+   "name": "Brown Eyes",
+   "texture": "Eyes15",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050016,
+   "group": "Eyes",
+   "name": "Smoky Eyes",
+   "texture": "Eyes16",
+   "cost": 500,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050017,
+   "group": "Eyes",
+   "name": "Scary Eyes",
+   "texture": "Eyes17",
+   "cost": 800,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050018,
+   "group": "Eyes",
+   "name": "Blue Dreamy Eyes",
+   "texture": "Eyes18",
+   "cost": 500,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050019,
+   "group": "Eyes",
+   "name": "Cute Eyes",
+   "texture": "Eyes19",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050020,
+   "group": "Eyes",
+   "name": "Glowing Green Eyes",
+   "texture": "Eyes20",
+   "cost": 1000,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1050021,
+   "group": "Eyes",
+   "name": "Pretty Pink Eyes",
+   "texture": "Eyes21",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060000,
+   "group": "Mouth",
+   "name": "Happy Mouth",
+   "texture": "Mouth",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060008,
+   "group": "Mouth",
+   "name": "Indifferent",
+   "texture": "Mouth8",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060007,
+   "group": "Mouth",
+   "name": "Happy",
+   "texture": "Mouth7",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060001,
+   "group": "Mouth",
+   "name": "Luscious Lips",
+   "texture": "Mouth1",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060002,
+   "group": "Mouth",
+   "name": "Pink Puffy Lips",
+   "texture": "Mouth2",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060003,
+   "group": "Mouth",
+   "name": "Cute Mouth",
+   "texture": "Mouth3",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060005,
+   "group": "Mouth",
+   "name": "Purple Power Lips",
+   "texture": "Mouth5",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060006,
+   "group": "Mouth",
+   "name": "Hmmm",
+   "texture": "Mouth6",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060004,
+   "group": "Mouth",
+   "name": "Luscious Red Lips",
+   "texture": "Mouth4",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060009,
+   "group": "Mouth",
+   "name": "Glad",
+   "texture": "Mouth9",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060010,
+   "group": "Mouth",
+   "name": "Happy 2",
+   "texture": "Mouth10",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060011,
+   "group": "Mouth",
+   "name": "Teeth",
+   "texture": "Mouth11",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060012,
+   "group": "Mouth",
+   "name": "V",
+   "texture": "Mouth12",
+   "cost": 150,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060013,
+   "group": "Mouth",
+   "name": "Vampire",
+   "texture": "Mouth13",
+   "cost": 1000,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060014,
+   "group": "Mouth",
+   "name": "Smile",
+   "texture": "Mouth14",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060015,
+   "group": "Mouth",
+   "name": "Sad",
+   "texture": "Mouth15",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060016,
+   "group": "Mouth",
+   "name": "Concerned",
+   "texture": "Mouth16",
+   "cost": 150,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060017,
+   "group": "Mouth",
+   "name": "Unhappy",
+   "texture": "Mouth17",
+   "cost": 150,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060018,
+   "group": "Mouth",
+   "name": "Pretty Pink Lips",
+   "texture": "Mouth18",
+   "cost": 100,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060019,
+   "group": "Mouth",
+   "name": "Great Smile",
+   "texture": "Mouth19",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060020,
+   "group": "Mouth",
+   "name": "Pursed Lips",
+   "texture": "Mouth20",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060021,
+   "group": "Mouth",
+   "name": "Big Tooth",
+   "texture": "Mouth21",
+   "cost": 600,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060022,
+   "group": "Mouth",
+   "name": "Glossy Lips",
+   "texture": "Mouth22",
+   "cost": 150,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060023,
+   "group": "Mouth",
+   "name": "Wavy mouth",
+   "texture": "Mouth23",
+   "cost": 150,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1060024,
+   "group": "Mouth",
+   "name": "Tight Lipped",
+   "texture": "Mouth24",
+   "cost": 150,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 1
+  },
+  {
+   "id": 1070000,
+   "group": "Eyebrows",
+   "name": "No Eyebrow",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070001,
+   "group": "Eyebrows",
+   "name": "Classic EyeBrow",
+   "texture": "EyeBrow01",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070002,
+   "group": "Eyebrows",
+   "name": "Evil EyeBrow",
+   "texture": "EyeBrow02",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070003,
+   "group": "Eyebrows",
+   "name": "Thin EyeBrow",
+   "texture": "EyeBrow03",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070004,
+   "group": "Eyebrows",
+   "name": "Soft EyeBrow",
+   "texture": "EyeBrow04",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070005,
+   "group": "Eyebrows",
+   "name": "Spooky EyeBrow",
+   "texture": "EyeBrow05",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070006,
+   "group": "Eyebrows",
+   "name": "Sharp EyeBrow",
+   "texture": "EyeBrow06",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070007,
+   "group": "Eyebrows",
+   "name": "Fluffy EyeBrow",
+   "texture": "EyeBrow07",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070008,
+   "group": "Eyebrows",
+   "name": "Curvy EyeBrow",
+   "texture": "EyeBrow08",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070009,
+   "group": "Eyebrows",
+   "name": "ZigZag EyeBrow",
+   "texture": "EyeBrow09",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070010,
+   "group": "Eyebrows",
+   "name": "Arc EyeBrow",
+   "texture": "EyeBrow10",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1070011,
+   "group": "Eyebrows",
+   "name": "Sad EyeBrow",
+   "texture": "EyeBrow11",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1080000,
+   "group": "Miscellaneous",
+   "name": "No Extra",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080001,
+   "group": "Miscellaneous",
+   "name": "Plaster",
+   "texture": "Extra01",
+   "cost": 600,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080002,
+   "group": "Miscellaneous",
+   "name": "scar",
+   "texture": "Extra02",
+   "cost": 500,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080003,
+   "group": "Miscellaneous",
+   "name": "Lightning",
+   "texture": "Extra03",
+   "cost": 500,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080004,
+   "group": "Miscellaneous",
+   "name": "Scar2",
+   "texture": "Extra04",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080005,
+   "group": "Miscellaneous",
+   "name": "Star",
+   "texture": "Extra05",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080006,
+   "group": "Miscellaneous",
+   "name": "Red Dots",
+   "texture": "Extra06",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080007,
+   "group": "Miscellaneous",
+   "name": "White Flower",
+   "texture": "Extra07",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080008,
+   "group": "Miscellaneous",
+   "name": "Heart",
+   "texture": "Extra08",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080009,
+   "group": "Miscellaneous",
+   "name": "FacePaint",
+   "texture": "Extra09",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080010,
+   "group": "Miscellaneous",
+   "name": "Freckles",
+   "texture": "Extra10",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1080011,
+   "group": "Miscellaneous",
+   "name": "Pink Cheeks",
+   "texture": "Extra11",
+   "cost": 300,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0
+  },
+  {
+   "id": 1090000,
+   "group": "Facial Hair",
+   "name": "No Beard",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1090001,
+   "group": "Facial Hair",
+   "name": "Moustache",
+   "texture": "Beard01",
+   "cost": 250,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1090002,
+   "group": "Facial Hair",
+   "name": "Tom",
+   "texture": "Beard02",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1090003,
+   "group": "Facial Hair",
+   "name": "Broom",
+   "texture": "Beard03",
+   "cost": 400,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1090004,
+   "group": "Facial Hair",
+   "name": "Sherif",
+   "texture": "Beard04",
+   "cost": 1000,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 2
+  },
+  {
+   "id": 1100000,
+   "group": "SkinColour",
+   "name": "0xFFECE9",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#ffece9"
+  },
+  {
+   "id": 1100001,
+   "group": "SkinColour",
+   "name": "0xFFDBC0",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#ffdbc0"
+  },
+  {
+   "id": 1100002,
+   "group": "SkinColour",
+   "name": "0xF9C095",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#f9c095"
+  },
+  {
+   "id": 1100003,
+   "group": "SkinColour",
+   "name": "0xDBA163",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#dba163"
+  },
+  {
+   "id": 1100004,
+   "group": "SkinColour",
+   "name": "0xBA875C",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#ba875c"
+  },
+  {
+   "id": 1100005,
+   "group": "SkinColour",
+   "name": "0xA1613B",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#a1613b"
+  },
+  {
+   "id": 1100006,
+   "group": "SkinColour",
+   "name": "0x82472E",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#82472e"
+  },
+  {
+   "id": 1100007,
+   "group": "SkinColour",
+   "name": "0x663824",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#663824"
+  },
+  {
+   "id": 1100008,
+   "group": "SkinColour",
+   "name": "0xa4dfe3",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#a4dfe3"
+  },
+  {
+   "id": 1100009,
+   "group": "SkinColour",
+   "name": "0xe3a4dd",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#e3a4dd"
+  },
+  {
+   "id": 1100010,
+   "group": "SkinColour",
+   "name": "0x98e3a0",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#98e3a0"
+  },
+  {
+   "id": 1100011,
+   "group": "SkinColour",
+   "name": "0xb3b3b3",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#b3b3b3"
+  },
+  {
+   "id": 1100012,
+   "group": "SkinColour",
+   "name": "0xa4aee3",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#a4aee3"
+  },
+  {
+   "id": 1100013,
+   "group": "SkinColour",
+   "name": "0xffe5a3",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#ffe5a3"
+  },
+  {
+   "id": 1100014,
+   "group": "SkinColour",
+   "name": "0xcce3e2",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#cce3e2"
+  },
+  {
+   "id": 1100015,
+   "group": "SkinColour",
+   "name": "0xffffff",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#ffffff"
+  },
+  {
+   "id": 1200000,
+   "group": "HairColour",
+   "name": "0xf0ece3",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#f0ece3"
+  },
+  {
+   "id": 1200001,
+   "group": "HairColour",
+   "name": "0xf6ebd1",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#f6ebd1"
+  },
+  {
+   "id": 1200002,
+   "group": "HairColour",
+   "name": "0xc7b8a7",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#c7b8a7"
+  },
+  {
+   "id": 1200003,
+   "group": "HairColour",
+   "name": "0xa09885",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#a09885"
+  },
+  {
+   "id": 1200004,
+   "group": "HairColour",
+   "name": "0xcda55b",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#cda55b"
+  },
+  {
+   "id": 1200005,
+   "group": "HairColour",
+   "name": "0xa9773e",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#a9773e"
+  },
+  {
+   "id": 1200006,
+   "group": "HairColour",
+   "name": "0x844921",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#844921"
+  },
+  {
+   "id": 1200007,
+   "group": "HairColour",
+   "name": "0x4f3e21",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#4f3e21"
+  },
+  {
+   "id": 1200008,
+   "group": "HairColour",
+   "name": "0x332e26",
+   "cost": 0,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#332e26"
+  },
+  {
+   "id": 1200009,
+   "group": "HairColour",
+   "name": "0xbd4040",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#bd4040"
+  },
+  {
+   "id": 1200010,
+   "group": "HairColour",
+   "name": "0x852121",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#852121"
+  },
+  {
+   "id": 1200011,
+   "group": "HairColour",
+   "name": "0x541152",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#541152"
+  },
+  {
+   "id": 1200012,
+   "group": "HairColour",
+   "name": "0x383a7c",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#383a7c"
+  },
+  {
+   "id": 1200013,
+   "group": "HairColour",
+   "name": "0x4cb1aa",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#4cb1aa"
+  },
+  {
+   "id": 1200014,
+   "group": "HairColour",
+   "name": "0x7a69bf",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#7a69bf"
+  },
+  {
+   "id": 1200015,
+   "group": "HairColour",
+   "name": "0xe36298",
+   "cost": 200,
+   "objects": [],
+   "hideGroups": [],
+   "priority": 0,
+   "colour": "#e36298"
+  }
+ ]
+}

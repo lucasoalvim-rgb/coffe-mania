@@ -1,0 +1,851 @@
+<config> 
+	<game sellBackRatio="99" creditsToCoinsFactor="99" speedMultiplier="99" dishPickupTime="0" gatherTime="0" eatingTime="0" waitingChairTime="999" waitingDiningSetTime="999" waitingFoodTime="999" minPopularity="5" maxPopularity="105" friendCustomerProbability="0.3" satisfiedCustomerPopularity="0.1" unsatisfiedCustomerPopularity="0.3" stoveCleaningXPGain="999" stoveCleaningCoinCost="1" recoverTime="910" recoverIncrease="1" pokerPromotionURL="http://vpads.orkut.vostu.com/xpromo/cm/" /> 
+	<characterShadow color="0x000000" alpha="0.25" x="-28" y="12" width="50" height="20" /> 
+	<levels> 
+		<level num="1" requiredXp="0" rewardCoins="5000" /> 
+		<level num="2" requiredXp="7" rewardCoins="700" /> 
+		<level num="3" requiredXp="40" rewardCoins="700" /> 
+		<level num="4" requiredXp="95" rewardCoins="700" /> 
+		<level num="5" requiredXp="165" rewardCoins="700" /> 
+		<level num="6" requiredXp="285" rewardCoins="700" /> 
+		<level num="7" requiredXp="405" rewardCoins="700" /> 
+		<level num="8" requiredXp="585" rewardCoins="900" /> 
+		<level num="9" requiredXp="765" rewardCoins="900" /> 
+		<level num="10" requiredXp="995" rewardCoins="900" /> 
+		<level num="11" requiredXp="1350" rewardCoins="900" /> 
+		<level num="12" requiredXp="1695" rewardCoins="900" /> 
+		<level num="13" requiredXp="2055" rewardCoins="900" /> 
+		<level num="14" requiredXp="2425" rewardCoins="900" /> 
+		<level num="15" requiredXp="2790" rewardCoins="900" /> 
+		<level num="16" requiredXp="3340" rewardCoins="900" /> 
+		<level num="17" requiredXp="4020" rewardCoins="900" /> 
+		<level num="18" requiredXp="4695" rewardCoins="900" /> 
+		<level num="19" requiredXp="5365" rewardCoins="1000" /> 
+		<level num="20" requiredXp="6035" rewardCoins="1200" /> 
+		<level num="21" requiredXp="6920" rewardCoins="1300" /> 
+		<level num="22" requiredXp="7820" rewardCoins="1500" /> 
+		<level num="23" requiredXp="8755" rewardCoins="1700" /> 
+		<level num="24" requiredXp="9690" rewardCoins="1800" /> 
+		<level num="25" requiredXp="10635" rewardCoins="1800" /> 
+		<level num="26" requiredXp="12065" rewardCoins="1800" /> 
+		<level num="27" requiredXp="13545" rewardCoins="1800" /> 
+		<level num="28" requiredXp="15065" rewardCoins="1800" /> 
+		<level num="29" requiredXp="16575" rewardCoins="2000" /> 
+		<level num="30" requiredXp="18115" rewardCoins="2200" /> 
+		<level num="31" requiredXp="19700" rewardCoins="2500" /> 
+		<level num="32" requiredXp="21285" rewardCoins="2800" /> 
+		<level num="33" requiredXp="23185" rewardCoins="3100" /> 
+		<level num="34" requiredXp="25080" rewardCoins="3500" /> 
+		<level num="35" requiredXp="26980" rewardCoins="3800" /> 
+		<level num="36" requiredXp="29260" rewardCoins="4200" /> 
+		<level num="37" requiredXp="31865" rewardCoins="4600" /> 
+		<level num="38" requiredXp="34465" rewardCoins="5100" /> 
+		<level num="39" requiredXp="37070" rewardCoins="3000" /> 
+		<level num="40" requiredXp="39675" rewardCoins="3000" /> 
+		<level num="41" requiredXp="42605" rewardCoins="3000" /> 
+		<level num="42" requiredXp="45535" rewardCoins="3000" /> 
+		<level num="43" requiredXp="48460" rewardCoins="3000" /> 
+		<level num="44" requiredXp="51390" rewardCoins="3000" /> 
+		<level num="45" requiredXp="54320" rewardCoins="5000" /> 
+		<level num="46" requiredXp="57575" rewardCoins="5000" /> 
+		<level num="47" requiredXp="60830" rewardCoins="5000" /> 
+		<level num="48" requiredXp="64085" rewardCoins="5000" /> 
+		<level num="49" requiredXp="67340" rewardCoins="5000" /> 
+		<level num="50" requiredXp="70920" rewardCoins="5000" /> 
+		<level num="51" requiredXp="75695" rewardCoins="5000" /> 
+		<level num="52" requiredXp="80470" rewardCoins="5000" /> 
+		<level num="53" requiredXp="85675" rewardCoins="5000" /> 
+		<level num="54" requiredXp="90885" rewardCoins="5000" /> 
+		<level num="55" requiredXp="96090" rewardCoins="5000" /> 
+		<level num="56" requiredXp="101300" rewardCoins="5000" /> 
+		<level num="57" requiredXp="106505" rewardCoins="5000" /> 
+		<level num="58" requiredXp="111715" rewardCoins="5000" /> 
+		<level num="59" requiredXp="116920" rewardCoins="5000" /> 
+		<level num="60" requiredXp="122130" rewardCoins="10000" /> 
+		<level num="61" requiredXp="130295" rewardCoins="5000" /> 
+		<level num="62" requiredXp="138465" rewardCoins="5000" /> 
+		<level num="63" requiredXp="146635" rewardCoins="5000" /> 
+		<level num="64" requiredXp="154805" rewardCoins="5000" /> 
+		<level num="65" requiredXp="162975" rewardCoins="5000" /> 
+		<level num="66" requiredXp="173865" rewardCoins="5000" /> 
+		<level num="67" requiredXp="185665" rewardCoins="5000" /> 
+		<level num="68" requiredXp="197460" rewardCoins="5000" /> 
+		<level num="69" requiredXp="209260" rewardCoins="5000" /> 
+		<level num="70" requiredXp="221060" rewardCoins="15000" /> 
+		<level num="71" requiredXp="235810" rewardCoins="5000" /> 
+		<level num="72" requiredXp="250560" rewardCoins="5000" /> 
+		<level num="73" requiredXp="265305" rewardCoins="5000" /> 
+		<level num="74" requiredXp="280055" rewardCoins="5000" /> 
+		<level num="75" requiredXp="294805" rewardCoins="5000" /> 
+		<level num="76" requiredXp="312505" rewardCoins="5000" /> 
+		<level num="77" requiredXp="330200" rewardCoins="5000" /> 
+		<level num="78" requiredXp="347900" rewardCoins="5000" /> 
+		<level num="79" requiredXp="365595" rewardCoins="5000" /> 
+		<level num="80" requiredXp="383295" rewardCoins="20000" /> 
+		<level num="81" requiredXp="403945" rewardCoins="5000" /> 
+		<level num="82" requiredXp="424590" rewardCoins="5000" /> 
+		<level num="83" requiredXp="445240" rewardCoins="5000" /> 
+		<level num="84" requiredXp="465885" rewardCoins="5000" /> 
+		<level num="85" requiredXp="488125" rewardCoins="5000" /> 
+		<level num="86" requiredXp="513535" rewardCoins="5000" /> 
+		<level num="87" requiredXp="538950" rewardCoins="5000" /> 
+		<level num="88" requiredXp="564365" rewardCoins="5000" /> 
+		<level num="89" requiredXp="589775" rewardCoins="5000" /> 
+		<level num="90" requiredXp="615190" rewardCoins="25000" /> 
+		<level num="91" requiredXp="645895" rewardCoins="5000" /> 
+		<level num="92" requiredXp="676605" rewardCoins="5000" /> 
+		<level num="93" requiredXp="707315" rewardCoins="5000" /> 
+		<level num="94" requiredXp="738020" rewardCoins="5000" /> 
+		<level num="95" requiredXp="768730" rewardCoins="5000" /> 
+		<level num="96" requiredXp="804730" rewardCoins="5000" /> 
+		<level num="97" requiredXp="840735" rewardCoins="5000" /> 
+		<level num="98" requiredXp="876735" rewardCoins="5000" /> 
+		<level num="99" requiredXp="912735" rewardCoins="5000" /> 
+		<level num="100" requiredXp="948740" rewardCoins="30000" /> 
+		<level num="101" requiredXp="984795" rewardCoins="6000" /> 
+		<level num="102" requiredXp="1020900" rewardCoins="6000" /> 
+		<level num="103" requiredXp="1057055" rewardCoins="6000" /> 
+		<level num="104" requiredXp="1093260" rewardCoins="6000" /> 
+		<level num="105" requiredXp="1129515" rewardCoins="6000" /> 
+		<level num="106" requiredXp="1165820" rewardCoins="6000" /> 
+		<level num="107" requiredXp="1202175" rewardCoins="6000" /> 
+		<level num="108" requiredXp="1238580" rewardCoins="6000" /> 
+		<level num="109" requiredXp="1275035" rewardCoins="6000" /> 
+		<level num="110" requiredXp="1311540" rewardCoins="30000" /> 
+		<level num="111" requiredXp="1348095" rewardCoins="6000" /> 
+		<level num="112" requiredXp="1384700" rewardCoins="6000" /> 
+		<level num="113" requiredXp="1421355" rewardCoins="6000" /> 
+		<level num="114" requiredXp="1458060" rewardCoins="6000" /> 
+		<level num="115" requiredXp="1494815" rewardCoins="6000" /> 
+		<level num="116" requiredXp="1531620" rewardCoins="6000" /> 
+		<level num="117" requiredXp="1568475" rewardCoins="6000" /> 
+		<level num="118" requiredXp="1605380" rewardCoins="6000" /> 
+		<level num="119" requiredXp="1642335" rewardCoins="6000" /> 
+		<level num="120" requiredXp="1679340" rewardCoins="30000" /> 
+		<level num="121" requiredXp="1716395" rewardCoins="6000" /> 
+		<level num="122" requiredXp="1753500" rewardCoins="6000" /> 
+		<level num="123" requiredXp="1790655" rewardCoins="6000" /> 
+		<level num="124" requiredXp="1827860" rewardCoins="6000" /> 
+		<level num="125" requiredXp="1865115" rewardCoins="6000" /> 
+		<level num="126" requiredXp="1902420" rewardCoins="6000" /> 
+		<level num="127" requiredXp="1939775" rewardCoins="6000" /> 
+		<level num="128" requiredXp="1977180" rewardCoins="6000" /> 
+		<level num="129" requiredXp="2014635" rewardCoins="6000" /> 
+		<level num="130" requiredXp="2052140" rewardCoins="40000" /> 
+		<level num="131" requiredXp="2089695" rewardCoins="6000" /> 
+		<level num="132" requiredXp="2127300" rewardCoins="6000" /> 
+		<level num="133" requiredXp="2164955" rewardCoins="6000" /> 
+		<level num="134" requiredXp="2202660" rewardCoins="6000" /> 
+		<level num="135" requiredXp="2240415" rewardCoins="6000" /> 
+		<level num="136" requiredXp="2278220" rewardCoins="6000" /> 
+		<level num="137" requiredXp="2316075" rewardCoins="6000" /> 
+		<level num="138" requiredXp="2353980" rewardCoins="6000" /> 
+		<level num="139" requiredXp="2391935" rewardCoins="6000" /> 
+		<level num="140" requiredXp="2429940" rewardCoins="40000" /> 
+		<level num="141" requiredXp="2467995" rewardCoins="6000" /> 
+		<level num="142" requiredXp="2506100" rewardCoins="6000" /> 
+		<level num="143" requiredXp="2544255" rewardCoins="6000" /> 
+		<level num="144" requiredXp="2582460" rewardCoins="6000" /> 
+		<level num="145" requiredXp="2620715" rewardCoins="6000" /> 
+		<level num="146" requiredXp="2659020" rewardCoins="6000" /> 
+		<level num="147" requiredXp="2697375" rewardCoins="6000" /> 
+		<level num="148" requiredXp="2735780" rewardCoins="6000" /> 
+		<level num="149" requiredXp="2774235" rewardCoins="6000" /> 
+		<level num="150" requiredXp="2812740" rewardCoins="60000" /> 
+		<level num="151" requiredXp="2851295" rewardCoins="6000" /> 
+		<level num="152" requiredXp="2889900" rewardCoins="6000" /> 
+		<level num="153" requiredXp="2928555" rewardCoins="6000" /> 
+		<level num="154" requiredXp="2967260" rewardCoins="6000" /> 
+		<level num="155" requiredXp="3006015" rewardCoins="6000" /> 
+		<level num="156" requiredXp="3044820" rewardCoins="6000" /> 
+		<level num="157" requiredXp="3083675" rewardCoins="6000" /> 
+		<level num="158" requiredXp="3122580" rewardCoins="6000" /> 
+		<level num="159" requiredXp="3161535" rewardCoins="6000" /> 
+		<level num="160" requiredXp="3200540" rewardCoins="60000" /> 
+		<level num="161" requiredXp="3239595" rewardCoins="6000" /> 
+		<level num="162" requiredXp="3278700" rewardCoins="6000" /> 
+		<level num="163" requiredXp="3317855" rewardCoins="6000" /> 
+		<level num="164" requiredXp="3357060" rewardCoins="6000" /> 
+		<level num="165" requiredXp="3396315" rewardCoins="6000" /> 
+		<level num="166" requiredXp="3435620" rewardCoins="6000" /> 
+		<level num="167" requiredXp="3474975" rewardCoins="6000" /> 
+		<level num="168" requiredXp="3514380" rewardCoins="6000" /> 
+		<level num="169" requiredXp="3553835" rewardCoins="6000" /> 
+		<level num="170" requiredXp="3593340" rewardCoins="60000" /> 
+		<level num="171" requiredXp="3632895" rewardCoins="6000" /> 
+		<level num="172" requiredXp="3672500" rewardCoins="6000" /> 
+		<level num="173" requiredXp="3712155" rewardCoins="6000" /> 
+		<level num="174" requiredXp="3751860" rewardCoins="6000" /> 
+		<level num="175" requiredXp="3791615" rewardCoins="6000" /> 
+		<level num="176" requiredXp="3831420" rewardCoins="6000" /> 
+		<level num="177" requiredXp="3871275" rewardCoins="6000" /> 
+		<level num="178" requiredXp="3911180" rewardCoins="6000" /> 
+		<level num="179" requiredXp="3951135" rewardCoins="6000" /> 
+		<level num="180" requiredXp="3991140" rewardCoins="60000" /> 
+		<level num="181" requiredXp="4031195" rewardCoins="6000" /> 
+		<level num="182" requiredXp="4071300" rewardCoins="6000" /> 
+		<level num="183" requiredXp="4111455" rewardCoins="6000" /> 
+		<level num="184" requiredXp="4151660" rewardCoins="6000" /> 
+		<level num="185" requiredXp="4191915" rewardCoins="6000" /> 
+		<!-- Nuevos 28 de diciembre --> 
+		<level num="186" requiredXp="4232220" rewardCoins="6000" /> 
+		<level num="187" requiredXp="4272575" rewardCoins="6000" /> 
+		<level num="188" requiredXp="4312980" rewardCoins="6000" /> 
+		<level num="189" requiredXp="4353435" rewardCoins="6000" /> 
+		<level num="190" requiredXp="4393940" rewardCoins="6000" /> 
+		<level num="191" requiredXp="4434495" rewardCoins="6000" /> 
+		<level num="192" requiredXp="4475100" rewardCoins="6000" /> 
+		<level num="193" requiredXp="4515755" rewardCoins="6000" /> 
+		<level num="194" requiredXp="4556460" rewardCoins="6000" /> 
+		<level num="195" requiredXp="4597215" rewardCoins="6000" /> 
+		<!-- Nuevos 05 de enero --> 
+		<level num="196" requiredXp="4638020" rewardCoins="6000" /> 
+		<level num="197" requiredXp="4678875" rewardCoins="6000" /> 
+		<level num="198" requiredXp="4719780" rewardCoins="6000" /> 
+		<level num="199" requiredXp="4760735" rewardCoins="6000" /> 
+		<level num="200" requiredXp="4801740" rewardCoins="60000" /> 
+		<!-- Nuevos 11 de enero --> 
+		<level num="201" requiredXp="4842795" rewardCoins="6000" /> 
+		<level num="202" requiredXp="4883900" rewardCoins="6000" /> 
+		<level num="203" requiredXp="4925055" rewardCoins="6000" /> 
+		<level num="204" requiredXp="4966260" rewardCoins="6000" /> 
+		<level num="205" requiredXp="5007515" rewardCoins="6000" /> 
+		<level num="206" requiredXp="5048820" rewardCoins="6000" /> 
+		<level num="207" requiredXp="5090175" rewardCoins="6000" /> 
+		<level num="208" requiredXp="5131580" rewardCoins="6000" /> 
+		<level num="209" requiredXp="5173035" rewardCoins="6000" /> 
+		<level num="210" requiredXp="5214540" rewardCoins="60000" /> 
+		<!-- Nuevos 18 de enero --> 
+		<level num="211" requiredXp="5256095" rewardCoins="6000" /> 
+		<level num="212" requiredXp="5297700" rewardCoins="6000" /> 
+		<level num="213" requiredXp="5339355" rewardCoins="6000" /> 
+		<level num="214" requiredXp="5381060" rewardCoins="6000" /> 
+		<level num="215" requiredXp="5422815" rewardCoins="6000" /> 
+		<level num="216" requiredXp="5464620" rewardCoins="6000" /> 
+		<level num="217" requiredXp="5506475" rewardCoins="6000" /> 
+		<level num="218" requiredXp="5548380" rewardCoins="6000" /> 
+		<level num="219" requiredXp="5590335" rewardCoins="6000" /> 
+		<level num="220" requiredXp="5632340" rewardCoins="60000" /> 
+		<!-- Nuevos 25 de enero --> 
+		<level num="221" requiredXp="5674395" rewardCoins="6000" /> 
+		<level num="222" requiredXp="5716500" rewardCoins="6000" /> 
+		<level num="223" requiredXp="5758655" rewardCoins="6000" /> 
+		<level num="224" requiredXp="5800860" rewardCoins="6000" /> 
+		<level num="225" requiredXp="5843115" rewardCoins="6000" /> 
+		<level num="226" requiredXp="5885420" rewardCoins="6000" /> 
+		<level num="227" requiredXp="5927775" rewardCoins="6000" /> 
+		<level num="228" requiredXp="5970180" rewardCoins="6000" /> 
+		<level num="229" requiredXp="6012635" rewardCoins="6000" /> 
+		<level num="230" requiredXp="6055140" rewardCoins="60000" /> 
+		<!-- Nuevos 25 de enero --> 
+		<level num="231" requiredXp="6097695" rewardCoins="6000" /> 
+		<level num="232" requiredXp="6140300" rewardCoins="6000" /> 
+		<level num="233" requiredXp="6182955" rewardCoins="6000" /> 
+		<level num="234" requiredXp="6225660" rewardCoins="6000" /> 
+		<level num="235" requiredXp="6268415" rewardCoins="6000" /> 
+		<level num="236" requiredXp="6311220" rewardCoins="6000" /> 
+		<level num="237" requiredXp="6354075" rewardCoins="6000" /> 
+		<level num="238" requiredXp="6396980" rewardCoins="6000" /> 
+		<level num="239" requiredXp="6439935" rewardCoins="6000" /> 
+		<level num="240" requiredXp="6482940" rewardCoins="60000" /> 
+		<!-- Nuevos 25 de enero --> 
+		<level num="241" requiredXp="6525995" rewardCoins="6000" /> 
+		<level num="242" requiredXp="6569100" rewardCoins="6000" /> 
+		<level num="243" requiredXp="6612255" rewardCoins="6000" /> 
+		<level num="244" requiredXp="6655460" rewardCoins="6000" /> 
+		<level num="245" requiredXp="6698715" rewardCoins="6000" /> 
+		<level num="246" requiredXp="6742020" rewardCoins="6000" /> 
+		<level num="247" requiredXp="6785375" rewardCoins="6000" /> 
+		<level num="248" requiredXp="6828780" rewardCoins="6000" /> 
+		<level num="249" requiredXp="6872235" rewardCoins="6000" /> 
+		<level num="250" requiredXp="6915740" rewardCoins="60000" /> 
+		<!-- Nuevos 24 de febrero --> 
+		<level num="251" requiredXp="6959295" rewardCoins="6000" /> 
+		<level num="252" requiredXp="7002900" rewardCoins="6000" /> 
+		<level num="253" requiredXp="7046555" rewardCoins="6000" /> 
+		<level num="254" requiredXp="7090260" rewardCoins="6000" /> 
+		<level num="255" requiredXp="7134015" rewardCoins="6000" /> 
+		<level num="256" requiredXp="7177820" rewardCoins="6000" /> 
+		<level num="257" requiredXp="7221675" rewardCoins="6000" /> 
+		<level num="258" requiredXp="7265580" rewardCoins="6000" /> 
+		<level num="259" requiredXp="7309535" rewardCoins="6000" /> 
+		<level num="260" requiredXp="7353540" rewardCoins="60000" />  
+	</levels> 
+	<employees> 
+		<amountLocks> 
+			<amount n="1"> 
+				<level>1</level> 
+			</amount> 
+			<amount n="2"> 
+				<level>7</level> 
+			</amount> 
+			<amount n="3"> 
+				<level>15</level> 
+			</amount> 
+			<amount n="4"> 
+				<level>23</level> 
+			</amount> 
+			<amount n="5"> 
+				<level>31</level> 
+			</amount> 
+			<amount n="6"> 
+				<level>39</level> 
+			</amount> 
+			<amount n="7"> 
+				<level>47</level> 
+			</amount> 
+		</amountLocks> 
+	</employees> 
+	<clientFrequency> 
+		<popularity low="5" frequency="5" /> 
+		<popularity low="15" frequency="7" /> 
+		<popularity low="25" frequency="10" /> 
+		<popularity low="35" frequency="13" /> 
+		<popularity low="45" frequency="15" /> 
+		<popularity low="55" frequency="16" /> 
+		<popularity low="65" frequency="17" /> 
+		<popularity low="75" frequency="19" /> 
+		<popularity low="85" frequency="22" /> 
+		<popularity low="95" frequency="25" /> 
+		<level low="10" frequency="2" /> 
+		<level low="30" frequency="3" /> 
+	</clientFrequency> 
+	<tips> 
+		<level low="1" rewardCoins="100" /> 
+		<level low="6" rewardCoins="200" /> 
+		<level low="11" rewardCoins="300" /> 
+		<level low="16" rewardCoins="400" /> 
+		<level low="21" rewardCoins="500" /> 
+	</tips> 
+	<achievements> 
+		<achievement name="served_dishes" code="1"> 
+			<goals> 
+				<goal target="10" rewardXp="10" rewardCoins="100" /> 
+				<goal target="100" rewardXp="50" rewardCoins="500" /> 
+				<goal target="300" rewardXp="75" rewardCoins="2000" /> 
+				<goal target="1000" rewardXp="225" rewardCoins="5000" /> 
+				<goal target="3000" rewardXp="350" rewardCoins="10000" /> 
+			</goals>     </achievement> 
+		<achievement name="unique_dishes" code="2"> 
+			<goals> 
+				<goal target="5" rewardXp="10" rewardCoins="100" /> 
+				<goal target="10" rewardXp="25" rewardCoins="200" /> 
+				<goal target="25" rewardXp="50" rewardCoins="2000" /> 
+				<goal target="50" rewardXp="250" rewardCoins="5000" /> 
+				<goal target="100" rewardXp="350" rewardCoins="7500" /> 
+			</goals>     </achievement> 
+		<achievement name="amount_neighbors" code="3"> 
+			<goals> 
+				<goal target="1" rewardCoins="1000" /> 
+				<goal target="5" rewardCoins="5000" /> 
+				<goal target="10" rewardCoins="10000" /> 
+				<goal target="25" rewardCoins="20000" /> 
+				<goal target="50" rewardCoins="50000" /> 
+			</goals>     </achievement> 
+		<achievement name="sent_gifts" code="4"> 
+			<goals> 
+				<goal target="1" rewardCoins="100" /> 
+				<goal target="5" rewardCoins="200" /> 
+				<goal target="15" rewardCoins="500" /> 
+				<goal target="50" rewardCoins="2000" /> 
+				<goal target="100" rewardCoins="5000" /> 
+			</goals>     </achievement> 
+		<achievement name="spent_coins" code="5"> 
+			<goals> 
+				<goal target="5000" rewardXp="15" /> 
+				<goal target="35000" rewardXp="30" /> 
+				<goal target="125000" rewardXp="55" /> 
+				<goal target="400000" rewardXp="200" /> 
+				<goal target="1000000" rewardXp="350" /> 
+			</goals>     </achievement> 
+		<!--<achievement name="spent_credits" code="6">
+		<goals>
+		<goal target="3" xp="15" coins="0" />
+		<goal target="10" xp="30" coins="0" />
+		<goal target="25" xp="45" coins="0" />
+		<goal target="75" xp="75" coins="0" />
+		<goal target="150" xp="120" coins="0" />
+		</goals>
+		    </achievement>--> 
+	</achievements> 
+	<newsFeedEvents> 
+		<leveling> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardDish /> 
+			</newsFeed> 
+		</leveling> 
+		<buildablesFinished> 
+			<buildableFinished code="500001"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardSpice randomValues="800001,800002,800003" /> 
+				</newsFeed> 
+			</buildableFinished> 
+		</buildablesFinished> 
+		<achievements> 
+			<achievement code="1"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardDish /> 
+				</newsFeed> 
+			</achievement> 
+			<achievement code="2"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardDish /> 
+				</newsFeed> 
+			</achievement> 
+			<achievement code="3"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardDish /> 
+				</newsFeed> 
+			</achievement> 
+			<achievement code="4"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardDish /> 
+				</newsFeed> 
+			</achievement> 
+			<achievement code="5"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardCoins q="250" /> 
+				</newsFeed> 
+			</achievement> 
+		</achievements> 
+		<expansions> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardCoins q="250" /> 
+			</newsFeed> 
+		</expansions> 
+		<spiceNeighbor> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardDish /> 
+			</newsFeed> 
+		</spiceNeighbor> 
+		<dailyBonus> 
+			<day number="1"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardCoins q="100" /> 
+				</newsFeed> 
+			</day> 
+			<day number="2"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardCoins q="250" /> 
+				</newsFeed> 
+			</day> 
+			<day number="3"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardDish /> 
+				</newsFeed> 
+			</day> 
+			<day number="4"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardDish /> 
+				</newsFeed> 
+			</day> 
+			<day number="5"> 
+				<newsFeed clicks="4" duration="10080"> 
+					<rewardSpice randomValues="800001,800002,800003" /> 
+				</newsFeed> 
+			</day> 
+			<day number="6"> 
+				<newsFeed clicks="4" duration="10080"> 
+					<rewardSpice randomValues="800001,800002,800003" /> 
+				</newsFeed> 
+			</day> 
+		</dailyBonus> 
+		<thanksSpices> 
+			<newsFeed clicks="3" duration="10080"> 
+				<rewardSpice randomValues="800001,800002,800003" /> 
+			</newsFeed> 
+		</thanksSpices> 
+		<criticReview> 
+			<newsFeed clicks="3" duration="10080"> 
+				<rewardItem /> 
+			</newsFeed> 
+		</criticReview> 
+		<spiceFound> 
+			<newsFeed clicks="3" duration="10080"> 
+				<rewardSpice randomValues="800001,800002,800003" /> 
+			</newsFeed> 
+		</spiceFound> 
+		<entertainmentMachinePlace> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardCoins q="250" /> 
+			</newsFeed> 
+		</entertainmentMachinePlace> 
+		<juiceMastering> 
+			<newsFeed clicks="1" duration="10080"> 
+				<rewardEnergy /> 
+			</newsFeed> 
+		</juiceMastering> 
+		<energyPack> 
+			<newsFeed clicks="1" duration="10080"> 
+				<rewardEnergy /> 
+			</newsFeed> 
+		</energyPack> 
+		<machinePlace> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardCoins q="250" /> 
+			</newsFeed> 
+		</machinePlace> 
+		<itemPlace> 
+			<item code="490280"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardItem code="570001" /> 
+				</newsFeed> 
+			</item> 
+		</itemPlace> 
+		<itemBuild> 
+			<item code="470028"> 
+				<newsFeed clicks="10" duration="10080"> 
+					<rewardCoins q="250" /> 
+				</newsFeed> 
+			</item> 
+		</itemBuild> 
+		<exchangeItem> 
+			<newsFeed clicks="1" duration="10080"> 
+				<rewardItem /> 
+			</newsFeed> 
+		</exchangeItem> 
+		<dailyPushGift> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardCoins q="250" /> 
+			</newsFeed> 
+		</dailyPushGift> 
+		<friendHelped> 
+			<newsFeed clicks="10" duration="10080"> 
+				<rewardCoins q="250" /> 
+			</newsFeed> 
+		</friendHelped> 
+		<friendHelpedMapReward> 
+			<newsFeed clicks="3" duration="10080"> 
+				<rewardItem /> 
+			</newsFeed> 
+		</friendHelpedMapReward> 
+		<goalAccomplished> 
+			<reward type="0"> 
+				<newsFeed clicks="3" duration="10080"> 
+					<rewardItem /> 
+				</newsFeed> 
+			</reward> 
+			<reward type="1"> 
+				<newsFeed clicks="3" duration="10080"> 
+					<rewardCoins q="1000" /> 
+				</newsFeed> 
+			</reward> 
+		</goalAccomplished> 
+		<misteryCrate> 
+			<item code="980400"> 
+				<newsFeed clicks="2" duration="10080"> 
+					<rewardItem code="490290" /> 
+				</newsFeed> 
+			</item> 
+			<item code="980500"> 
+				<newsFeed clicks="2" duration="10080"> 
+					<rewardItem code="490408" /> 
+				</newsFeed> 
+			</item> 
+			<item code="980600"> 
+				<newsFeed clicks="2" duration="10080"> 
+					<rewardItem code="490326" /> 
+				</newsFeed> 
+			</item> 
+		</misteryCrate> 
+	</newsFeedEvents> 
+	<vostuFriend socialId="e1" name="Vostu" imgPath="images/vostu-waiter.png" /> 
+	<suggestions iconPath="swf/action_bar/"> 
+		<!--  
+		<suggestion name="vgn">
+		<conditions>
+		<condition type="atOwnCafe" />
+		<condition type="showOnce" />
+		</conditions>
+		<action type="showPopupByClass" class="com.vostu.minicafe.view.popups.PopupVgnPromotion" method="create" />
+		</suggestion>
+		--> 
+		<suggestion name="videogames"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="showOnce" /> 
+			</conditions> 
+			<action type="showPopup" id="popup_videogames_item_set" /> 
+		</suggestion> 
+		<suggestion name="mystery_crates"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="showOnce" /> 
+			</conditions> 
+			<action type="showPopup" id="popup_mystery_crate_promotion" /> 
+		</suggestion> 
+		<suggestion name="carnaval_sale"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="showOnce" /> 
+			</conditions> 
+			<action type="showPopup" id="popup_carnaval_sale" /> 
+		</suggestion> 
+		<suggestion name="fantasy_critic_sale"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="hasNotItemInTheWorld" itemCode="490514" /> 
+				<condition type="hasNotItemInStock" itemCode="490514" /> 
+			</conditions> 
+			<action type="showPopupByClass" class="com.vostu.minicafe.view.popups.PopupPotionPlacer" method="create" /> 
+		</suggestion> 
+		<!-- 
+		<suggestion name="energy_sale">
+		<conditions>
+		<condition type="atOwnCafe" />
+		<condition type="showOnce" />
+		</conditions>
+		<action type="showPopup" id="popup_boost_energy_sale"/>
+		</suggestion>
+		--> 
+		<suggestion name="poker"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="showOnce" /> 
+				<condition type="isNotWonVostuPokerPromotion" /> 
+				<condition type="feature" key="CP" /> 
+			</conditions> 
+			<action type="showPopupByClass" class="com.vostu.minicafe.view.popups.PopupVostuPokerPromotionPlay" method="create" /> 
+		</suggestion> 
+		<suggestion name="thankfriends" code="3"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="hasSpicedStoves" /> 
+			</conditions> 
+			<action type="thankFriends" /> 
+		</suggestion> 
+		<suggestion name="expansion"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="showOnce" /> 
+			</conditions> 
+			<action type="showPopup" id="promotion_expansion" /> 
+		</suggestion> 
+		<suggestion name="spicing"> 
+			<conditions> 
+				<condition type="atNeighborCafe" /> 
+			</conditions> 
+			<action type="showPopup" id="spice" /> 
+		</suggestion> 
+	</suggestions> 
+	<inactivity> 
+		<!--Este vuelve la otra semana: <suggestion popupid="popupChristmasTreeInitial" />	--> 
+		<suggestion popupid="luxury_stove_box"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="hasLevelHigher" level="19" /> 
+				<condition type="hasNotLuxuryStove" /> 
+			</conditions> 
+		</suggestion> 
+		<suggestion popupid="juice_machine_promotion"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="hasLevelHigher" level="5" /> 
+				<condition type="doesNotHaveJuiceMachine" /> 
+			</conditions> 
+		</suggestion> 
+		<suggestion popupid="coffee_machine_promotion"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="doesNotHaveCoffeeMachine" /> 
+			</conditions> 
+		</suggestion> 
+		<suggestion popupid="email_mistery_present"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="mustProvideEmail" /> 
+			</conditions> 
+		</suggestion> 
+	</inactivity> 
+	<principal> 
+		<!--		<suggestion popupid="popupUnderSeaPromotionInitial">--> 
+		<!--			<conditions>--> 
+		<!--				<condition type="atOwnCafe" />--> 
+		<!--			</conditions>--> 
+		<!--		</suggestion>--> 
+		<!--		<suggestion popupid="pirate_chest_place">--> 
+		<!--			<conditions>--> 
+		<!--				<condition type="atOwnCafe" />--> 
+		<!--				<condition type="hasNotItemInStock" itemCode="490338" />--> 
+		<!--				<condition type="hasNotItemInTheWorld" itemCode="490338" />--> 
+		<!--			</conditions>--> 
+		<!--		</suggestion>--> 
+		<suggestion popupid="email_mistery_present"> 
+			<conditions> 
+				<condition type="atOwnCafe" /> 
+				<condition type="mustProvideEmail" /> 
+				<condition type="oncePerDay" /> 
+			</conditions> 
+		</suggestion> 
+	</principal> 
+	<visitors> 
+		<!-- actionTime attribute. When the visitor will show the icon : walking (default)|sitting|eating --> 
+		<!--		<visitor code="1" showTime="180" stereotype="pirate_jack" rewardItem="570006">--> 
+		<!--			<locks><dishServed>900103</dishServed></locks>--> 
+		<!--		</visitor>--> 
+		<!--		<visitor code="2" showTime="180" stereotype="pirate_davy_jones" rewardItem="570007">--> 
+		<!--			<locks><dishServed>900104</dishServed></locks>--> 
+		<!--		</visitor>--> 
+		<!--		<visitor code="3" showTime="180" stereotype="pirate_woman" rewardItem="570008">--> 
+		<!--			<locks><dishServed>900105</dishServed></locks>--> 
+		<!--		</visitor>--> 
+		<!--  Visitors de la pociones --> 
+		<visitor code="8" showTime="30" stereotype="fantasy_harry"> 
+			<requires> 
+				<requireCollector code="570009" q="1" /> 
+			</requires> 
+			<locks> 
+				<itemWorld>490514</itemWorld> 
+			</locks> 
+			<rewards> 
+				<rewardCollector code="570010" /> 
+			</rewards> 
+		</visitor> 
+		<!--  Configuración de Goals Critics --> 
+		<visitor code="4" showTime="120" stereotype="rock_jagger" actionTime="eating"> 
+			<locks> 
+				<goalCompleted>800180</goalCompleted> 
+				<goalIncomplete>800190</goalIncomplete> 
+			</locks> 
+			<rewards> 
+				<rewardXp q="0" multiplier="0.15" /> 
+				<rewardCoins q="0" multiplier="3.5" /> 
+			</rewards> 
+		</visitor> 
+		<visitor code="5" showTime="120" stereotype="rock_mercury" actionTime="eating"> 
+			<locks> 
+				<goalCompleted>800210</goalCompleted> 
+				<goalIncomplete>800220</goalIncomplete> 
+			</locks> 
+			<rewards> 
+				<rewardXp q="0" multiplier="0.15" /> 
+				<rewardCoins q="0" multiplier="3.5" /> 
+			</rewards> 
+		</visitor> 
+		<visitor code="6" showTime="120" stereotype="rock_jackson" actionTime="eating"> 
+			<locks> 
+				<goalCompleted>800240</goalCompleted> 
+				<goalIncomplete>800250</goalIncomplete> 
+			</locks> 
+			<rewards> 
+				<rewardXp q="0" multiplier="0.15" /> 
+				<rewardCoins q="0" multiplier="3.5" /> 
+			</rewards> 
+		</visitor> 
+		<!--  Configuración de critic_initial --> 
+		<visitor code="7" showTime="180" stereotype="critic_initial" actionTime="eating"> 
+			<locks> 
+				<goalCompleted>800400</goalCompleted> 
+				<goalCompleted>800430</goalCompleted> 
+				<goalIncomplete>800440</goalIncomplete> 
+			</locks> 
+			<rewards> 
+				<rewardXp q="2" multiplier="0.5" /> 
+				<rewardCoins q="0" multiplier="3.5" /> 
+			</rewards> 
+		</visitor> 
+	</visitors> 
+	<pushGift rewardCoins="250" rewardXp="3" dailyGifts="5" daysLimit="10" items="490134,490195,410045,420051,410047" /> 
+	<emailCampaignItems> 
+		<emailCampaignItem code="1" customFlagMask="EMAIL_CAMPAIGN_I_OURO"> 
+			<rewardCoins q="250" /> 
+		</emailCampaignItem> 
+		<emailCampaignItem code="2" customFlagMask="EMAIL_CAMPAIGN_I_ITEM"> 
+			<rewardItem code="410037" /> 
+		</emailCampaignItem> 
+		<emailCampaignItem code="3" customFlagMask="EMAIL_CAMPAIGN_I_GRANA"> 
+			<rewardCredits q="1" /> 
+		</emailCampaignItem> 
+	</emailCampaignItems> 
+	<misteryCrate> 
+		<crate name="mystery_crate_purple" code="980100" market="credits" cost="15" reducedCost="7" icon="mystery_crate_purple"> 
+			<packs> 
+				<pack code="980101" items="490394,420067,410077" /> 
+				<pack code="980102" items="490343,440037,420071" /> 
+				<pack code="980103" items="490226,420082,410070" /> 
+				<pack code="980104" items="490357,420087,410084" /> 
+				<pack code="980105" items="490393,420064,410087" /> 
+				<pack code="980106" items="490398,440045,480025" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_yellow" code="980200" market="credits" cost="25" reducedCost="12" icon="mystery_crate_yellow"> 
+			<packs> 
+				<pack code="980201" items="490324,480024,420090" /> 
+				<pack code="980202" items="490363,490304,420086" /> 
+				<pack code="980203" items="490215,480024,420090" /> 
+				<pack code="980204" items="490340,430025,410081" /> 
+				<pack code="980205" items="470038,420092,410089" /> 
+				<pack code="980206" items="490193,480024,440026" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_gold" code="980300" market="credits" cost="30" reducedCost="15" icon="mystery_crate_gold"> 
+			<packs> 
+				<pack code="980301" items="490301,430040,490390" /> 
+				<pack code="980302" items="490189,410087,480025" /> 
+				<pack code="980303" items="470034,490390,420078" /> 
+				<pack code="980304" items="490192,420068,410068" /> 
+				<pack code="980305" items="470036,480024,440037" /> 
+				<pack code="980306" items="490193,420064,490393" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_brown" code="980400" cost="15000" icon="mystery_crate_brown"> 
+			<packs> 
+				<pack code="980401" items="490427,490475,490229" /> 
+				<pack code="980402" items="490420,490408,420091" /> 
+				<pack code="980403" items="490432,410095,490354" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_red" code="980500" cost="50000" icon="mystery_crate_red"> 
+			<packs> 
+				<pack code="980501" items="490430,490370,480028" /> 
+				<pack code="980502" items="490370,490240,440049" /> 
+				<pack code="980503" items="420095,490486,410048" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_white" code="980600" cost="100000" icon="mystery_crate_white"> 
+			<packs> 
+				<pack code="980601" items="490455,490480,440047" /> 
+				<pack code="980602" items="490447,440050,480027" /> 
+				<pack code="980603" items="490503,490396,430049" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_fantasy_brown" code="980700" cost="1" market="credits" buyable="false" icon="mystery_crate_fantasy_brown"> 
+			<packs> 
+				<pack code="980701" items="490509" /> 
+				<pack code="980702" items="490508" /> 
+				<pack code="980703" items="420104" /> 
+				<pack code="980704" items="410105" /> 
+				<pack code="980705" items="490534" /> 
+				<pack code="980706" items="490536" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_fantasy_purple" code="980800" cost="1" market="credits" buyable="false" icon="mystery_crate_fantasy_purple"> 
+			<packs> 
+				<pack code="980801" items="490513" /> 
+				<pack code="980802" items="490510" /> 
+				<pack code="980803" items="440061" /> 
+				<pack code="980804" items="480032" /> 
+				<pack code="980805" items="490535" /> 
+				<pack code="980806" items="410104" /> 
+			</packs> 
+		</crate> 
+		<crate name="mystery_crate_fantasy_gold" code="980900" cost="1" market="credits" buyable="false" icon="mystery_crate_fantasy_gold"> 
+			<packs> 
+				<pack code="980901" items="490511" /> 
+				<pack code="980902" items="440062" /> 
+				<pack code="980903" items="490512" /> 
+				<pack code="980904" items="490537" /> 
+				<pack code="980905" items="490533" /> 
+				<pack code="980906" items="470047" /> 
+			</packs> 
+		</crate> 
+	</misteryCrate> 
+	<special_neighbors> 
+		<neighbor id="-1" name="perfect_neighbor" /> 
+		<neighbor id="-2" name="perfect_neighbor"> 
+			<locks>
+				<level>69</level>
+			</locks> 
+		</neighbor> 
+	</special_neighbors> 
+</config>

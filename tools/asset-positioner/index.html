@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asset Studio — Coffe Mania 0.0.4.19</title>
+  <meta name="color-scheme" content="dark">
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+  <nav aria-label="Ferramentas"><button id="positionerTab" aria-pressed="true">Posicionador</button><button id="cutterTab" aria-pressed="false">Image Cutter</button><button id="twisterTab" aria-pressed="false">Twister</button></nav>
+  <main id="positionerPanel">
+    <aside>
+      <h1>Gabarito de assets</h1>
+      <div class="muted">Coffe Mania · tile nativo 160 × 80 px<br>Local e offline. A imagem não é enviada.</div>
+      <section>
+        <h2>1. Imagem</h2>
+        <button id="importImage" class="primary">Importar imagem…</button>
+        <input id="imageFile" type="file" accept="image/*" hidden>
+        <p id="imageInfo" class="muted">Ou arraste um PNG para a área de trabalho.</p>
+        <label>Nome do asset <input id="assetName" value="meu-asset" maxlength="80"></label>
+      </section>
+      <section>
+        <h2>2. Categoria e preset</h2>
+        <label>Categoria <select id="positionPreset"><option value="object">Móvel — altura livre</option><option value="floor">Piso — recorte próximo de 1 × 1</option><option value="wall">Papel de parede — face esquerda/direita</option><option value="door">Porta — fina, alta e traseira, 1 × 1</option></select></label>
+        <label id="footprintLabel">Pegada no chão
+          <select id="footprint"><option value="1,1">1 × 1 — 160 × 80 px</option><option value="2,1">2 × 1 — 240 × 120 px</option><option value="1,2">1 × 2 — 240 × 120 px</option><option value="2,2">2 × 2 — 320 × 160 px</option></select>
+        </label>
+        <div id="positionWallOptions" hidden>
+          <label>Lado da face <select id="positionWallSide"><option value="left">Esquerda — inclinação ↘</option><option value="right">Direita — inclinação ↙</option></select></label>
+          <label>Comprimento (arestas de tile) <input id="positionWallSpan" type="number" min="1" max="8" step="1" value="1"></label>
+          <label>Altura vertical da parede (px) <input id="positionWallHeight" type="number" min="1" max="4096" step="1" value="208"></label>
+        </div>
+        <div id="positionDoorOptions" hidden>
+          <label>Face traseira <select id="positionDoorSide"><option value="left">Traseira esquerda ↖ — tx = 0</option><option value="right">Traseira direita ↗ — ty = 0</option></select></label>
+          <label>Espessura da porta (px) <input id="positionDoorThickness" type="number" min="1" max="40" step="1" value="8"></label>
+          <p class="muted">Pegada fixa 1 × 1. A faixa fina fica a 2 px da aresta traseira, perto da origem, em vez de ocupar o centro do chão. A altura continua ajustável.</p>
+        </div>
+        <label id="heightLabel">Altura acima da origem (px) <input id="height" type="number" min="0" max="4096" step="1" value="200"></label>
+        <label>Margem ao redor (px) <input id="padding" type="number" min="0" max="512" step="1" value="12"></label>
+        <label><input id="showGuides" type="checkbox" checked> Mostrar grade e plano de altura</label>
+        <p id="presetHint" class="muted">A altura aumenta o espaço acima do chão, sem mudar o tile. Os guias nunca entram no PNG.</p>
+      </section>
+      <section>
+        <h2>3. Posicionar e redimensionar</h2>
+        <div class="row">
+          <label>X da imagem <input id="imageX" type="number" step="1" value="0"></label>
+          <label>Y da imagem <input id="imageY" type="number" step="1" value="0"></label>
+        </div>
+        <div class="row">
+          <label>Largura (px) <input id="imageWidth" type="number" min="1" max="8192" step="1" value="160"></label>
+          <label>Altura (px) <input id="imageHeight" type="number" min="1" max="8192" step="1" value="160"></label>
+        </div>
+        <label><input id="lockRatio" type="checkbox" checked> Manter proporção</label>
+        <label><input id="imageFlip" type="checkbox"> Espelhar imagem horizontalmente</label>
+        <label>Escala da imagem (%) <input id="imageScale" type="number" min="1" max="10000" step="1" value="100"></label>
+        <label>Filtro ao redimensionar <select id="filter"><option value="smooth">Suave — ilustrações</option><option value="pixel">Nearest-neighbor — pixel art</option></select></label>
+        <button id="alignImage">Centralizar base na pegada</button>
+        <button id="fitPresetImage" style="margin-top:8px" hidden>Ajustar tamanho ao preset</button>
+        <p class="muted">Arraste a imagem ou use o quadradinho no canto inferior direito para redimensionar. Setas movem 1 px; Shift + setas, 10 px.</p>
+      </section>
+      <section>
+        <h2>4. Exportação</h2>
+        <label>Área disponível <select id="boundsMode"><option value="auto">Grade + altura + margem</option><option value="manual">Recorte manual em pixels</option></select></label>
+        <div id="manualBounds" hidden>
+          <div class="row"><label>Esquerda <input id="cropLeft" type="number" step="1" value="-92"></label><label>Topo <input id="cropTop" type="number" step="1" value="-212"></label></div>
+          <div class="row"><label>Largura <input id="cropWidth" type="number" min="1" max="8192" step="1" value="184"></label><label>Altura <input id="cropHeight" type="number" min="1" max="8192" step="1" value="304"></label></div>
+        </div>
+        <label><input id="trim" type="checkbox" checked> Recortar transparência automaticamente</label>
+        <label>Limiar de alfa para o recorte (0–254) <input id="alphaThreshold" type="number" min="0" max="254" step="1" value="0"></label>
+        <label>Fundo do PNG <select id="exportBackground"><option value="transparent">Sem fundo — transparente</option><option value="white">Fundo branco</option></select></label>
+        <p class="muted">0 preserva até as sombras mais sutis. Valores maiores ignoram pixels quase transparentes ao calcular o recorte. A área amarela é o limite máximo exportável.</p>
+        <div id="metadata">Importe uma imagem para começar.</div>
+        <p id="clipWarning" class="muted warning" hidden>A imagem ultrapassa o limite amarelo. Aumente a altura/margem ou use um recorte manual para evitar cortes.</p>
+        <button id="exportPng" class="primary" disabled>Exportar PNG</button>
+        <button id="exportJson" style="width:100%; margin-top:8px" disabled>Salvar offsets JSON</button>
+      </section>
+      <section>
+        <h2>Continuar depois</h2>
+        <div class="row"><button id="saveProject" disabled>Salvar projeto</button><button id="openProject">Abrir projeto</button></div>
+        <input id="projectFile" type="file" accept=".json,application/json" hidden>
+        <p class="muted">O projeto guarda a imagem e os ajustes. Exportar aqui não altera os arquivos do jogo.</p>
+      </section>
+    </aside>
+    <div class="stage">
+      <header>
+        <button id="fitView">Enquadrar</button>
+        <label>Zoom de visualização <input id="viewZoom" type="range" min="10" max="800" value="100"><span id="zoomLabel">100%</span></label>
+        <span class="muted">Scroll: zoom · clique direito: inverter · arraste direito: mover visão</span>
+      </header>
+      <div id="viewport">
+        <canvas id="canvas" tabindex="0" aria-label="Editor de posicionamento isométrico"></canvas>
+        <div id="empty">Importe ou solte uma imagem aqui.<br>Azul = chão · verde = altura · vermelho = origem · amarelo = recorte.</div>
+      </div>
+      <footer id="status">A escala de exportação é sempre nativa. O zoom desta janela não muda o tamanho do PNG.</footer>
+    </div>
+  </main>
+  <main id="cutterPanel" hidden>
+    <aside>
+      <h1>Image Cutter</h1>
+      <div class="muted">Recorte uma folha de assets com máscaras na projeção nativa 2:1. A imagem original é preservada.</div>
+      <section>
+        <h2>1. Folha de assets</h2>
+        <button id="cutterImport" class="primary">Importar imagem…</button>
+        <input id="cutterFile" type="file" accept="image/*" hidden>
+        <p id="cutterSourceInfo" class="muted">Ou solte a imagem maior na área de trabalho.</p>
+        <label>Nome do recorte <input id="cutterName" value="meu-recorte" maxlength="80"></label>
+      </section>
+      <section>
+        <h2>2. Máscara de recorte</h2>
+        <label>Tipo <select id="cutterType"><option value="floor">Piso / item — pegada isométrica</option><option value="wall">Papel de parede — face vertical</option></select></label>
+        <div id="cutterFloorOptions">
+          <label>Tamanho e orientação <select id="cutterFootprint"><option value="1,1">1 × 1 — 160 × 80 px</option><option value="1,2">1 × 2 — para esquerda ↙</option><option value="2,1">1 × 2 — para direita ↘ (2 × 1)</option><option value="2,2">2 × 2 — 320 × 160 px</option></select></label>
+          <label>Altura acima do tile (px) <input id="cutterHeight" type="number" min="0" max="4096" step="1" value="0"></label>
+          <p class="muted">0 recorta apenas o piso. Aumente a altura para incluir itens altos: a máscara cresce para cima, mantendo a pegada e a origem do tile. Não redimensiona a imagem.</p>
+        </div>
+        <div id="cutterWallOptions" hidden>
+          <label>Lado da face <select id="cutterSide"><option value="left">Esquerda — inclinação ↘</option><option value="right">Direita — inclinação ↙</option></select></label>
+          <label>Comprimento (arestas de tile) <input id="cutterWallSpan" type="number" min="1" max="8" step="1" value="1"></label>
+          <label>Altura vertical da parede (px) <input id="cutterWallHeight" type="number" min="1" max="4096" step="1" value="208"></label>
+          <p class="muted">Cada aresta de tile tem 80 px na horizontal e 40 px de desnível. A altura da parede é livre; 208 px corresponde à face da parede atual do jogo, sem o topo da estrutura.</p>
+        </div>
+        <label>Ao arrastar <select id="cutterDragMode"><option value="mask">Mover a máscara sobre a imagem</option><option value="image">Mover a imagem sob a máscara</option></select></label>
+        <div class="row"><label>Máscara X <input id="cutterMaskX" type="number" step="1" value="0"></label><label>Máscara Y <input id="cutterMaskY" type="number" step="1" value="0"></label></div>
+        <button id="cutterCenter">Centralizar máscara na imagem</button>
+      </section>
+      <section>
+        <h2>3. Ajustar a imagem</h2>
+        <div class="row"><label>Imagem X <input id="cutterImageX" type="number" step="1" value="0"></label><label>Imagem Y <input id="cutterImageY" type="number" step="1" value="0"></label></div>
+        <label>Escala da imagem (%) <input id="cutterScale" type="number" min="1" max="10000" step="0.1" value="100"></label>
+        <label>Rotação da imagem (graus) <input id="cutterRotation" type="number" min="-180" max="180" step="0.1" value="0"></label>
+        <label><input id="cutterFlip" type="checkbox"> Espelhar imagem horizontalmente</label>
+        <label>Filtro <select id="cutterFilter"><option value="smooth">Suave — ilustrações</option><option value="pixel">Nearest-neighbor — pixel art</option></select></label>
+        <p class="muted">A máscara mantém o ângulo correto; escala, rotação e espelhamento afetam apenas a imagem. Setas ajustam o modo de arraste em 1 px; Shift, 10 px.</p>
+      </section>
+      <section>
+        <h2>4. Resultado transparente</h2>
+        <div id="cutterPreviewBox"><canvas id="cutterPreview" width="160" height="80" aria-label="Prévia do recorte"></canvas></div>
+        <p id="cutterInfo">Importe uma imagem.</p>
+        <button id="cutterExport" class="primary" disabled>Exportar recorte PNG</button>
+        <button id="cutterJson" style="width:100%; margin-top:8px" disabled>Salvar offsets JSON</button>
+        <button id="cutterSend" style="width:100%; margin-top:8px" disabled>Enviar ao posicionador</button>
+        <p class="muted">Só o interior da máscara é exportado. Os cantos ficam transparentes, sem guias nem pixels dos outros assets fora da seleção. A máscara não remove fundos internos nem corrige perspectiva automaticamente.</p>
+      </section>
+    </aside>
+    <div class="stage">
+      <header>
+        <button id="cutterFit">Ver imagem inteira</button><button id="cutterFocus">Focar recorte</button>
+        <label>Zoom <input id="cutterZoom" type="range" min="5" max="1200" value="100"><span id="cutterZoomLabel">100%</span></label>
+        <span class="muted">Scroll: zoom · clique direito: inverter · arraste direito: mover visão</span>
+      </header>
+      <div id="cutterViewport"><canvas id="cutterCanvas" tabindex="0" aria-label="Recorte isométrico de imagens"></canvas></div>
+      <footer id="cutterStatus">Importe a folha de assets e arraste a máscara sobre o padrão desejado.</footer>
+    </div>
+  </main>
+  <main id="twisterPanel" class="workspace" hidden>
+    <div class="workspace-toolbar">
+      <button id="twisterImport" data-icon="image-plus">Importar imagem…</button>
+      <input id="twisterFile" type="file" accept="image/*" hidden>
+      <span class="toolbar-divider"></span>
+      <button id="twisterReuse" disabled>Usar resultado como entrada</button>
+      <span class="toolbar-note">Conversão de paredes e pisos · projeção 2:1</span>
+    </div>
+    <aside class="property-panel" aria-label="Propriedades da conversão">
+      <div class="panel-title"><span data-icon="sliders-horizontal"></span><h1>Propriedades</h1></div>
+      <details class="panel-group" open><summary>Documento</summary><div class="panel-body">
+        <label>Nome do resultado <input id="twisterName" value="minha-parede" maxlength="80"></label>
+      </div></details>
+      <details class="panel-group" open><summary>Conversão</summary><div class="panel-body">
+        <label>Tipo <select id="twisterType"><option value="wall">Parede — face vertical</option><option value="floor">Piso — plano do chão</option></select></label>
+        <label>Sentido <select id="twisterMode"><option value="flatten">Isométrico → retangular</option><option value="project">Retangular → isométrico</option></select></label>
+        <label id="twisterWallOptions">Lado da face <select id="twisterSide"><option value="left">Esquerda — inclinação ↘</option><option value="right">Direita — inclinação ↙</option></select></label>
+        <div id="twisterFloorOptions" hidden>
+          <label>Pegada do piso <select id="twisterFootprint"><option value="1,1">1 × 1 — 160 × 80 px</option><option value="2,1">2 × 1 — para direita ↘</option><option value="1,2">1 × 2 — para esquerda ↙</option><option value="2,2">2 × 2 — 320 × 160 px</option></select></label>
+          <label>Resolução por tile retangular (px) <input id="twisterTileSize" type="number" min="4" max="4096" step="4" value="160"></label>
+        </div>
+        <label>Filtro <select id="twisterFilter"><option value="smooth">Suave — ilustrações</option><option value="pixel">Nearest-neighbor — pixel art</option></select></label>
+        <p id="twisterProjectionHint" class="muted">Arestas a ±26,565°. A largura horizontal e a altura vertical da face são preservadas. Cada 80 px de largura acrescenta 40 px de desnível ao PNG isométrico.</p>
+      </div></details>
+      <details class="panel-group" open><summary>Área da imagem de origem</summary><div class="panel-body">
+        <div class="row"><label>X <input id="twisterX" type="number" min="0" max="8192" step="1" value="0"></label><label>Y <input id="twisterY" type="number" min="0" max="8192" step="1" value="0"></label></div>
+        <div class="row"><label>Largura (px) <input id="twisterWidth" type="number" min="1" max="8192" step="1" value="80"></label><label>Altura da caixa (px) <input id="twisterHeight" type="number" min="1" max="8192" step="1" value="248"></label></div>
+        <button id="twisterFull" class="full-width" disabled>Selecionar imagem inteira</button>
+        <button id="twisterTrim" class="full-width" disabled>Remover margens transparentes</button>
+        <p id="twisterSelectionHint" class="muted">Para uma parede isométrica, selecione a caixa que contém uma única face, incluindo os cantos transparentes. Para uma imagem retangular, selecione o retângulo desejado. Arraste a seleção na origem ou ajuste os valores acima.</p>
+      </div></details>
+    </aside>
+    <div class="panel-resizer" data-resize="left" tabindex="0" role="separator" aria-orientation="vertical" aria-label="Largura das propriedades"></div>
+    <div class="stage">
+      <header class="view-toolbar">
+        <button id="twisterFit" data-icon="scan">Enquadrar</button>
+        <label class="zoom-control"><span class="sr-only">Zoom de visualização</span><input id="twisterZoom" type="range" min="5" max="1200" value="100"><span id="twisterZoomLabel">100%</span></label>
+      </header>
+      <div class="document-strip"><span data-icon="image-plus"></span><p id="twisterSourceInfo" class="document-name">Nenhuma imagem aberta</p><span class="document-format">Twister</span></div>
+      <div id="twisterViewport">
+        <canvas id="twisterCanvas" tabindex="0" aria-label="Comparação da imagem de origem e da conversão"></canvas>
+        <div id="twisterEmpty" class="empty-state">
+          <span class="empty-art" data-icon="crop"></span><h2>Transforme paredes e pisos</h2>
+          <p>Solte uma imagem aqui e escolha o sentido da conversão.</p>
+          <button class="primary" data-action="twisterImport" data-icon="image-plus">Importar imagem</button>
+          <span class="empty-caption">Isométrico ↔ retangular · paredes e pisos</span>
+        </div>
+      </div>
+      <div class="guide-legend"><span><i class="guide-crop"></i>Área de origem</span><span>Scroll: zoom · arraste direito: mover visão</span></div>
+    </div>
+    <div class="panel-resizer" data-resize="right" tabindex="0" role="separator" aria-orientation="vertical" aria-label="Largura da saída"></div>
+    <aside class="output-panel" aria-label="Resultado e exportação">
+      <div class="panel-title"><span data-icon="download"></span><h2>Saída</h2></div>
+      <details class="panel-group" open><summary>Dimensões</summary><div class="panel-body"><p id="twisterInfo" class="data-readout" aria-live="polite">Importe uma imagem para começar.</p></div></details>
+      <div class="export-actions"><button id="twisterExport" class="primary" data-icon="download" disabled>Exportar PNG</button><p class="muted">Transparência preservada. A seleção e os guias ficam apenas na prévia.</p></div>
+    </aside>
+    <div class="statusbar"><span class="status-indicator"></span><span id="twisterStatus" role="status">Escolha o sentido da conversão e importe uma imagem.</span><span class="status-tail">Local e offline</span></div>
+  </main>
+  <script src="vendor/lucide-icons.js"></script>
+  <script src="desktop-ui.js"></script>
+  <script src="cutter-geometry.js"></script>
+  <script src="context-menu.js"></script>
+  <script src="editor.js"></script>
+  <script src="cutter.js"></script>
+  <script src="twister-geometry.js"></script>
+  <script src="twister.js"></script>
+</body>
+</html>

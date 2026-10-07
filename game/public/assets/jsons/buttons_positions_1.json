@@ -1,0 +1,97 @@
+{
+  "image": {
+    "width": 1448,
+    "height": 1086
+  },
+  "coordinate_system": {
+    "origin": "top-left",
+    "bbox_format": "x1,y1,x2,y2",
+    "bbox_bounds": "inclusive"
+  },
+  "buttons": [
+    {
+      "id": 1,
+      "name": "voltar",
+      "bbox": { "x1": 22, "y1": 297, "x2": 246, "y2": 530 },
+      "center": { "x": 134, "y": 413 },
+      "size": { "width": 225, "height": 234 }
+    },
+    {
+      "id": 2,
+      "name": "anterior",
+      "bbox": { "x1": 255, "y1": 297, "x2": 481, "y2": 530 },
+      "center": { "x": 368, "y": 413 },
+      "size": { "width": 227, "height": 234 }
+    },
+    {
+      "id": 3,
+      "name": "play",
+      "bbox": { "x1": 490, "y1": 297, "x2": 720, "y2": 530 },
+      "center": { "x": 605, "y": 413 },
+      "size": { "width": 231, "height": 234 }
+    },
+    {
+      "id": 4,
+      "name": "proximo",
+      "bbox": { "x1": 728, "y1": 297, "x2": 960, "y2": 530 },
+      "center": { "x": 844, "y": 413 },
+      "size": { "width": 233, "height": 234 }
+    },
+    {
+      "id": 5,
+      "name": "configuracao",
+      "bbox": { "x1": 970, "y1": 297, "x2": 1197, "y2": 530 },
+      "center": { "x": 1083, "y": 413 },
+      "size": { "width": 228, "height": 234 }
+    },
+    {
+      "id": 6,
+      "name": "fechar",
+      "bbox": { "x1": 1206, "y1": 297, "x2": 1432, "y2": 530 },
+      "center": { "x": 1319, "y": 413 },
+      "size": { "width": 227, "height": 234 }
+    },
+    {
+      "id": 7,
+      "name": "menos",
+      "bbox": { "x1": 22, "y1": 556, "x2": 246, "y2": 792 },
+      "center": { "x": 134, "y": 674 },
+      "size": { "width": 225, "height": 237 }
+    },
+    {
+      "id": 8,
+      "name": "mais",
+      "bbox": { "x1": 255, "y1": 556, "x2": 481, "y2": 792 },
+      "center": { "x": 368, "y": 674 },
+      "size": { "width": 227, "height": 237 }
+    },
+    {
+      "id": 9,
+      "name": "visualizar",
+      "bbox": { "x1": 490, "y1": 556, "x2": 720, "y2": 792 },
+      "center": { "x": 605, "y": 674 },
+      "size": { "width": 231, "height": 237 }
+    },
+    {
+      "id": 10,
+      "name": "tela_cheia",
+      "bbox": { "x1": 728, "y1": 556, "x2": 960, "y2": 792 },
+      "center": { "x": 844, "y": 674 },
+      "size": { "width": 233, "height": 237 }
+    },
+    {
+      "id": 11,
+      "name": "volume",
+      "bbox": { "x1": 970, "y1": 555, "x2": 1198, "y2": 792 },
+      "center": { "x": 1084, "y": 673 },
+      "size": { "width": 229, "height": 238 }
+    },
+    {
+      "id": 12,
+      "name": "musica",
+      "bbox": { "x1": 1206, "y1": 556, "x2": 1432, "y2": 792 },
+      "center": { "x": 1319, "y": 674 },
+      "size": { "width": 227, "height": 237 }
+    }
+  ]
+}

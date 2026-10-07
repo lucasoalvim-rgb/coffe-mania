@@ -1,0 +1,22 @@
+{
+  "id": 3020003,
+  "classname": "delicate_bush",
+  "name": "Arbusto",
+  "type": 3,
+  "kind": "bush",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "DelicateBush",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 127.2,
+  "parts": [
+    {
+      "file": "delicate_bush.png",
+      "width": 74,
+      "height": 165,
+      "left": -36.7,
+      "top": -106.1
+    }
+  ]
+}

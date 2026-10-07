@@ -1,0 +1,429 @@
+{
+  "items": [
+    {
+      "id": 3000011,
+      "classname": "basic_window",
+      "name": "Janela Básica",
+      "type": 3,
+      "kind": "window",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "WindowInside11",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 195.2,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 146,
+          "height": 125,
+          "left": -74,
+          "top": -120.1,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 146,
+          "height": 125,
+          "left": -74,
+          "top": -120.1,
+          "rotation": 1
+        }
+      ]
+    },
+    {
+      "id": 3010000,
+      "classname": "mafia_door",
+      "name": "Porta Máfia",
+      "type": 2,
+      "kind": "door",
+      "priceGold": 1,
+      "purchasable": true,
+      "legacyClassName": "Door",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 176,
+      "parts": [
+        {
+          "file": "mafia_door.png",
+          "width": 92,
+          "height": 218,
+          "left": -87,
+          "top": -179
+        }
+      ],
+      "wall_cutter_index": 0.85,
+      "door": {
+        "sourceRotation": 0,
+        "hinge": {
+          "x": 87,
+          "y": 179
+        },
+        "baseSlope": -0.5
+      }
+    },
+    {
+      "id": 3020003,
+      "classname": "delicate_bush",
+      "name": "Arbusto",
+      "type": 3,
+      "kind": "bush",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "DelicateBush",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 127.2,
+      "parts": [
+        {
+          "file": "delicate_bush.png",
+          "width": 74,
+          "height": 165,
+          "left": -36.7,
+          "top": -106.1
+        }
+      ]
+    },
+    {
+      "id": 3030010,
+      "classname": "white_cloth_table",
+      "name": "Mesa com Toalha Branca",
+      "type": 3,
+      "kind": "table",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "WhiteTableCloth",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 51.4,
+      "parts": [
+        {
+          "file": "white_cloth_table.png",
+          "width": 176,
+          "height": 127,
+          "left": -90,
+          "top": -49.2
+        }
+      ]
+    },
+    {
+      "id": 3040001,
+      "classname": "classic_chair",
+      "name": "Cadeira Clássica",
+      "type": 3,
+      "kind": "chair",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "Chair02",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 97.4,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 83,
+          "height": 143,
+          "left": -40,
+          "top": -80.2,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 83,
+          "height": 143,
+          "left": -40,
+          "top": -80.2,
+          "rotation": 1
+        },
+        {
+          "file": "rotation-2.png",
+          "width": 83,
+          "height": 143,
+          "left": -40,
+          "top": -80.2,
+          "rotation": 2
+        },
+        {
+          "file": "rotation-3.png",
+          "width": 83,
+          "height": 143,
+          "left": -40,
+          "top": -80.2,
+          "rotation": 3
+        }
+      ]
+    },
+    {
+      "id": 3050000,
+      "classname": "default_tile_name",
+      "name": "Piso Padrão",
+      "type": 0,
+      "kind": "decor",
+      "priceGold": 1,
+      "purchasable": true,
+      "legacyClassName": "FloorTile",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 0,
+      "parts": [
+        {
+          "file": "default_tile_name.png",
+          "width": 164,
+          "height": 84,
+          "left": -82,
+          "top": -2
+        }
+      ]
+    },
+    {
+      "id": 3060016,
+      "classname": "default_wallpaper_name",
+      "name": "Parede Padrão",
+      "type": 1,
+      "kind": "wall",
+      "priceGold": 1,
+      "purchasable": true,
+      "legacyClassName": "Wall17",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 192.4,
+      "parts": [
+        {
+          "file": "default_wallpaper_name.png",
+          "width": 80,
+          "height": 248,
+          "left": -80,
+          "top": -168
+        }
+      ],
+      "wallpaperRotation": 1
+    },
+    {
+      "id": 3070000,
+      "classname": "starter_stove",
+      "name": "Fogão",
+      "type": 3,
+      "kind": "stove",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "Stove01",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 47,
+      "parts": [
+        {
+          "file": "starter_stove.png",
+          "width": 160,
+          "height": 127,
+          "left": -80,
+          "top": -47
+        }
+      ]
+    },
+    {
+      "id": 3090000,
+      "classname": "room_wall",
+      "name": "Estrutura da Parede",
+      "type": 3,
+      "kind": "wall",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "Wall2",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 202,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 160,
+          "height": 282,
+          "left": -80,
+          "top": -202,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 160,
+          "height": 282,
+          "left": -80,
+          "top": -202,
+          "rotation": 1
+        }
+      ]
+    },
+    {
+      "id": 3090001,
+      "classname": "room_wall_corner",
+      "name": "Canto da Parede",
+      "type": 3,
+      "kind": "wall",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "WallCorner",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 169,
+      "parts": [
+        {
+          "file": "room_wall_corner.png",
+          "width": 36,
+          "height": 251,
+          "left": -18,
+          "top": -170
+        }
+      ]
+    },
+    {
+      "id": 3100000,
+      "classname": "menu_holder",
+      "name": "Suporte de Cardápio",
+      "type": 3,
+      "kind": "panel",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "MenuHolder",
+      "sizeX": 2,
+      "sizeY": 1,
+      "itemHeight": 153.2,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 309,
+          "height": 167,
+          "left": -153.3,
+          "top": -120.1,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 309,
+          "height": 167,
+          "left": -153.3,
+          "top": -120.1,
+          "rotation": 1
+        }
+      ]
+    },
+    {
+      "id": 3200000,
+      "classname": "achievement_panel",
+      "name": "Painel de Conquistas",
+      "type": 3,
+      "kind": "panel",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "AchievementPanel",
+      "sizeX": 2,
+      "sizeY": 1,
+      "itemHeight": 203.6,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 322,
+          "height": 170,
+          "left": -161.1,
+          "top": -146.8,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 322,
+          "height": 170,
+          "left": -161.1,
+          "top": -146.8,
+          "rotation": 1
+        }
+      ]
+    },
+    {
+      "id": 3300000,
+      "classname": "letter_box",
+      "name": "Caixa de Correio",
+      "type": 3,
+      "kind": "letterbox",
+      "priceGold": 0,
+      "purchasable": false,
+      "legacyClassName": "LetterBox",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 123.8,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 123,
+          "height": 181,
+          "left": -58.8,
+          "top": -112.4,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 123,
+          "height": 181,
+          "left": -58.8,
+          "top": -112.4,
+          "rotation": 1
+        },
+        {
+          "file": "rotation-2.png",
+          "width": 123,
+          "height": 181,
+          "left": -58.8,
+          "top": -112.4,
+          "rotation": 2
+        },
+        {
+          "file": "rotation-3.png",
+          "width": 123,
+          "height": 181,
+          "left": -58.8,
+          "top": -112.4,
+          "rotation": 3
+        }
+      ]
+    },
+    {
+      "id": 9000001,
+      "classname": "mafia_tile_floor",
+      "name": "Piso Máfia",
+      "type": 0,
+      "kind": "decor",
+      "priceGold": 1,
+      "purchasable": true,
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 0,
+      "parts": [
+        {
+          "file": "mafia_tile_floor.png",
+          "width": 164,
+          "height": 84,
+          "left": -82,
+          "top": -2
+        }
+      ]
+    },
+    {
+      "id": 9000002,
+      "classname": "mafia_wall",
+      "name": "Parede Máfia",
+      "type": 1,
+      "kind": "wall",
+      "priceGold": 1,
+      "purchasable": true,
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 233,
+      "parts": [
+        {
+          "file": "mafia_wall.png",
+          "width": 80,
+          "height": 273,
+          "left": -80,
+          "top": -193
+        }
+      ],
+      "wallpaperRotation": 1
+    }
+  ]
+}

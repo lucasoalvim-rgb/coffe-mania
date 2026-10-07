@@ -1,0 +1,22 @@
+{
+  "id": 3090001,
+  "classname": "room_wall_corner",
+  "name": "Canto da Parede",
+  "type": 3,
+  "kind": "wall",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "WallCorner",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 169,
+  "parts": [
+    {
+      "file": "room_wall_corner.png",
+      "width": 36,
+      "height": 251,
+      "left": -18,
+      "top": -170
+    }
+  ]
+}

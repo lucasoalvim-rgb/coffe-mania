@@ -1,0 +1,22 @@
+{
+  "id": 3030010,
+  "classname": "white_cloth_table",
+  "name": "Mesa com Toalha Branca",
+  "type": 3,
+  "kind": "table",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "WhiteTableCloth",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 51.4,
+  "parts": [
+    {
+      "file": "white_cloth_table.png",
+      "width": 176,
+      "height": 127,
+      "left": -90,
+      "top": -49.2
+    }
+  ]
+}

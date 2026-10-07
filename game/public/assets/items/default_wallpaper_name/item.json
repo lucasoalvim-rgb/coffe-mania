@@ -1,0 +1,23 @@
+{
+  "id": 3060016,
+  "classname": "default_wallpaper_name",
+  "name": "Parede Padrão",
+  "type": 1,
+  "kind": "wall",
+  "priceGold": 1,
+  "purchasable": true,
+  "legacyClassName": "Wall17",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 192.4,
+  "parts": [
+    {
+      "file": "default_wallpaper_name.png",
+      "width": 80,
+      "height": 248,
+      "left": -80,
+      "top": -168
+    }
+  ],
+  "wallpaperRotation": 1
+}

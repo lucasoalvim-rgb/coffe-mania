@@ -1,0 +1,31 @@
+{
+  "id": 3090000,
+  "classname": "room_wall",
+  "name": "Estrutura da Parede",
+  "type": 3,
+  "kind": "wall",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "Wall2",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 202,
+  "parts": [
+    {
+      "file": "rotation-0.png",
+      "width": 160,
+      "height": 282,
+      "left": -80,
+      "top": -202,
+      "rotation": 0
+    },
+    {
+      "file": "rotation-1.png",
+      "width": 160,
+      "height": 282,
+      "left": -80,
+      "top": -202,
+      "rotation": 1
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "coffe-mania-source",
+  "version": "0.0.4-19",
+  "gameVersion": "0.0.4.19",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "game"
+  ],
+  "scripts": {
+    "start": "node scripts/dev.mjs",
+    "dev": "node scripts/dev.mjs",
+    "dev:servers": "node scripts/dev.mjs --servers-only",
+    "dev:game": "npm run dev --workspace game",
+    "typecheck": "npm run typecheck --workspace game",
+    "build": "npm run build --workspace game",
+    "assets:room": "node scripts/sync-room-catalog.mjs",
+    "tools": "node scripts/serve-tools.mjs"
+  }
+}

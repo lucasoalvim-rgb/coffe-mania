@@ -1,0 +1,31 @@
+{
+  "id": 3000011,
+  "classname": "basic_window",
+  "name": "Janela Básica",
+  "type": 3,
+  "kind": "window",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "WindowInside11",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 195.2,
+  "parts": [
+    {
+      "file": "rotation-0.png",
+      "width": 146,
+      "height": 125,
+      "left": -74,
+      "top": -120.1,
+      "rotation": 0
+    },
+    {
+      "file": "rotation-1.png",
+      "width": 146,
+      "height": 125,
+      "left": -74,
+      "top": -120.1,
+      "rotation": 1
+    }
+  ]
+}

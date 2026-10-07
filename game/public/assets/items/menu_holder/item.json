@@ -1,0 +1,31 @@
+{
+  "id": 3100000,
+  "classname": "menu_holder",
+  "name": "Suporte de Cardápio",
+  "type": 3,
+  "kind": "panel",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "MenuHolder",
+  "sizeX": 2,
+  "sizeY": 1,
+  "itemHeight": 153.2,
+  "parts": [
+    {
+      "file": "rotation-0.png",
+      "width": 309,
+      "height": 167,
+      "left": -153.3,
+      "top": -120.1,
+      "rotation": 0
+    },
+    {
+      "file": "rotation-1.png",
+      "width": 309,
+      "height": 167,
+      "left": -153.3,
+      "top": -120.1,
+      "rotation": 1
+    }
+  ]
+}

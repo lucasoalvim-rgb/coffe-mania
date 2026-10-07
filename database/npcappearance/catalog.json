@@ -1,0 +1,1710 @@
+[
+  {
+    "itemId": 1000000,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Placeholder Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000009,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Classic Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000001,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Classic Shorts",
+    "colour": ""
+  },
+  {
+    "itemId": 1000002,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Elegant Jeans",
+    "colour": ""
+  },
+  {
+    "itemId": 1000003,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Beige Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000004,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Barman Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000005,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Torn Blue Shorts",
+    "colour": ""
+  },
+  {
+    "itemId": 1000006,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Black Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000007,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Prison Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000008,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Green Baseball Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000010,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Lucky Green Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000011,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Black Ninja Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000012,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Scout Shorts",
+    "colour": ""
+  },
+  {
+    "itemId": 1000013,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Blue Tang Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000014,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Orange Shorts",
+    "colour": ""
+  },
+  {
+    "itemId": 1000015,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Dark Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000016,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Blue Shorts and Boots",
+    "colour": ""
+  },
+  {
+    "itemId": 1000017,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Sushi Chef Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000018,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Elf Stockings",
+    "colour": ""
+  },
+  {
+    "itemId": 1000019,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Festive Red Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1000020,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Pirate Pants",
+    "colour": ""
+  },
+  {
+    "itemId": 1010010,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Classic Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010000,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Cute Blue Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010001,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Elegant Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010002,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "School Girl Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010003,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Red Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010004,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Purple Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010005,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Barmaid Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010006,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Hula Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010007,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "BunnyGirl Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010008,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Black Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010009,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Red Baseball Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010011,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Kimono Bottom",
+    "colour": ""
+  },
+  {
+    "itemId": 1010012,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Red Blossom Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010013,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Maid Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010014,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Elegant Black Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010015,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Ruby Red Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010016,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Witch Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010017,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Toga Bottom",
+    "colour": ""
+  },
+  {
+    "itemId": 1010018,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Goddess Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1010019,
+    "kind": "item",
+    "slot": "Pants",
+    "name": "Pirate Skirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020000,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Placeholder Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020027,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Blue Fish Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020012,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Hot Pink Fish Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020001,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Stewardess Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020002,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Red Star Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020003,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Chef Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020004,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Black Skull Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020005,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Shirt and Tie",
+    "colour": ""
+  },
+  {
+    "itemId": 1020006,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Pretty Pink",
+    "colour": ""
+  },
+  {
+    "itemId": 1020007,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Karate Outfit",
+    "colour": ""
+  },
+  {
+    "itemId": 1020008,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Chinese Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020009,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "School Girl Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020010,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Black Shirt and Tie",
+    "colour": ""
+  },
+  {
+    "itemId": 1020011,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Black Striped Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020013,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Cafe Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020014,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Cow Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020015,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Pink Sweater",
+    "colour": ""
+  },
+  {
+    "itemId": 1020016,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Green Sweater",
+    "colour": ""
+  },
+  {
+    "itemId": 1020017,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Barman Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020018,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Barmaid Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020019,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Red Hawaii Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020020,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Orange Hawaii Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020021,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Prison Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020022,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "BunnyGirl Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020023,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Grey Waiter Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020024,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Purple Waiter Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020025,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Red Baseball Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020026,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Green Baseball Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020034,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Green Lucky Coat",
+    "colour": ""
+  },
+  {
+    "itemId": 1020028,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Kimono Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020029,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Black Ninja Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020030,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Scout Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020031,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Blue Tang Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020032,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Red Blossom Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020033,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Maid Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020035,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Black And White Jersey",
+    "colour": ""
+  },
+  {
+    "itemId": 1020036,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Brown And Orange Jersey",
+    "colour": ""
+  },
+  {
+    "itemId": 1020037,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Yellow And Black Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020038,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Blue Top with Belt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020039,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Ruby Red Top with Belt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020040,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Red Shirt with Apron",
+    "colour": ""
+  },
+  {
+    "itemId": 1020041,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Elegant Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020042,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "...",
+    "colour": ""
+  },
+  {
+    "itemId": 1020043,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Sushi Chef Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020044,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Basketball Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020045,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Black Tux",
+    "colour": ""
+  },
+  {
+    "itemId": 1020046,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Witch Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020047,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Dracula Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020048,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Skull Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020049,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Toga",
+    "colour": ""
+  },
+  {
+    "itemId": 1020050,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Goddess Top",
+    "colour": ""
+  },
+  {
+    "itemId": 1020051,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Elf Costume",
+    "colour": ""
+  },
+  {
+    "itemId": 1020052,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Festive Red Coat",
+    "colour": ""
+  },
+  {
+    "itemId": 1020053,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "Pirate Shirt",
+    "colour": ""
+  },
+  {
+    "itemId": 1020054,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "The Don's Black Suit",
+    "colour": ""
+  },
+  {
+    "itemId": 1020055,
+    "kind": "item",
+    "slot": "Shirt",
+    "name": "The Don's White Suit",
+    "colour": ""
+  },
+  {
+    "itemId": 1030000,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "No Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030001,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Chef Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030003,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Clown hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030004,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "White Bunny Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030005,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Black Bunny Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030007,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Dark Brown Bunny Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030006,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Brown Bunny Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030008,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Top Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030009,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Tiara",
+    "colour": ""
+  },
+  {
+    "itemId": 1030011,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Red Fez",
+    "colour": ""
+  },
+  {
+    "itemId": 1030012,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Wooden Bucket",
+    "colour": ""
+  },
+  {
+    "itemId": 1030013,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Golden Cow Helmet",
+    "colour": ""
+  },
+  {
+    "itemId": 1030014,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Red Star Helmet",
+    "colour": ""
+  },
+  {
+    "itemId": 1030015,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Lucky Green Top Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030016,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Red Hot Top Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030017,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Cheesy Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030018,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Black Space Helmet",
+    "colour": ""
+  },
+  {
+    "itemId": 1030019,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "White Cat Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030020,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Fox Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030021,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Black Cat Ears",
+    "colour": ""
+  },
+  {
+    "itemId": 1030022,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Black Top Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030023,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Elf Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1030024,
+    "kind": "item",
+    "slot": "Hat",
+    "name": "Festive Hat",
+    "colour": ""
+  },
+  {
+    "itemId": 1040000,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Placeholder Hair",
+    "colour": ""
+  },
+  {
+    "itemId": 1040005,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Classic",
+    "colour": ""
+  },
+  {
+    "itemId": 1040007,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Ponytail",
+    "colour": ""
+  },
+  {
+    "itemId": 1040008,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Shoulder Long Hair",
+    "colour": ""
+  },
+  {
+    "itemId": 1040001,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Fringe",
+    "colour": ""
+  },
+  {
+    "itemId": 1040002,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Spike",
+    "colour": ""
+  },
+  {
+    "itemId": 1040003,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Emo",
+    "colour": ""
+  },
+  {
+    "itemId": 1040004,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Manga",
+    "colour": ""
+  },
+  {
+    "itemId": 1040006,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Pigtails",
+    "colour": ""
+  },
+  {
+    "itemId": 1040009,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Long Hair",
+    "colour": ""
+  },
+  {
+    "itemId": 1040010,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Leah",
+    "colour": ""
+  },
+  {
+    "itemId": 1040011,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Afro",
+    "colour": ""
+  },
+  {
+    "itemId": 1040012,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Mohawk",
+    "colour": ""
+  },
+  {
+    "itemId": 1040013,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Waxy",
+    "colour": ""
+  },
+  {
+    "itemId": 1040014,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Granny",
+    "colour": ""
+  },
+  {
+    "itemId": 1040015,
+    "kind": "item",
+    "slot": "Hair",
+    "name": "Glamour",
+    "colour": ""
+  },
+  {
+    "itemId": 1050000,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Simple Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050001,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Basic Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050005,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Dashing Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050004,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Puppy Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050002,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Luxurious Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050003,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Zombie Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050006,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Pretty Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050007,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Villain Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050008,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Green Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050009,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Beady Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050010,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Serious Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050011,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Happy Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050012,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Angry Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050013,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Blue Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050014,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Light Brown Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050015,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Brown Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050016,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Smoky Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050017,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Scary Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050018,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Blue Dreamy Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050019,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Cute Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050020,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Glowing Green Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1050021,
+    "kind": "item",
+    "slot": "Eyes",
+    "name": "Pretty Pink Eyes",
+    "colour": ""
+  },
+  {
+    "itemId": 1060000,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Happy Mouth",
+    "colour": ""
+  },
+  {
+    "itemId": 1060008,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Indifferent",
+    "colour": ""
+  },
+  {
+    "itemId": 1060007,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Happy",
+    "colour": ""
+  },
+  {
+    "itemId": 1060001,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Luscious Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060002,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Pink Puffy Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060003,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Cute Mouth",
+    "colour": ""
+  },
+  {
+    "itemId": 1060005,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Purple Power Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060006,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Hmmm",
+    "colour": ""
+  },
+  {
+    "itemId": 1060004,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Luscious Red Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060009,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Glad",
+    "colour": ""
+  },
+  {
+    "itemId": 1060010,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Happy 2",
+    "colour": ""
+  },
+  {
+    "itemId": 1060011,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Teeth",
+    "colour": ""
+  },
+  {
+    "itemId": 1060012,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "V",
+    "colour": ""
+  },
+  {
+    "itemId": 1060013,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Vampire",
+    "colour": ""
+  },
+  {
+    "itemId": 1060014,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Smile",
+    "colour": ""
+  },
+  {
+    "itemId": 1060015,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Sad",
+    "colour": ""
+  },
+  {
+    "itemId": 1060016,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Concerned",
+    "colour": ""
+  },
+  {
+    "itemId": 1060017,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Unhappy",
+    "colour": ""
+  },
+  {
+    "itemId": 1060018,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Pretty Pink Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060019,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Great Smile",
+    "colour": ""
+  },
+  {
+    "itemId": 1060020,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Pursed Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060021,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Big Tooth",
+    "colour": ""
+  },
+  {
+    "itemId": 1060022,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Glossy Lips",
+    "colour": ""
+  },
+  {
+    "itemId": 1060023,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Wavy mouth",
+    "colour": ""
+  },
+  {
+    "itemId": 1060024,
+    "kind": "item",
+    "slot": "Mouth",
+    "name": "Tight Lipped",
+    "colour": ""
+  },
+  {
+    "itemId": 1070000,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "No Eyebrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070001,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Classic EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070002,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Evil EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070003,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Thin EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070004,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Soft EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070005,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Spooky EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070006,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Sharp EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070007,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Fluffy EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070008,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Curvy EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070009,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "ZigZag EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070010,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Arc EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1070011,
+    "kind": "item",
+    "slot": "Eyebrows",
+    "name": "Sad EyeBrow",
+    "colour": ""
+  },
+  {
+    "itemId": 1080000,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "No Extra",
+    "colour": ""
+  },
+  {
+    "itemId": 1080001,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Plaster",
+    "colour": ""
+  },
+  {
+    "itemId": 1080002,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "scar",
+    "colour": ""
+  },
+  {
+    "itemId": 1080003,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Lightning",
+    "colour": ""
+  },
+  {
+    "itemId": 1080004,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Scar2",
+    "colour": ""
+  },
+  {
+    "itemId": 1080005,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Star",
+    "colour": ""
+  },
+  {
+    "itemId": 1080006,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Red Dots",
+    "colour": ""
+  },
+  {
+    "itemId": 1080007,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "White Flower",
+    "colour": ""
+  },
+  {
+    "itemId": 1080008,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Heart",
+    "colour": ""
+  },
+  {
+    "itemId": 1080009,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "FacePaint",
+    "colour": ""
+  },
+  {
+    "itemId": 1080010,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Freckles",
+    "colour": ""
+  },
+  {
+    "itemId": 1080011,
+    "kind": "item",
+    "slot": "Miscellaneous",
+    "name": "Pink Cheeks",
+    "colour": ""
+  },
+  {
+    "itemId": 1090000,
+    "kind": "item",
+    "slot": "Facial Hair",
+    "name": "No Beard",
+    "colour": ""
+  },
+  {
+    "itemId": 1090001,
+    "kind": "item",
+    "slot": "Facial Hair",
+    "name": "Moustache",
+    "colour": ""
+  },
+  {
+    "itemId": 1090002,
+    "kind": "item",
+    "slot": "Facial Hair",
+    "name": "Tom",
+    "colour": ""
+  },
+  {
+    "itemId": 1090003,
+    "kind": "item",
+    "slot": "Facial Hair",
+    "name": "Broom",
+    "colour": ""
+  },
+  {
+    "itemId": 1090004,
+    "kind": "item",
+    "slot": "Facial Hair",
+    "name": "Sherif",
+    "colour": ""
+  },
+  {
+    "itemId": 1100000,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xFFECE9",
+    "colour": "#ffece9"
+  },
+  {
+    "itemId": 1100001,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xFFDBC0",
+    "colour": "#ffdbc0"
+  },
+  {
+    "itemId": 1100002,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xF9C095",
+    "colour": "#f9c095"
+  },
+  {
+    "itemId": 1100003,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xDBA163",
+    "colour": "#dba163"
+  },
+  {
+    "itemId": 1100004,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xBA875C",
+    "colour": "#ba875c"
+  },
+  {
+    "itemId": 1100005,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xA1613B",
+    "colour": "#a1613b"
+  },
+  {
+    "itemId": 1100006,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0x82472E",
+    "colour": "#82472e"
+  },
+  {
+    "itemId": 1100007,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0x663824",
+    "colour": "#663824"
+  },
+  {
+    "itemId": 1100008,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xa4dfe3",
+    "colour": "#a4dfe3"
+  },
+  {
+    "itemId": 1100009,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xe3a4dd",
+    "colour": "#e3a4dd"
+  },
+  {
+    "itemId": 1100010,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0x98e3a0",
+    "colour": "#98e3a0"
+  },
+  {
+    "itemId": 1100011,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xb3b3b3",
+    "colour": "#b3b3b3"
+  },
+  {
+    "itemId": 1100012,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xa4aee3",
+    "colour": "#a4aee3"
+  },
+  {
+    "itemId": 1100013,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xffe5a3",
+    "colour": "#ffe5a3"
+  },
+  {
+    "itemId": 1100014,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xcce3e2",
+    "colour": "#cce3e2"
+  },
+  {
+    "itemId": 1100015,
+    "kind": "skin_colour",
+    "slot": "SkinColour",
+    "name": "0xffffff",
+    "colour": "#ffffff"
+  },
+  {
+    "itemId": 1200000,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xf0ece3",
+    "colour": "#f0ece3"
+  },
+  {
+    "itemId": 1200001,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xf6ebd1",
+    "colour": "#f6ebd1"
+  },
+  {
+    "itemId": 1200002,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xc7b8a7",
+    "colour": "#c7b8a7"
+  },
+  {
+    "itemId": 1200003,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xa09885",
+    "colour": "#a09885"
+  },
+  {
+    "itemId": 1200004,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xcda55b",
+    "colour": "#cda55b"
+  },
+  {
+    "itemId": 1200005,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xa9773e",
+    "colour": "#a9773e"
+  },
+  {
+    "itemId": 1200006,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x844921",
+    "colour": "#844921"
+  },
+  {
+    "itemId": 1200007,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x4f3e21",
+    "colour": "#4f3e21"
+  },
+  {
+    "itemId": 1200008,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x332e26",
+    "colour": "#332e26"
+  },
+  {
+    "itemId": 1200009,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xbd4040",
+    "colour": "#bd4040"
+  },
+  {
+    "itemId": 1200010,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x852121",
+    "colour": "#852121"
+  },
+  {
+    "itemId": 1200011,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x541152",
+    "colour": "#541152"
+  },
+  {
+    "itemId": 1200012,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x383a7c",
+    "colour": "#383a7c"
+  },
+  {
+    "itemId": 1200013,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x4cb1aa",
+    "colour": "#4cb1aa"
+  },
+  {
+    "itemId": 1200014,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0x7a69bf",
+    "colour": "#7a69bf"
+  },
+  {
+    "itemId": 1200015,
+    "kind": "hair_colour",
+    "slot": "HairColour",
+    "name": "0xe36298",
+    "colour": "#e36298"
+  }
+]

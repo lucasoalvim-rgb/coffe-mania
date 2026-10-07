@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.runtime/
+database/pb_data/
+database/pb_migrations/
+.env
+.env.*
+!.env.example
+*.log
+*.exe
+*.test
+game-server/coffe-game-server
+database/coffe-database
+.DS_Store
+Thumbs.db
+
+tools/gabaritos/

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "flower",
+    "x": 554,
+    "y": 643,
+    "width": 234,
+    "height": 234
+  },
+  {
+    "name": "stove",
+    "x": 1131,
+    "y": 640,
+    "width": 238,
+    "height": 249
+  },
+  {
+    "name": "stove-fire",
+    "x": 833,
+    "y": 609,
+    "width": 250,
+    "height": 303
+  },
+  {
+    "name": "counter",
+    "x": 11,
+    "y": 80,
+    "width": 230,
+    "height": 225
+  },
+  {
+    "name": "table",
+    "x": 18,
+    "y": 379,
+    "width": 232,
+    "height": 211
+  },
+  {
+    "name": "chair",
+    "x": 254,
+    "y": 59,
+    "width": 206,
+    "height": 249
+  },
+  {
+    "name": "door",
+    "x": 286,
+    "y": 374,
+    "width": 162,
+    "height": 216
+  },
+  {
+    "name": "flower-window",
+    "x": 31,
+    "y": 641,
+    "width": 201,
+    "height": 248
+  },
+  {
+    "name": "floor",
+    "x": 259,
+    "y": 686,
+    "width": 264,
+    "height": 199
+  },
+  {
+    "name": "wallpaper",
+    "x": 1420,
+    "y": 633,
+    "width": 190,
+    "height": 241
+  }
+]
