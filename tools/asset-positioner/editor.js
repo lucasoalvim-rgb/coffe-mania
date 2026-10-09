@@ -9,8 +9,16 @@
     'imageWidth', 'imageHeight', 'lockRatio', 'imageScale', 'filter', 'boundsMode', 'cropLeft',
     'cropTop', 'cropWidth', 'cropHeight', 'trim', 'alphaThreshold', 'positionPreset',
     'positionWallSide', 'positionWallSpan', 'positionWallHeight', 'imageFlip',
-    'positionDoorSide', 'positionDoorThickness', 'exportBackground'];
+    'positionDoorSide', 'positionDoorThickness', 'exportBackground', 'fitPlane', 'fitMode'];
+  const fitGeometry = globalThis.AssetFitGeometry;
   let image = null;
+  let imageVersion = 0;
+  // Cantos da arte em pixels nativos da imagem como aparece (já espelhada): { base, top }.
+  let fitPoints = null;
+  // Correção de ângulo ativa: { k, aL, aR, bL, bR, c, ox, oy }, relativa a imageX/imageY.
+  let warp = null;
+  let warpCache = null;
+  let sourceCache = null;
   let imageUrl = '';
   let originalName = '';
   let view = { x: 0, y: 0, scale: 1 };
@@ -27,6 +35,51 @@
     : $('footprint').value.split(',').map(Number);
   const project = (tx, ty, height = 0) => ({ x: (tx - ty) * 80, y: (tx + ty) * 40 - height });
   const imageRect = () => ({ left: int('imageX'), top: int('imageY'), width: int('imageWidth'), height: int('imageHeight') });
+
+  /** Transformação local → mundo da imagem atual, com ou sem a correção de ângulo. */
+  function placement() {
+    if (warp) {
+      const { ox, oy, ...shape } = warp;
+      return { ...shape, x: int('imageX') + ox, y: int('imageY') + oy };
+    }
+    return fitGeometry.rectTransform(int('imageX'), int('imageY'),
+      int('imageWidth') / image.naturalWidth, int('imageHeight') / image.naturalHeight);
+  }
+
+  /** Caixa ocupada pela imagem no mundo; com a correção, inclui o cisalhamento das faces. */
+  function imageBox() {
+    if (!warp || !image) return imageRect();
+    const b = fitGeometry.transformedBounds(placement(), image.naturalWidth, image.naturalHeight);
+    return { left: Math.floor(b.minX), top: Math.floor(b.minY),
+      width: Math.ceil(b.maxX) - Math.floor(b.minX), height: Math.ceil(b.maxY) - Math.floor(b.minY) };
+  }
+
+  /** RGBA da imagem como aparece (espelhada ou não), em resolução nativa. */
+  function sourcePixels() {
+    const flip = $('imageFlip').checked;
+    if (sourceCache?.version === imageVersion && sourceCache.flip === flip) return sourceCache;
+    const width = image.naturalWidth, height = image.naturalHeight;
+    if (width > 8192 || height > 8192 || width * height > 16000000) throw new Error('Imagem muito grande para o encaixe: limite de 8192 px por lado.');
+    const work = document.createElement('canvas'); work.width = width; work.height = height;
+    const c = work.getContext('2d', { willReadFrequently: true });
+    if (flip) { c.translate(width, 0); c.scale(-1, 1); }
+    c.drawImage(image, 0, 0);
+    sourceCache = { version: imageVersion, flip, width, height, data: c.getImageData(0, 0, width, height).data };
+    return sourceCache;
+  }
+
+  /** Imagem reamostrada pela correção de ângulo; left/top relativos a imageX/imageY. */
+  function warpedImage() {
+    const key = JSON.stringify([imageVersion, $('imageFlip').checked, $('filter').value, warp]);
+    if (warpCache?.key === key) return warpCache;
+    const source = sourcePixels();
+    const { ox, oy, ...shape } = warp;
+    const result = fitGeometry.render(source.data, source.width, source.height, { ...shape, x: ox, y: oy }, { filter: $('filter').value });
+    const output = document.createElement('canvas'); output.width = result.width; output.height = result.height;
+    output.getContext('2d').putImageData(new ImageData(result.data, result.width, result.height), 0, 0);
+    warpCache = { key, canvas: output, left: result.left, top: result.top };
+    return warpCache;
+  }
 
   function surfaceShape() {
     const [sizeX, sizeY] = footprint();
@@ -120,10 +173,17 @@
       ? 'Fundo branco, em resolução nativa. Não altera os assets do jogo.'
       : 'Fundo transparente, em resolução nativa. Não altera os assets do jogo.';
     $('manualBounds').hidden = $('boundsMode').value !== 'manual';
+    const fitAvailable = Boolean(image) && preset === 'object';
+    $('fitDetect').disabled = !fitAvailable;
+    $('fitApply').disabled = !fitAvailable || !fitPoints;
+    $('fitClear').disabled = !warp;
+    // Com a correção ativa, o tamanho vem do encaixe; mover continua livre.
+    for (const id of ['imageWidth', 'imageHeight', 'imageScale', 'lockRatio']) $(id).disabled = Boolean(warp);
     const b = bounds();
-    const r = imageRect();
+    const r = image ? imageBox() : imageRect();
     $('clipWarning').hidden = !image || (r.left >= b.left && r.top >= b.top &&
       r.left + r.width <= b.left + b.width && r.top + r.height <= b.top + b.height);
+    updateFitInfo();
     draw();
     clearTimeout(metadataTimer);
     metadataTimer = setTimeout(updateMetadata, 100);
@@ -144,6 +204,7 @@
       $('imageWidth').value = Math.max(1, Math.round(image.naturalWidth * num(id) / 100));
       $('imageHeight').value = Math.max(1, Math.round(image.naturalHeight * num(id) / 100));
     }
+    if (id === 'imageFlip') flipChanged();
     changed();
   }));
   $('positionPreset').addEventListener('change', () => {
@@ -187,7 +248,7 @@
 
   function fitView() {
     const b = bounds();
-    const r = imageRect();
+    const r = image ? imageBox() : imageRect();
     const left = image ? Math.min(b.left, r.left) : b.left;
     const top = image ? Math.min(b.top, r.top) : b.top;
     const right = image ? Math.max(b.left + b.width, r.left + r.width) : b.left + b.width;
@@ -296,7 +357,15 @@
     }
     ctx.strokeStyle = '#e8a318'; ctx.lineWidth = 2 / view.scale;
     ctx.setLineDash([8 / view.scale, 5 / view.scale]); ctx.strokeRect(b.left, b.top, b.width, b.height); ctx.setLineDash([]);
-    if (image) {
+    if (image && warp) {
+      const t = placement(), w = image.naturalWidth, h = image.naturalHeight, k = Math.max(0, Math.min(w, t.k));
+      ctx.beginPath();
+      [[0, 0], [k, 0], [w, 0], [w, h], [k, h], [0, h]].forEach(([x, y], index) => {
+        const p = fitGeometry.map(t, { x, y });
+        ctx[index ? 'lineTo' : 'moveTo'](p.x, p.y);
+      });
+      ctx.closePath(); ctx.strokeStyle = '#845bef'; ctx.lineWidth = 1 / view.scale; ctx.stroke();
+    } else if (image) {
       const r = imageRect();
       ctx.strokeStyle = '#845bef'; ctx.lineWidth = 1 / view.scale;
       ctx.strokeRect(r.left, r.top, r.width, r.height);
@@ -304,8 +373,148 @@
       ctx.fillStyle = '#845bef';
       ctx.fillRect(r.left + r.width - handle / 2, r.top + r.height - handle / 2, handle, handle);
     }
+    if (image && fitPoints) drawFitPoints();
     ctx.restore();
   }
+
+  const FIT_COLORS = { base: '#ff8a1f', top: '#22c3e6' };
+  const FIT_LABELS = { left: 'E', front: 'F', back: 'T', right: 'D' };
+  const fitKeys = (plane) => plane === 'top' ? ['left', 'back', 'right'] : ['left', 'front', 'right'];
+
+  function fitHandles() {
+    if (!image || !fitPoints) return [];
+    const t = placement();
+    return ['base', 'top'].flatMap((plane) => fitPoints[plane]
+      ? fitKeys(plane).map((key) => ({ plane, key, world: fitGeometry.map(t, fitPoints[plane][key]) })) : []);
+  }
+
+  function drawFitPoints() {
+    const reference = $('fitPlane').value;
+    const handles = fitHandles();
+    for (const plane of ['base', 'top']) {
+      const points = handles.filter((handle) => handle.plane === plane);
+      if (points.length !== 3) continue;
+      ctx.beginPath();
+      points.forEach((handle, index) => ctx[index ? 'lineTo' : 'moveTo'](handle.world.x, handle.world.y));
+      ctx.strokeStyle = FIT_COLORS[plane]; ctx.lineWidth = (plane === reference ? 2 : 1) / view.scale;
+      ctx.setLineDash(plane === reference ? [] : [4 / view.scale, 4 / view.scale]); ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.font = `bold ${10 / view.scale}px system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (const handle of handles) {
+      ctx.beginPath(); ctx.arc(handle.world.x, handle.world.y, 6 / view.scale, 0, Math.PI * 2);
+      ctx.fillStyle = FIT_COLORS[handle.plane]; ctx.fill();
+      ctx.strokeStyle = '#111'; ctx.lineWidth = 1 / view.scale; ctx.stroke();
+      ctx.fillStyle = '#111'; ctx.fillText(FIT_LABELS[handle.key], handle.world.x, handle.world.y + .5 / view.scale);
+    }
+    ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+  }
+
+  function fitHandleAt(p) {
+    const radius = 9 / view.scale;
+    return fitHandles().find((handle) => Math.hypot(handle.world.x - p.x, handle.world.y - p.y) <= radius) || null;
+  }
+
+  const formatNumber = (n, digits = 1) => Number.isFinite(n) ? n.toFixed(digits).replace('.', ',') : '—';
+  const formatAngles = (a) => a ? `${formatNumber(a.left)}° / ${formatNumber(a.right)}°` : '—';
+
+  function updateFitInfo() {
+    if (!image || !fitPoints) {
+      $('fitInfo').textContent = image ? 'Clique em Detectar cantos da arte.' : 'Importe uma imagem e detecte os cantos.';
+      return;
+    }
+    const [sizeX, sizeY] = footprint();
+    const plane = $('fitPlane').value;
+    const result = fitGeometry.evaluate({ points: fitPoints, plane, transform: placement(), sizeX, sizeY });
+    const lines = [`Tile: ${formatNumber(fitGeometry.TILE_ANGLE, 2)}° (2:1)`,
+      `Arte  base ${formatAngles(result.angles.before.base)} · tampo ${formatAngles(result.angles.before.top)}`,
+      `Agora base ${formatAngles(result.angles.after.base)} · tampo ${formatAngles(result.angles.after.top)}`];
+    lines.push(result.maxDeviation === null
+      ? `Marque os cantos ${plane === 'top' ? 'do tampo' : 'da base'} para medir o desvio.`
+      : `Desvio dos cantos: ${formatNumber(result.maxDeviation)} px${plane === 'top' ? ` · tampo a ${formatNumber(result.height)} px` : ''}`);
+    if (warp) lines.push(`Correção: horizontal ${formatNumber(warp.aL * 100)}% / ${formatNumber(warp.aR * 100)}% · vertical ${formatNumber(warp.c * 100)}%`);
+    $('fitInfo').textContent = lines.join('\n');
+  }
+
+  /** Espelhar troca os lados: os cantos acompanham a arte e a correção precisa ser refeita. */
+  function flipChanged() {
+    if (fitPoints && image) {
+      const width = image.naturalWidth, mirror = (p) => ({ x: width - p.x, y: p.y });
+      for (const plane of ['base', 'top']) {
+        const points = fitPoints[plane];
+        if (!points) continue;
+        const middle = plane === 'top' ? 'back' : 'front';
+        fitPoints[plane] = { left: mirror(points.right), [middle]: mirror(points[middle]), right: mirror(points.left) };
+      }
+    }
+    if (warp) { removeWarp(); report('Correção de ângulo removida ao espelhar. Clique em Encaixar na pegada para refazê-la.'); }
+  }
+
+  function removeWarp() {
+    if (!warp) return;
+    // Volta ao retângulo em tamanho nativo, mantendo a posição do canto superior esquerdo.
+    $('imageX').value = Math.round(int('imageX') + warp.ox); $('imageY').value = Math.round(int('imageY') + warp.oy);
+    $('imageWidth').value = image.naturalWidth; $('imageHeight').value = image.naturalHeight;
+    warp = null; warpCache = null;
+    syncScale();
+  }
+
+  // Pontos iniciais para arrastar quando a silhueta não forma um losango (pés, plantas, sombras).
+  function defaultPlane(plane) {
+    const w = image.naturalWidth, h = image.naturalHeight;
+    return plane === 'top'
+      ? { left: { x: 0, y: h * .3 }, back: { x: w / 2, y: 0 }, right: { x: w, y: h * .3 } }
+      : { left: { x: 0, y: h * .7 }, front: { x: w / 2, y: h }, right: { x: w, y: h * .7 } };
+  }
+
+  $('fitDetect').addEventListener('click', () => {
+    if (!image) return;
+    try {
+      const source = sourcePixels();
+      const found = fitGeometry.detect(fitGeometry.alphaChannel(source.data, source.width, source.height), source.width, source.height);
+      const clean = (plane) => found[plane] && Object.fromEntries(fitKeys(plane).map((key) => [key, found[plane][key]]));
+      fitPoints = { base: clean('base') || defaultPlane('base'), top: clean('top') || defaultPlane('top') };
+      const missing = ['base', 'top'].filter((plane) => !found[plane]).map((plane) => plane === 'top' ? 'tampo' : 'base');
+      const irregular = ['base', 'top'].filter((plane) => found[plane]?.rms > 1.5).map((plane) => plane === 'top' ? 'tampo' : 'base');
+      changed();
+      report(missing.length ? `Não reconheci ${missing.join(' e ')} pela silhueta: arraste os pontos até os cantos.`
+        : irregular.length ? `Contorno irregular em ${irregular.join(' e ')}: confira os pontos antes de encaixar.`
+        : 'Cantos detectados. Confira os pontos e clique em Encaixar na pegada.');
+    } catch (error) { report(error.message, true); }
+  });
+
+  $('fitApply').addEventListener('click', () => {
+    if (!image || !fitPoints) return;
+    try {
+      const [sizeX, sizeY] = footprint();
+      const mode = $('fitMode').value;
+      const result = fitGeometry.solve({ points: fitPoints, plane: $('fitPlane').value, mode, sizeX, sizeY });
+      const t = result.transform;
+      warp = null; warpCache = null;
+      if (mode === 'angle') {
+        const x = Math.floor(t.x), y = Math.floor(t.y);
+        $('imageX').value = x; $('imageY').value = y;
+        $('imageWidth').value = image.naturalWidth; $('imageHeight').value = image.naturalHeight;
+        warp = { k: t.k, aL: t.aL, aR: t.aR, bL: t.bL, bR: t.bR, c: t.c, ox: t.x - x, oy: t.y - y };
+      } else {
+        $('imageWidth').value = Math.max(1, Math.round(image.naturalWidth * t.c));
+        $('imageHeight').value = Math.max(1, Math.round(image.naturalHeight * t.c));
+        $('imageX').value = Math.round(t.x); $('imageY').value = Math.round(t.y);
+      }
+      syncScale();
+      // A área automática cresce para não cortar a arte encaixada; a origem do tile não muda.
+      const box = imageBox();
+      if ($('boundsMode').value === 'auto' && -box.top > int('height')) $('height').value = Math.ceil(-box.top);
+      changed(); fitView();
+      const residual = fitGeometry.evaluate({ points: fitPoints, plane: $('fitPlane').value, transform: placement(), sizeX, sizeY });
+      report(`Encaixe aplicado: desvio de ${formatNumber(residual.maxDeviation)} px nos cantos.${result.notes.length ? ` ${result.notes.join(' ')}` : ''}` +
+        (mode === 'angle' ? '' : ' Este modo preserva o ângulo da arte; use Corrigir ângulo para levar as arestas a 26,565°.'));
+    } catch (error) { report(error.message, true); }
+  });
+
+  $('fitClear').addEventListener('click', () => {
+    removeWarp(); changed();
+    report('Correção de ângulo removida. A imagem voltou ao tamanho nativo.');
+  });
 
   function localPoint(event) {
     const rect = canvas.getBoundingClientRect();
@@ -320,6 +529,7 @@
     isFlipped: () => $('imageFlip').checked,
     onFlip: () => {
       $('imageFlip').checked = !$('imageFlip').checked;
+      flipChanged();
       changed();
       report($('imageFlip').checked ? 'Imagem invertida horizontalmente.' : 'Imagem na orientação original.');
     },
@@ -329,11 +539,14 @@
     canvas.focus();
     const p = worldPoint(event);
     const r = imageRect();
+    const box = image ? imageBox() : r;
     const radius = 13 / view.scale;
+    const fitHandle = event.button === 0 ? fitHandleAt(p) : null;
     if (event.button === 2) drag = { mode: 'pan', point: localPoint(event), x: view.x, y: view.y };
-    else if (image && Math.abs(p.x - r.left - r.width) < radius && Math.abs(p.y - r.top - r.height) < radius) {
+    else if (fitHandle) drag = { mode: 'fitPoint', plane: fitHandle.plane, key: fitHandle.key };
+    else if (image && !warp && Math.abs(p.x - r.left - r.width) < radius && Math.abs(p.y - r.top - r.height) < radius) {
       drag = { mode: 'resize', point: p, rect: r };
-    } else if (image && p.x >= r.left && p.x <= r.left + r.width && p.y >= r.top && p.y <= r.top + r.height) {
+    } else if (image && p.x >= box.left && p.x <= box.left + box.width && p.y >= box.top && p.y <= box.top + box.height) {
       drag = { mode: 'move', point: p, rect: r };
     } else drag = { mode: 'pan', point: localPoint(event), x: view.x, y: view.y };
     drag.pointerId = event.pointerId;
@@ -343,7 +556,8 @@
   canvas.addEventListener('pointermove', (event) => {
     if (!drag) {
       const p = worldPoint(event), r = imageRect(), radius = 13 / view.scale;
-      canvas.style.cursor = image && Math.abs(p.x - r.left - r.width) < radius && Math.abs(p.y - r.top - r.height) < radius ? 'nwse-resize' : 'grab';
+      canvas.style.cursor = image && fitHandleAt(p) ? 'crosshair'
+        : image && !warp && Math.abs(p.x - r.left - r.width) < radius && Math.abs(p.y - r.top - r.height) < radius ? 'nwse-resize' : 'grab';
       return;
     }
     if (drag.pointerId !== event.pointerId) return;
@@ -352,6 +566,11 @@
       view.x = drag.x + p.x - drag.point.x; view.y = drag.y + p.y - drag.point.y; draw(); return;
     }
     const p = worldPoint(event);
+    if (drag.mode === 'fitPoint') {
+      // Os pontos ficam em pixels da imagem: continuam válidos ao mover, escalar ou corrigir o ângulo.
+      fitPoints[drag.plane][drag.key] = fitGeometry.inverse(placement(), p);
+      updateFitInfo(); draw(); return;
+    }
     if (drag.mode === 'move') {
       $('imageX').value = Math.round(drag.rect.left + p.x - drag.point.x);
       $('imageY').value = Math.round(drag.rect.top + p.y - drag.point.y);
@@ -403,6 +622,7 @@
     if (sequence !== loadSequence) return;
     if (!nextImage.naturalWidth || !nextImage.naturalHeight) throw new Error('Imagem sem dimensões válidas.');
     image = nextImage; imageUrl = url; originalName = name;
+    imageVersion++; fitPoints = null; warp = null; warpCache = null; sourceCache = null;
     $('imageFlip').checked = false;
     $('assetName').value = name.replace(/\.[^.]+$/, '') || 'meu-asset';
     $('imageWidth').value = image.naturalWidth; $('imageHeight').value = image.naturalHeight;
@@ -412,6 +632,7 @@
       $('positionWallSide').value = 'left'; $('positionWallSpan').value = 1; $('positionWallHeight').value = 208;
       $('positionDoorSide').value = 'left'; $('positionDoorThickness').value = 8;
       $('exportBackground').value = 'transparent';
+      $('fitPlane').value = 'base'; $('fitMode').value = 'angle';
       if (typeof settings.footprint === 'string' && /^\d+,\d+$/.test(settings.footprint)) {
         const [nx, ny] = settings.footprint.split(',').map(Number);
         if (nx >= 1 && ny >= 1 && nx <= 8 && ny <= 8 && !Array.from($('footprint').options).some((option) => option.value === settings.footprint)) {
@@ -432,6 +653,10 @@
       if (!$('positionDoorSide').value) $('positionDoorSide').value = 'left';
       if (!$('exportBackground').value) $('exportBackground').value = 'transparent';
       if ($('positionPreset').value === 'door') $('footprint').value = '1,1';
+      if (!$('fitPlane').value) $('fitPlane').value = 'base';
+      if (!$('fitMode').value) $('fitMode').value = 'angle';
+      fitPoints = restoreFitPoints(settings.fitPoints);
+      warp = restoreWarp(settings.angleCorrection);
     } else alignImage();
     syncScale();
     $('imageInfo').textContent = `${name} · original ${image.naturalWidth} × ${image.naturalHeight} px`;
@@ -439,6 +664,25 @@
     $('saveProject').disabled = false;
     changed(); fitView();
     report('Imagem importada. Arraste e ajuste o tamanho; PNGs transparentes são recomendados.');
+  }
+
+  // Projetos sem encaixe, ou com dados inválidos, abrem sem pontos e sem correção.
+  function restoreFitPoints(data) {
+    if (!data || typeof data !== 'object') return null;
+    const point = (p) => p && Number.isFinite(p.x) && Number.isFinite(p.y) ? { x: p.x, y: p.y } : null;
+    const plane = (points, keys) => {
+      const restored = Object.fromEntries(keys.map((key) => [key, point(points?.[key])]));
+      return Object.values(restored).every(Boolean) ? restored : null;
+    };
+    const restored = { base: plane(data.base, fitKeys('base')), top: plane(data.top, fitKeys('top')) };
+    return restored.base || restored.top ? restored : null;
+  }
+
+  function restoreWarp(data) {
+    if (!data || typeof data !== 'object') return null;
+    const keys = ['k', 'aL', 'aR', 'bL', 'bR', 'c', 'ox', 'oy'];
+    if (!keys.every((key) => Number.isFinite(data[key])) || !(data.aL > 0 && data.aR > 0 && data.c > 0)) return null;
+    return Object.fromEntries(keys.map((key) => [key, data[key]]));
   }
 
   async function importFile(file) {
@@ -453,6 +697,11 @@
 
   // Preview and export share the same transform; position and dimensions stay intact.
   function paintImage(context, offsetX = 0, offsetY = 0) {
+    if (warp) {
+      const warped = warpedImage();
+      context.drawImage(warped.canvas, int('imageX') + warped.left + offsetX, int('imageY') + warped.top + offsetY);
+      return;
+    }
     const r = imageRect();
     context.save();
     context.translate(r.left + offsetX + ($('imageFlip').checked ? r.width : 0), r.top + offsetY);
@@ -503,7 +752,10 @@
           ? Math.max(0, -geometry.bounds(surfaceShape().points).top)
           : $('positionPreset').value === 'floor' ? 0 : int('height'),
         exportArea: b, alphaThreshold: threshold, background: $('exportBackground').value,
-        trimmed: $('trim').checked, image: { ...r, flipHorizontal: $('imageFlip').checked }, filter: $('filter').value,
+        trimmed: $('trim').checked, image: { ...r, flipHorizontal: $('imageFlip').checked, angleCorrection: warp ? { ...warp } : null },
+        fit: fitPoints ? { plane: $('fitPlane').value, mode: $('fitMode').value, points: fitPoints,
+          maxDeviation: fitGeometry.evaluate({ points: fitPoints, plane: $('fitPlane').value, transform: placement(), sizeX, sizeY }).maxDeviation } : null,
+        filter: $('filter').value,
         preset: $('positionPreset').value,
         door: $('positionPreset').value === 'door' ? { side: $('positionDoorSide').value,
           thickness: int('positionDoorThickness'), height: int('height'), inset: 2, placement: 'back-edge', itemType: 'door' } : null,
@@ -556,6 +808,7 @@
 
   $('saveProject').addEventListener('click', () => {
     const settings = Object.fromEntries(controlIds.map((id) => [id, $(id).type === 'checkbox' ? $(id).checked : $(id).value]));
+    settings.fitPoints = fitPoints; settings.angleCorrection = warp;
     const projectData = { format: 'coffe-mania-asset-positioner', version: 1, originalName, imageUrl, settings };
     download(new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' }), `${sanitizeName()}.projeto.json`);
     report('Projeto salvo com a imagem original e todos os ajustes.');

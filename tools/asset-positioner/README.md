@@ -1,4 +1,4 @@
-# Asset Studio — Coffe Mania 0.0.4.22
+# Asset Studio — Coffe Mania 0.0.4.30
 
 Ferramenta simples, local e independente do jogo. No Windows, dê dois cliques em **abrir.cmd**, ou abra **index.html** no Chrome, Edge ou Firefox. Não precisa de Python, npm, servidor ou internet. Os arquivos permanecem no seu dispositivo.
 
@@ -104,6 +104,30 @@ Os pixels do editor são os pixels nativos dos assets do jogo. O zoom de visuali
 - Área automática: `left = -sizeY*80 - margem`, `top = -altura - margem`, largura `(sizeX+sizeY)*80 + 2*margem`, altura `altura + (sizeX+sizeY)*40 + 2*margem`.
 
 Assim um fogão 1×1 pode ser alto: mantenha a mesma pegada e aumente a altura disponível. Não precisa usar um canvas quadrado nem limitar todo PNG a 512×512.
+
+## Encaixe no tile: alinhar a arte ao ângulo 2:1
+
+Artes recortadas de capturas e portfólios costumam vir num ângulo um pouco diferente do tile, por exemplo 28°–30° em vez de 26,565°. Nesse caso, o contorno do tile aparece por baixo das laterais ou da frente do móvel. Mover a imagem não resolve: o fogão inicial tinha os cantos laterais 4 px acima dos cantos do tile e a frente já apoiada. A seção **Encaixe no tile** do Posicionador mede e corrige isso, na categoria **Móvel**.
+
+1. Importe o PNG e clique em **Detectar cantos da arte**. A silhueta gera os pontos da **base** (laranja: E, F, D = esquerdo, frontal, direito) e do **tampo** (ciano: E, T, D = esquerdo, traseiro, direito). Os ângulos medidos aparecem no painel.
+2. Confira os pontos. Pés, sombras, plantas e saliências não formam um losango: arraste cada ponto até o canto real. Os pontos ficam presos à imagem e acompanham movimento, escala e espelhamento.
+3. Escolha o **plano de referência**. **Base** encaixa o apoio no chão; serve para fogões, caixas e móveis cujo corpo ocupa o tile. **Tampo** encaixa o tampo no losango, numa altura livre, e mantém a frente da base apoiada na frente do tile. Use-o em balcões cujo corpo é mais estreito que o tampo; o corpo continua recuado, com arestas paralelas ao tile.
+4. Escolha o **modo** e clique em **Encaixar na pegada**:
+   - **Só mover — 1:1**: translação inteira, sem reamostrar pixels. O ângulo da arte não muda; o desvio residual é dividido entre os cantos.
+   - **Escala uniforme — sem distorção**: mesma escala nos dois eixos. Também preserva o ângulo da arte.
+   - **Corrigir ângulo**: leva as arestas a exatamente 26,565°. As verticais continuam verticais; cada face visível (esquerda e direita do vértice) recebe sua escala horizontal e um cisalhamento vertical, e a imagem inteira recebe uma escala vertical comum, calculada para que a outra face (tampo ou base) também chegue a 26,565°. O painel mostra essas escalas: o fogão inicial ficou com 104%/96% na horizontal e 89% na vertical.
+
+Nenhum modo tomba as verticais nem aplica perspectiva. Uma arte assimétrica, com o vértice fora do centro, só fica exata no modo de ângulo. Mudar o ângulo sem reamostrar é impossível, então os modos uniforme e de ângulo reamostram a partir do original com o filtro escolhido; o projeto continua guardando a imagem original. Com a correção ativa, largura, altura e escala ficam bloqueadas, enquanto mover e as setas continuam livres. **Remover correção de ângulo** volta ao tamanho nativo. Espelhar também remove a correção, porque troca as faces; clique de novo em Encaixar. A correção, os pontos, o plano e o modo são salvos no projeto e registrados no JSON de offsets (`template.image.angleCorrection` e `template.fit`).
+
+Os itens já cadastrados podem ser conferidos e corrigidos pela linha de comando, na raiz da distribuição, com a mesma geometria (`fit-geometry.js`):
+
+```sh
+npm run assets:fit                                        # relatório: ângulos e desvio atual de cada móvel de chão
+npm run assets:fit -- starter_counter:top --preview=PASTA # PNGs da arte sobre o contorno do tile, em cada modo
+npm run assets:fit -- starter_stove --mode=angle --write  # regrava PNGs e parts; depois npm run assets:room
+```
+
+`classname:top` usa o tampo como referência. `--write` exige `--mode` e nomes explícitos. Ele mantém o tamanho do tile e a origem, atualiza `width`, `height`, `left` e `top` de cada part e ajusta `itemHeight` quando ele era o topo das parts. Elementos posicionados sobre o tampo com offsets fixos, como `STOVE_DISH_Y` e `COUNTER_DISH_Y` em `RoomScreen.ts`, precisam acompanhar a nova altura informada no relatório com `:top`.
 
 ## Recorte e limiar
 

@@ -23,6 +23,8 @@ export class AvatarActorView {
   private frameIndex = 0;
   private elapsedMs = 0;
   private lastKey = '';
+  private carrying = false;
+  private carryingHand?: { x: number; y: number };
 
   constructor(
     private readonly actor: Actor,
@@ -72,6 +74,17 @@ export class AvatarActorView {
     this.actionElapsedMs = elapsedMs;
   }
 
+  setCarrying(carrying: boolean): void { this.carrying = carrying; }
+
+  /** Coordenadas relativas aos pés em pixels do mundo, no mesmo quadro da arte. */
+  getCarriedDishHand(): { x: number; y: number } | undefined {
+    if (!this.carryingHand) return undefined;
+    return {
+      x: (this.carryingHand.x - this.baked.ground.x) * this.sprite.scale.x * this.view.scale.x,
+      y: (this.carryingHand.y - this.baked.ground.y) * this.sprite.scale.y * this.view.scale.y,
+    };
+  }
+
   /** Replace only the atlas: movement, direction, current action and shadow are retained. */
   setAppearance(baked: AvatarAtlas, texture: Texture): void {
     const previous = [...this.cellTextures.values()];
@@ -90,9 +103,9 @@ export class AvatarActorView {
   }
 
   update(deltaMs: number): void {
-    // A velocidade determina a alternância entre os clipes parado e andando.
-
-    const desejado = this.actor.moving ? CLIP.WALK : this.actionClip ?? CLIP.IDLE;
+    const carryClip = this.carrying && lookupFrame(this.baked, CLIP.WAITOR_WALK, this.actor.direction, 10)
+      ? CLIP.WAITOR_WALK : undefined;
+    const desejado = this.actor.moving ? carryClip ?? CLIP.WALK : this.actionClip ?? carryClip ?? CLIP.IDLE;
     if (desejado !== this.clip) {
       this.clip = desejado;
       this.frameIndex = 0;
@@ -100,7 +113,10 @@ export class AvatarActorView {
     }
 
     const frames = clipFrames(this.clip);
-    if (!this.actor.moving && this.actionElapsedMs !== undefined && frames.length > 0) {
+    if (!this.actor.moving && this.clip === CLIP.WAITOR_WALK) {
+      this.frameIndex = 0;
+      this.elapsedMs = 0;
+    } else if (!this.actor.moving && this.actionElapsedMs !== undefined && frames.length > 0) {
       const elapsed = Math.max(0, this.actionElapsedMs);
       const step = clipFrameDelayMs(this.clip);
       this.frameIndex = Math.floor(elapsed / step) % frames.length;
@@ -121,11 +137,12 @@ export class AvatarActorView {
   /** Recorta a célula do atlas e espelha quando a direção pede. */
   private apply(): void {
     const encontrado = lookupFrame(this.baked, this.clip, this.actor.direction, this.currentFrame);
-    if (!encontrado) return;
+    if (!encontrado) { this.carryingHand = undefined; return; }
 
     const chave = `${encontrado.cell.x},${encontrado.cell.y},${encontrado.mirrored}`;
     if (chave === this.lastKey) return;
     this.lastKey = chave;
+    this.carryingHand = encontrado.mirrored ? encontrado.cell.carryingLeftHand : encontrado.cell.carryingHand;
 
     const textura = this.cellTextures.get(`${encontrado.cell.x},${encontrado.cell.y}`);
     if (textura) this.sprite.texture = textura;
