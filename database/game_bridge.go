@@ -116,7 +116,7 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(400, "Pedido inválido.")
 		}
 		body, err = mutateRoom(app, op.Owner, op.Action, command)
-	case "cook_start", "cook_serve", "cook_cancel":
+	case "cook_start", "cook_serve", "cook_cancel", "cook_clean":
 		var command struct {
 			StoveID  string `json:"stoveId"`
 			RecipeID string `json:"recipeId"`
@@ -131,6 +131,8 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			err = serveCooking(app, op.Owner, command.StoveID, types.NowDateTime())
 		case "cook_cancel":
 			err = cancelCooking(app, op.Owner, command.StoveID, types.NowDateTime())
+		case "cook_clean":
+			err = cleanStove(app, op.Owner, command.StoveID)
 		}
 		if err == nil {
 			body, err = snapshotCooking(app, op.Owner, types.NowDateTime())
@@ -146,7 +148,8 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(400, err.Error())
 		case errors.Is(err, errUnknownRecipe):
 			return fail(400, "Receita inválida.")
-		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel), errors.Is(err, errNoCounter):
+		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel), errors.Is(err, errNoCounter),
+			errors.Is(err, errStoveDirty), errors.Is(err, errStoveClean), errors.Is(err, errDishSpoiled):
 			return fail(409, err.Error())
 		default:
 			return fail(500, "Não foi possível salvar a operação.")

@@ -29,19 +29,21 @@ writeFileSync(resolve(directory, 'catalog.json'), JSON.stringify({ items: items.
 writeFileSync(resolve(root, 'shared/roomcatalog/catalog.json'), JSON.stringify({ items }, null, 2) + '\n');
 console.log(`Catálogo do servidor sincronizado com ${items.length} pastas de itens.`);
 
-// Receitas: cada pasta de foods/ tem recipe.json e os dois estágios do prato (no fogão e pronto).
+// Receitas: cada pasta de foods/ tem recipe.json, stage_1.png (o que fica no fogão durante o preparo: tábua,
+// panela...) e stage_2.png (o prato pronto). O livro segue a ordem do tempo de preparo, como no original.
 const foodsDirectory = resolve(root, 'game/public/assets/foods');
 const recipes = readdirSync(foodsDirectory, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => {
   const recipe = JSON.parse(readFileSync(resolve(foodsDirectory, entry.name, 'recipe.json'), 'utf8'));
   const counts = [recipe.level, recipe.durationSeconds, recipe.portions, recipe.profitGold, recipe.costGold, recipe.xp];
   if (recipe.id !== entry.name || !/^[a-z][a-z0-9_]*$/.test(recipe.id) || typeof recipe.name !== 'string' || !recipe.name ||
     !counts.every((n) => Number.isSafeInteger(n) && n >= 0) || recipe.level < 1 || recipe.durationSeconds < 1 || recipe.portions < 1 ||
-    typeof recipe.inBook !== 'boolean' || typeof recipe.source !== 'string') {
+    typeof recipe.inBook !== 'boolean' || typeof recipe.source !== 'string' ||
+    (recipe.validitySeconds !== undefined && (!Number.isSafeInteger(recipe.validitySeconds) || recipe.validitySeconds < 1))) {
     throw new Error(`Receita inválida: ${entry.name}`);
   }
   for (const stage of ['stage_1.png', 'stage_2.png']) readFileSync(resolve(foodsDirectory, entry.name, stage));
   return recipe;
-}).sort((a, b) => a.level - b.level || a.durationSeconds - b.durationSeconds || a.id.localeCompare(b.id));
+}).sort((a, b) => a.durationSeconds - b.durationSeconds || a.id.localeCompare(b.id));
 writeFileSync(resolve(foodsDirectory, 'catalog.json'), JSON.stringify({ recipes }, null, 2) + '\n');
 writeFileSync(resolve(root, 'shared/recipecatalog/catalog.json'), JSON.stringify({ recipes }, null, 2) + '\n');
 console.log(`Catálogo de receitas sincronizado com ${recipes.length} receitas.`);

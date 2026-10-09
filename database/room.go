@@ -104,7 +104,8 @@ func ensureRoom(app core.App, userID string) error {
 			}
 			return tx.Save(unit)
 		}
-		starters := [][4]int{{3070000, 6, 2, 3}, {starterCounterItemID, 7, 3, 3}, {3010000, 4, 1, 1}, {3000011, 0, 2, 0}, {3000011, 0, 6, 0},
+		// The stove and the counter face the dining room (rotation 1): the chef stands in front of the knobs.
+		starters := [][4]int{{3070000, 6, 2, 1}, {starterCounterItemID, 7, 3, 1}, {3010000, 4, 1, 1}, {3000011, 0, 2, 0}, {3000011, 0, 6, 0},
 			{3040001, 2, 3, 0}, {3040001, 2, 5, 0}, {3040001, 5, 5, 0}, {3030010, 3, 3, 0}, {3030010, 3, 5, 0}, {3030010, 6, 5, 0},
 			{3200000, 2, 0, 1}, {3300000, 1, 7, 0}, {3100000, 5, 0, 1}, {3020003, 1, 1, 0}, {3020003, 7, 1, 0}, {3020003, 7, 7, 0}}
 		for _, starter := range starters {
@@ -198,9 +199,9 @@ func ensureStarterCounter(app core.App, userID string) error {
 			return err
 		}
 		unit := core.NewRecord(inventory)
-		unit.Load(map[string]any{"user": userID, "item_id": item.ID, "rotation": 3, "layer": roomcatalog.Layer(item)})
+		unit.Load(map[string]any{"user": userID, "item_id": item.ID, "rotation": 1, "layer": roomcatalog.Layer(item)})
 		for _, tile := range candidates {
-			if !busy[tile] && validRoomPosition(item, tile[0], tile[1], 3, tilesX, tilesY) {
+			if !busy[tile] && validRoomPosition(item, tile[0], tile[1], 1, tilesX, tilesY) {
 				unit.Set("placed", true)
 				unit.Set("tx", tile[0])
 				unit.Set("ty", tile[1])

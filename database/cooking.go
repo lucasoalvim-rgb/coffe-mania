@@ -21,12 +21,15 @@ import (
 const starterStoveItemID = 3070000
 const cookingPlacementDuration = 2 * time.Second
 
-var errStoveOccupied = errors.New("stove occupied")
+var errStoveOccupied = errors.New("Fogão ocupado.")
 var errStoveNotOwned = errors.New("stove not owned")
-var errDishNotReady = errors.New("dish not ready")
-var errCookingCannotCancel = errors.New("cooking cannot be canceled")
+var errDishNotReady = errors.New("O prato ainda não está pronto.")
+var errCookingCannotCancel = errors.New("Não há prato neste fogão.")
 var errUnknownRecipe = errors.New("unknown recipe")
 var errNoCounter = errors.New("Não há balcão livre para este prato.")
+var errStoveDirty = errors.New("Limpe o fogão antes de cozinhar.")
+var errStoveClean = errors.New("O fogão já está limpo.")
+var errDishSpoiled = errors.New("O prato estragou. Jogue-o fora para liberar o fogão.")
 
 type cookingView struct {
 	ID          string `json:"id"`
@@ -34,7 +37,9 @@ type cookingView struct {
 	PreparingAt string `json:"preparingAt"`
 	StartedAt   string `json:"startedAt"`
 	ReadyAt     string `json:"readyAt"`
-	Status      string `json:"status"`
+	// SpoilsAt ends the ready window; after it the dish can only be thrown away.
+	SpoilsAt string `json:"spoilsAt"`
+	Status   string `json:"status"`
 }
 
 type stoveView struct {
@@ -42,6 +47,7 @@ type stoveView struct {
 	ItemID  int          `json:"itemId"`
 	TX      int          `json:"tx"`
 	TY      int          `json:"ty"`
+	Dirty   bool         `json:"dirty"`
 	Cooking *cookingView `json:"cooking"`
 }
 
@@ -83,14 +89,17 @@ func snapshotCooking(app core.App, userID string, now types.DateTime) (cookingSn
 		if inventoryErr != nil && !errors.Is(inventoryErr, sql.ErrNoRows) {
 			return result, inventoryErr
 		}
-		view := stoveView{ID: stove.Id, ItemID: stove.GetInt("item_id"), TX: stove.GetInt("tx"), TY: stove.GetInt("ty")}
+		view := stoveView{ID: stove.Id, ItemID: stove.GetInt("item_id"), TX: stove.GetInt("tx"), TY: stove.GetInt("ty"), Dirty: stove.GetBool("dirty")}
 		job, err := app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
 		if err != nil && !errors.Is(err, sql.ErrNoRows) {
 			return result, err
 		}
 		if err == nil {
+			spoilsAt := jobSpoilsAt(job)
 			status := "preparing"
-			if !now.Before(job.GetDateTime("ready_at")) {
+			if !now.Before(spoilsAt) {
+				status = "spoiled"
+			} else if !now.Before(job.GetDateTime("ready_at")) {
 				status = "ready"
 			} else if !now.Before(job.GetDateTime("started_at")) {
 				status = "cooking"
@@ -103,12 +112,21 @@ func snapshotCooking(app core.App, userID string, now types.DateTime) (cookingSn
 				ID: job.Id, RecipeID: job.GetString("recipe_id"),
 				PreparingAt: preparingAt.String(),
 				StartedAt:   job.GetDateTime("started_at").String(),
-				ReadyAt:     job.GetDateTime("ready_at").String(), Status: status,
+				ReadyAt:     job.GetDateTime("ready_at").String(),
+				SpoilsAt:    spoilsAt.String(), Status: status,
 			}
 		}
 		result.Stoves = append(result.Stoves, view)
 	}
 	return result, nil
+}
+
+func jobSpoilsAt(job *core.Record) types.DateTime {
+	validity := recipecatalog.DefaultValidity(job.GetDateTime("ready_at").Time().Sub(job.GetDateTime("started_at").Time()))
+	if recipe, ok := recipecatalog.ByID(job.GetString("recipe_id")); ok {
+		validity = recipe.Validity()
+	}
+	return job.GetDateTime("ready_at").Add(validity)
 }
 
 // Starting a dish pays its cost and grants its XP immediately, as in the original game.
@@ -124,6 +142,9 @@ func startCooking(app core.App, userID, stoveID, recipeID string, now types.Date
 		}
 		if stove.GetInt("item_id") != starterStoveItemID {
 			return errStoveNotOwned
+		}
+		if stove.GetBool("dirty") {
+			return errStoveDirty
 		}
 		unit, inventoryErr := txApp.FindFirstRecordByData("player_inventory", "stove_id", stove.Id)
 		if inventoryErr == nil && !unit.GetBool("placed") {
@@ -183,6 +204,9 @@ func serveCooking(app core.App, userID, stoveID string, now types.DateTime) erro
 		if job.GetString("user") != userID || now.Before(job.GetDateTime("ready_at")) {
 			return errDishNotReady
 		}
+		if !now.Before(jobSpoilsAt(job)) {
+			return errDishSpoiled
+		}
 		recipeID := job.GetString("recipe_id")
 		portions := 1
 		if recipe, ok := recipecatalog.ByID(recipeID); ok {
@@ -197,6 +221,10 @@ func serveCooking(app core.App, userID, stoveID string, now types.DateTime) erro
 			food.Set("job_id", job.Id)
 		}
 		if err = txApp.Save(food); err != nil {
+			return err
+		}
+		stove.Set("dirty", true)
+		if err = txApp.Save(stove); err != nil {
 			return err
 		}
 		return txApp.Delete(job)
@@ -243,6 +271,8 @@ func counterForDish(txApp core.App, userID, recipeID string) (*core.Record, erro
 	return food, nil
 }
 
+// cancelCooking throws the dish away at any stage, as in the original; the stove becomes dirty.
+// The cost and XP paid at the start are not returned.
 func cancelCooking(app core.App, userID, stoveID string, now types.DateTime) error {
 	return app.RunInTransaction(func(txApp core.App) error {
 		stove, err := txApp.FindRecordById("player_stoves", stoveID)
@@ -256,10 +286,28 @@ func cancelCooking(app core.App, userID, stoveID string, now types.DateTime) err
 		if err != nil {
 			return err
 		}
-		if job.GetString("user") != userID || !now.Before(job.GetDateTime("ready_at")) {
+		if job.GetString("user") != userID {
 			return errCookingCannotCancel
 		}
+		stove.Set("dirty", true)
+		if err := txApp.Save(stove); err != nil {
+			return err
+		}
 		return txApp.Delete(job)
+	})
+}
+
+func cleanStove(app core.App, userID, stoveID string) error {
+	return app.RunInTransaction(func(txApp core.App) error {
+		stove, err := txApp.FindRecordById("player_stoves", stoveID)
+		if err != nil || stove.GetString("user") != userID {
+			return errStoveNotOwned
+		}
+		if !stove.GetBool("dirty") {
+			return errStoveClean
+		}
+		stove.Set("dirty", false)
+		return txApp.Save(stove)
 	})
 }
 
@@ -322,7 +370,7 @@ func registerCookingRoutes(e *core.ServeEvent) {
 				return r.NotFoundError("Fogão indisponível.", nil)
 			case errors.Is(err, errStoveOccupied):
 				return apis.NewApiError(http.StatusConflict, "Fogão ocupado.", nil)
-			case errors.Is(err, errRoomGold):
+			case errors.Is(err, errRoomGold), errors.Is(err, errStoveDirty):
 				return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 			default:
 				return r.InternalServerError("Não foi possível iniciar o preparo.", err)
@@ -368,7 +416,7 @@ func registerCookingRoutes(e *core.ServeEvent) {
 				return r.NotFoundError("Fogão indisponível.", nil)
 			case errors.Is(err, errDishNotReady):
 				return apis.NewApiError(http.StatusConflict, "O prato ainda não está pronto.", nil)
-			case errors.Is(err, errNoCounter):
+			case errors.Is(err, errNoCounter), errors.Is(err, errDishSpoiled):
 				return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 			default:
 				return r.InternalServerError("Não foi possível servir o prato.", err)
@@ -385,47 +433,60 @@ func registerCookingRoutes(e *core.ServeEvent) {
 		}
 		return sameOrigin(r)
 	})
-	g.POST("/cancel", func(r *core.RequestEvent) error {
-		user := sessionRecord(r)
-		if user == nil {
-			return r.UnauthorizedError("Entre para jogar.", nil)
-		}
-		if !strings.HasPrefix(r.Request.Header.Get("Content-Type"), "application/json") {
-			return r.BadRequestError("Envie JSON.", nil)
-		}
-		var body struct {
-			StoveID string `json:"stoveId"`
-		}
-		decoder := json.NewDecoder(r.Request.Body)
-		decoder.DisallowUnknownFields()
-		if err := decoder.Decode(&body); err != nil {
-			return r.BadRequestError("Pedido inválido.", nil)
-		}
-		if err := decoder.Decode(new(any)); err != io.EOF || body.StoveID == "" {
-			return r.BadRequestError("Fogão inválido.", nil)
-		}
-		if roomService(r.App) != nil {
-			return proxyRoomOperation(r, user.Id, "cook_cancel", body)
-		}
-		if err := cancelCooking(r.App, user.Id, body.StoveID, types.NowDateTime()); err != nil {
-			switch {
-			case errors.Is(err, errStoveNotOwned):
-				return r.NotFoundError("Fogão indisponível.", nil)
-			case errors.Is(err, errCookingCannotCancel):
-				return apis.NewApiError(http.StatusConflict, "Este preparo não pode mais ser cancelado.", nil)
-			default:
-				return r.InternalServerError("Não foi possível cancelar o preparo.", err)
+	// Discarding works at any stage; cleaning needs a dirty stove. Both only take the stove id.
+	for _, route := range []struct {
+		path, operation, done string
+		run                   func(app core.App, userID, stoveID string) error
+	}{
+		{"/cancel", "cook_cancel", "Prato jogado fora", func(app core.App, userID, stoveID string) error {
+			return cancelCooking(app, userID, stoveID, types.NowDateTime())
+		}},
+		{"/clean", "cook_clean", "Fogão limpo", cleanStove},
+	} {
+		g.POST(route.path, func(r *core.RequestEvent) error {
+			user := sessionRecord(r)
+			if user == nil {
+				return r.UnauthorizedError("Entre para jogar.", nil)
 			}
-		}
-		snapshot, err := snapshotCooking(r.App, user.Id, types.NowDateTime())
-		if err != nil {
-			return r.InternalServerError("Preparo cancelado, mas não foi possível atualizar os dados.", err)
-		}
-		return r.JSON(http.StatusOK, snapshot)
-	}).Bind(apis.BodyLimit(1024)).BindFunc(func(r *core.RequestEvent) error {
-		if r.Request.Header.Get("Origin") == "" {
-			return r.ForbiddenError("Origem inválida.", nil)
-		}
-		return sameOrigin(r)
-	})
+			if !strings.HasPrefix(r.Request.Header.Get("Content-Type"), "application/json") {
+				return r.BadRequestError("Envie JSON.", nil)
+			}
+			var body struct {
+				StoveID string `json:"stoveId"`
+			}
+			decoder := json.NewDecoder(r.Request.Body)
+			decoder.DisallowUnknownFields()
+			if err := decoder.Decode(&body); err != nil {
+				return r.BadRequestError("Pedido inválido.", nil)
+			}
+			if err := decoder.Decode(new(any)); err != io.EOF || body.StoveID == "" {
+				return r.BadRequestError("Fogão inválido.", nil)
+			}
+			if roomService(r.App) != nil {
+				return proxyRoomOperation(r, user.Id, route.operation, body)
+			}
+			if err := route.run(r.App, user.Id, body.StoveID); err != nil {
+				switch {
+				case errors.Is(err, errStoveNotOwned):
+					return r.NotFoundError("Fogão indisponível.", nil)
+				case errors.Is(err, errCookingCannotCancel):
+					return apis.NewApiError(http.StatusConflict, "Não há prato neste fogão.", nil)
+				case errors.Is(err, errStoveClean):
+					return apis.NewApiError(http.StatusConflict, err.Error(), nil)
+				default:
+					return r.InternalServerError("Não foi possível concluir a ação no fogão.", err)
+				}
+			}
+			snapshot, err := snapshotCooking(r.App, user.Id, types.NowDateTime())
+			if err != nil {
+				return r.InternalServerError(route.done+", mas não foi possível atualizar os dados.", err)
+			}
+			return r.JSON(http.StatusOK, snapshot)
+		}).Bind(apis.BodyLimit(1024)).BindFunc(func(r *core.RequestEvent) error {
+			if r.Request.Header.Get("Origin") == "" {
+				return r.ForbiddenError("Origem inválida.", nil)
+			}
+			return sameOrigin(r)
+		})
+	}
 }

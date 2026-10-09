@@ -5,7 +5,9 @@ export interface StoveCooking {
   preparingAt: string;
   startedAt: string;
   readyAt: string;
-  status: 'preparing' | 'cooking' | 'ready';
+  /** Fim da validade do prato pronto; depois disso ele só pode ser jogado fora. */
+  spoilsAt: string;
+  status: 'preparing' | 'cooking' | 'ready' | 'spoiled';
 }
 
 export interface OwnedStove {
@@ -13,6 +15,8 @@ export interface OwnedStove {
   itemId: number;
   tx: number;
   ty: number;
+  /** Levar o prato ao balcão ou jogá-lo fora suja o fogão; o chef precisa limpá-lo. */
+  dirty: boolean;
   cooking: StoveCooking | null;
 }
 
@@ -106,7 +110,17 @@ export class CookingClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stoveId }),
     });
-    if (response.status === 409) throw new Error('Este preparo não pode mais ser cancelado.');
+    if (response.status === 409) return this.reject(response, 'Não há prato neste fogão.');
+    return this.read(response);
+  }
+
+  async clean(stoveId: string): Promise<CookingSnapshot> {
+    const response = await this.request('/clean', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stoveId }),
+    });
+    if (response.status === 409) return this.reject(response, 'O fogão já está limpo.');
     return this.read(response);
   }
 }

@@ -161,26 +161,46 @@ export class CookScreenModal {
           title.position.set(cardW / 2, 23);
           inner.addChild(title);
 
+          // Card do original: prato numa tábua, preço embaixo; porções, lucro, XP e tempo em faixas.
+          const board = new Graphics().roundRect(14, 54, 124, 120, 10).fill(0x8a5a2b);
+          board.label = `cook-card-board-${cardIndex + 1}`;
+          inner.addChild(board);
+
           const dish = new Sprite(recipe.stage2);
           dish.label = `cook-card-dish-${recipe.id}`;
           dish.anchor.set(0.5, 0.5);
-          dish.width = 110;
-          dish.height = 110;
-          dish.position.set(75, 114);
+          dish.width = 104;
+          dish.height = 104;
+          dish.position.set(76, 104);
           inner.addChild(dish);
+
+          const price = new Container();
+          price.label = `cook-card-price-${cardIndex + 1}`;
+          price.position.set(40, 146);
+          const priceText = new Text({ text: String(recipe.costGold), style: infoStyle });
+          priceText.anchor.set(0, 0.5);
+          priceText.position.set(30, 12);
+          price.addChild(
+            new Graphics().roundRect(0, 0, 40 + priceText.width, 24, 12).fill(0xfff8e8).stroke({ color: 0x8a5a2b, width: 2 }),
+            new Graphics().circle(15, 12, 8).fill(0xf2c230).stroke({ color: 0xb07c12, width: 2 }),
+            priceText,
+          );
+          inner.addChild(price);
 
           const lines = [
             `${recipe.portions} porções`,
             `Lucros: ${recipe.profitGold} c/un.`,
             `XP: ${recipe.xp}`,
             `Pronto: ${recipeTimeLabel(recipe.durationSeconds)}`,
-            `Custo: ${recipe.costGold} ouros`,
           ];
           lines.forEach((line, index) => {
+            const row = new Graphics().roundRect(148, 56 + index * 30, 206, 26, 6).fill(0xf3dfae);
+            row.label = `cook-card-row-${cardIndex + 1}-${index}`;
             const info = new Text({ text: line, style: infoStyle });
             info.label = `cook-card-info-${cardIndex + 1}-${index}`;
-            info.position.set(150, 60 + index * 22);
-            inner.addChild(info);
+            info.anchor.set(0, 0.5);
+            info.position.set(158, 69 + index * 30);
+            inner.addChild(row, info);
           });
 
           card.on('pointertap', (e) => {
