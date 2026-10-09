@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"coffe-mania/database/playerstate"
 	_ "coffe-mania/database/migrations"
+	"coffe-mania/database/playerstate"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
@@ -98,6 +98,9 @@ func TestMousseGoesToCounterAndPaysPerPortion(t *testing.T) {
 	if err := app.Save(state); err != nil {
 		t.Fatal(err)
 	}
+	if err := cleanStove(app, userID, stove.Id); err != nil {
+		t.Fatal(err)
+	}
 	if err := startCooking(app, userID, stove.Id, "passion_fruit_mousse", types.NowDateTime()); err != nil {
 		t.Fatal(err)
 	}
@@ -186,5 +189,66 @@ func TestExistingRoomReceivesStarterCounterOnce(t *testing.T) {
 	room, _ = app.FindFirstRecordByData("player_rooms", "user", userID)
 	if room.GetInt("revision") != revision+1 {
 		t.Fatalf("revisão %d, esperada %d", room.GetInt("revision"), revision+1)
+	}
+}
+
+func TestStoveCycleDirtySpoiledAndClean(t *testing.T) {
+	app, userID := newCookingTestApp(t)
+	stove, _ := app.FindFirstRecordByData("player_stoves", "user", userID)
+	state, _ := app.FindFirstRecordByData(playerstate.Collection, "user", userID)
+	state.Set("gold", 10000)
+	if err := app.Save(state); err != nil {
+		t.Fatal(err)
+	}
+	dirty := func() bool {
+		s, err := app.FindRecordById("player_stoves", stove.Id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return s.GetBool("dirty")
+	}
+
+	// Pronto → levar ao balcão → sujo.
+	if err := startCooking(app, userID, stove.Id, "nachos", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	finishJob(t, app, stove.Id)
+	if err := serveCooking(app, userID, stove.Id, types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	if !dirty() {
+		t.Fatal("levar o prato ao balcão deve sujar o fogão")
+	}
+	if err := startCooking(app, userID, stove.Id, "nachos", types.NowDateTime()); !errors.Is(err, errStoveDirty) {
+		t.Fatalf("fogão sujo não cozinha: %v", err)
+	}
+	if err := cleanStove(app, userID, stove.Id); err != nil || dirty() {
+		t.Fatalf("limpar: %v", err)
+	}
+	if err := cleanStove(app, userID, stove.Id); !errors.Is(err, errStoveClean) {
+		t.Fatalf("fogão limpo não precisa de limpeza: %v", err)
+	}
+
+	// Pronto há mais tempo que a validade → estragado: não vai ao balcão, só pode ser jogado fora.
+	if err := startCooking(app, userID, stove.Id, "nachos", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	job, _ := app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
+	job.Set("ready_at", types.NowDateTime().Add(-31*time.Minute))
+	if err := app.Save(job); err != nil {
+		t.Fatal(err)
+	}
+	snapshot, err := snapshotCooking(app, userID, types.NowDateTime())
+	if err != nil || snapshot.Stoves[0].Cooking == nil || snapshot.Stoves[0].Cooking.Status != "spoiled" {
+		t.Fatalf("nachos (3 min) estragam 30 min depois de prontos: %+v %v", snapshot, err)
+	}
+	if err := serveCooking(app, userID, stove.Id, types.NowDateTime()); !errors.Is(err, errDishSpoiled) {
+		t.Fatalf("prato estragado não vai ao balcão: %v", err)
+	}
+	if err := cancelCooking(app, userID, stove.Id, types.NowDateTime()); err != nil || !dirty() {
+		t.Fatalf("jogar fora suja o fogão: %v", err)
+	}
+	if _, err := app.FindFirstRecordByData("stove_cooking", "stove", stove.Id); err == nil {
+		t.Fatal("o prato jogado fora sai do fogão")
 	}
 }

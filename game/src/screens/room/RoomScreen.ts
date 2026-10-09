@@ -107,6 +107,18 @@ const LOCAL_COOKING_DURATION_MS = 30_000;
 const COOKING_PROGRESS_SCALE = 1.2;
 const STOVE_MENU_TOP_DROP = 14;
 const TARGET_STOVE_ALPHA = 0.38;
+/** Centro do tampo do fogão e do prato do balcão, a partir do canto de cima do tile (arte de 160 px). */
+const STOVE_DISH_Y = 2;
+const COUNTER_DISH_Y = 2;
+const COUNTER_DISH_SIZE = 104;
+/** Fogão sujo fica apagado e escurecido; prato estragado fica esverdeado, como no clone de referência. */
+const DIRTY_STOVE_TINT = 0x8a7a6a;
+const SPOILED_DISH_TINT = 0x9aae6a;
+
+/** O chef leva o prato do fogão ao balcão ("carrying") e o pousa nele ("placing"). */
+function isCarrying(state: SharedActor): boolean {
+  return state.state === 'carrying' || state.state === 'placing';
+}
 
 /**
  * Quanto o ponteiro pode andar, em px de stage, antes do gesto deixar de ser
@@ -280,6 +292,10 @@ export class RoomScreen implements Screen {
   private readonly realtime?: RoomRealtime;
   private readonly liveActors = new Map<string, { actor: Actor; view: ActorRenderer; state: SharedActor; bundle?: BakedAvatarBundle; appearanceRevision: number; appearanceController?: AbortController }>();
   private readonly mealViews = new Map<string, Sprite>();
+  /** Prato nas mãos do chef entre o fogão e o balcão, por ator. */
+  private readonly carriedViews = new Map<string, Sprite>();
+  private readonly dirtyStoves = new Set<string>();
+  private cleaningProcess?: { stove: RoomItem; phase: 'walking' | 'requesting' };
   /** Pratos nos balcões, por unidade de inventário do balcão. */
   private readonly counterDishViews = new Map<string, { view: Sprite; label: Text }>();
   private sharedFoods: SharedFood[] = [];
@@ -382,6 +398,8 @@ export class RoomScreen implements Screen {
     this.npcLookPicker = new NpcLookPicker(this.avatars.slice(1).map((bundle, offset) => bundle.lookKey ?? `atlas:${offset + 1}`), this.random);
     this.playerAppearance = options.playerState?.appearance ?? '';
     this.keyboardCamera = options.keyboardCamera ?? true;
+    // Só em npm run dev: acesso pelo console e por testes no navegador; não entra no build.
+    if (import.meta.env.DEV) Object.assign(window, { __coffeRoom: this });
 
     this.view.label = 'room-screen';
     this.world.sortableChildren = true;
@@ -662,6 +680,7 @@ export class RoomScreen implements Screen {
           this.liveActors.forEach(({ view }) => { view.view.renderable = !open; });
           this.mealViews.forEach((view) => { view.renderable = !open; });
           this.counterDishViews.forEach(({ view, label }) => { view.renderable = !open; label.renderable = !open; });
+          this.carriedViews.forEach((view) => { view.renderable = !open; });
           this.liveEmotions.forEach(({ effect }) => { effect.view.renderable = !open; });
           this.sharedCookingViews.forEach((view) => { view.renderable = !open; });
           this.sharedCookingProgress.forEach(({ bar }) => { bar.view.renderable = !open; });
@@ -822,44 +841,47 @@ export class RoomScreen implements Screen {
     return this.cookProgressTextures?.recipes?.find((recipe) => recipe.id === id);
   }
 
-  /** Prato de cada balcão; ao passar o mouse, mostra o nome e as porções restantes. */
+  /** Prato de cada balcão; com o cursor no tile do balcão, mostra o nome e as porções restantes. */
   private updateCounterDishes(): void {
     const shown = new Set<string>();
     for (const counter of this.model.items) {
       if (counter.kind !== 'counter' || !counter.inventoryUnitId) continue;
       const food = this.sharedFoods.find((entry) => entry.counterId === counter.inventoryUnitId);
       const art = food ? this.recipeArt(food.recipeId) : undefined;
-      if (!food || !art) continue;
+      // As porções já estão salvas no balcão; enquanto o chef as carrega, elas ainda não aparecem nele.
+      const carried = [...this.liveActors.values()].reduce((sum, { state }) =>
+        sum + (isCarrying(state) && state.food?.counterId === counter.inventoryUnitId ? state.food?.portions ?? 0 : 0), 0);
+      const portions = (food?.portions ?? 1) - carried;
+      if (!food || !art || portions <= 0) continue;
       shown.add(counter.inventoryUnitId);
       let dish = this.counterDishViews.get(counter.inventoryUnitId);
       if (!dish) {
         const view = new Sprite(art.stage2);
         view.label = 'counter-dish:' + counter.inventoryUnitId;
         view.anchor.set(0.5, 0.72);
-        view.width = 80;
-        view.height = 80;
-        view.eventMode = 'static';
+        view.width = COUNTER_DISH_SIZE;
+        view.height = COUNTER_DISH_SIZE;
+        // O prato fica na frente do fogão vizinho na tela; não pode roubar o clique dele.
+        view.eventMode = 'none';
         const label = new Text({ text: '', style: new TextStyle({
-          fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 22, fontWeight: '600', fill: 0xffffff, align: 'center',
-          stroke: { color: 0x5a3915, width: 4, join: 'round' },
+          fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 30, fontWeight: '600', fill: 0xffffff, align: 'center',
+          stroke: { color: 0x5a3915, width: 6, join: 'round' },
         }) });
         label.anchor.set(0.5, 1);
         label.visible = false;
         label.zIndex = POPUP_DRAW_PRIORITY;
-        view.on('pointerover', () => { label.visible = true; });
-        view.on('pointerout', () => { label.visible = false; });
         this.world.addChild(view, label);
         dish = { view, label };
         this.counterDishViews.set(counter.inventoryUnitId, dish);
       }
       if (dish.view.texture !== art.stage2) dish.view.texture = art.stage2;
-      const portions = food.portions ?? 1;
       dish.label.text = `${art.name}\n${portions} ${portions === 1 ? 'porção' : 'porções'}`;
       const x = tileToScreenX(counter.tx, counter.ty);
-      const y = tileToScreenY(counter.tx, counter.ty) - 14;
+      const y = tileToScreenY(counter.tx, counter.ty) + COUNTER_DISH_Y;
       dish.view.position.set(x, y);
       setItemOverlayDepth(dish.view, counter);
-      dish.label.position.set(x, y - 62);
+      dish.label.position.set(x, y - 96);
+      dish.label.visible = this.hovered?.tx === counter.tx && this.hovered.ty === counter.ty;
       dish.view.renderable = dish.label.renderable = !this.storeBar?.isOpen;
     }
     for (const [id, dish] of this.counterDishViews) {
@@ -881,6 +903,7 @@ export class RoomScreen implements Screen {
     entry.appearanceController?.abort();
     if (entry.actor !== this.player) { entry.view.destroy(); if (entry.bundle) releaseNpcAvatar(entry.bundle); }
     this.mealViews.get(id)?.destroy(); this.mealViews.delete(id);
+    this.carriedViews.get(id)?.destroy(); this.carriedViews.delete(id);
     this.liveEmotions.get(id)?.effect.destroy(); this.liveEmotions.delete(id);
   }
 
@@ -912,7 +935,7 @@ export class RoomScreen implements Screen {
       else { entry.actor.speedX = 0; entry.actor.speedY = 0; }
       if (state.state === 'entering' && entry.actor.tileX >= 1 && entry.actor.tileY >= 1) entry.actor.outside = false;
       const action = state.state === 'eating' ? CLIP.EAT : state.state === 'seated' ? CLIP.SIT :
-        state.state === 'cooking' || state.state === 'serving' ? CLIP.COOKING : null;
+        state.state === 'cooking' || state.state === 'serving' || state.state === 'cleaning' || state.state === 'placing' ? CLIP.COOKING : null;
       entry.view.setActionClip?.(action, state.action ? now - state.action.startedAt : undefined);
       this.advanceActorView(entry.view, deltaMs);
       this.updateLiveEmotion(id, state, entry.view.view, now);
@@ -926,6 +949,7 @@ export class RoomScreen implements Screen {
         meal.zIndex = itemDepth(table.tx, table.ty) + 1; meal.renderable = !this.storeBar?.isOpen;
         setItemOverlayDepth(meal, table);
       } else { this.mealViews.get(id)?.destroy(); this.mealViews.delete(id); }
+      this.updateCarriedDish(id, state, entry.view.view);
     }
     this.updateSharedStoves(now);
     this.updateCounterDishes();
@@ -981,14 +1005,21 @@ export class RoomScreen implements Screen {
         }
         if (progress) { progress.bar.setProgress(elapsed / Math.max(1, duration)); progress.bar.view.renderable = !this.storeBar?.isOpen; }
       }
+      const cleaning = [...this.liveActors.values()].some(({ state }) => state.action?.kind === 'cleaning' &&
+        state.action.stoveId === stove.instanceId && now < state.action.startedAt + state.action.duration);
+      const dirtyTint = this.dirtyStoves.has(stove.instanceId) || cleaning ? DIRTY_STOVE_TINT : 0xffffff;
+      this.stoveViews.get(stove)?.forEach((view) => { view.tint = dirtyTint; });
+      const spoiled = !!job && now >= cookingTime(job.spoilsAt ?? '');
+      if (this.cookingProcess?.stove === stove) this.cookingProcess.view.tint = spoiled ? SPOILED_DISH_TINT : 0xffffff;
       const art = job ? this.recipeArt(job.recipeId) : undefined;
       const texture = now >= cookingTime(job?.readyAt ?? '') ? art?.stage2 : art?.stage1;
       if (!job || !texture || this.cookingProcess?.stove === stove) { this.sharedCookingViews.get(stove.instanceId)?.destroy(); this.sharedCookingViews.delete(stove.instanceId); continue; }
       let view = this.sharedCookingViews.get(stove.instanceId);
       if (!view) { view = new Sprite(texture); view.anchor.set(.5, .72); view.width = 92; view.height = 92; view.label = 'shared-stove:' + stove.instanceId; this.sharedCookingViews.set(stove.instanceId, view); this.world.addChild(view); }
       view.texture = texture; view.alpha = mode === 'serving' ? TARGET_STOVE_ALPHA : 1;
+      view.tint = spoiled ? SPOILED_DISH_TINT : 0xffffff;
       view.renderable = !this.storeBar?.isOpen;
-      view.position.set(tileToScreenX(stove.tx, stove.ty), tileToScreenY(stove.tx, stove.ty) - 11); view.zIndex = itemDepth(stove.tx, stove.ty) + 1;
+      view.position.set(tileToScreenX(stove.tx, stove.ty), tileToScreenY(stove.tx, stove.ty) + STOVE_DISH_Y); view.zIndex = itemDepth(stove.tx, stove.ty) + 1;
       setItemOverlayDepth(view, stove);
     }
     for (const [id, view] of this.sharedCookingViews) if (!stoveIds.has(id)) { view.destroy(); this.sharedCookingViews.delete(id); }
@@ -1002,6 +1033,7 @@ export class RoomScreen implements Screen {
     void this.realtime.command('walk', destination).catch((error: unknown) => {
       console.info('[room]', error); this.pendingCook = undefined; this.startingCook = false;
       if (this.servingProcess?.phase === 'walking') this.clearServingProcess();
+      if (this.cleaningProcess?.phase === 'walking') this.cleaningProcess = undefined;
     }).finally(() => { this.networkPending--; });
   }
 
@@ -1057,8 +1089,10 @@ export class RoomScreen implements Screen {
   /** Aplica um snapshot autenticado; ao reentrar, reconstitui o prato sem repetir som/caminhada. */
   private acceptCookingSnapshot(snapshot: CookingSnapshot, restore: boolean): void {
     this.occupiedStoves.clear();
+    this.dirtyStoves.clear();
     for (const stove of snapshot.stoves) {
       if (stove.cooking) this.occupiedStoves.set(stove.id, stove.cooking);
+      if (stove.dirty) this.dirtyStoves.add(stove.id);
     }
     if (!restore || this.cookingProcess) return;
     for (const stove of this.model.items) {
@@ -1105,9 +1139,9 @@ export class RoomScreen implements Screen {
     const sx = tileToScreenX(stove.tx, stove.ty);
     const sy = tileToScreenY(stove.tx, stove.ty);
 
-    // pink_stove.png: queimador em (80, 36), com offsets da arte (-80, -47).
+    // Centro do tampo do fogão inicial (rotation-N.png, 160 px de largura).
     const burnerX = sx;
-    const burnerY = sy - 11;
+    const burnerY = sy + STOVE_DISH_Y;
 
     const sprite = new Sprite(ready ? recipe.stage2 : recipe.stage1);
     sprite.label = `stove-cooking-${recipe.id}`;
@@ -1220,9 +1254,10 @@ export class RoomScreen implements Screen {
     callout.view.visible = true;
   }
 
-  /** Escolhe um lado alcançável da pegada, priorizando a face cardinal do fogão. */
+  /** Escolhe um lado alcançável da pegada: a frente do fogão (rotação), depois as outras faces cardinais. */
   private findCookingApproach(stove: RoomItem): { destination: Tile; path: Tile[] } | null {
-    const candidates: Array<{ destination: Tile; path: Tile[]; diagonal: boolean }> = [];
+    const [frontX, frontY] = ([[1, 0], [0, 1], [-1, 0], [0, -1]] as const)[((stove.rotation % 4) + 4) % 4];
+    const candidates: Array<{ destination: Tile; path: Tile[]; diagonal: boolean; front: boolean }> = [];
     for (const tile of footprintTiles(stove)) {
       for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]]) {
         const destination = { tx: tile.tx + dx, ty: tile.ty + dy };
@@ -1237,10 +1272,10 @@ export class RoomScreen implements Screen {
         // O hitbox pode já estar neste tile na metade do passo, enquanto a arte
         // ainda chega nele. A ação só começa quando o movimento visual termina.
         const path = route && route.length === 0 && this.player.moving ? [destination] : route;
-        if (path) candidates.push({ destination, path, diagonal: dx !== 0 && dy !== 0 });
+        if (path) candidates.push({ destination, path, diagonal: dx !== 0 && dy !== 0, front: dx === frontX && dy === frontY });
       }
     }
-    candidates.sort((a, b) => Number(a.diagonal) - Number(b.diagonal) || a.path.length - b.path.length);
+    candidates.sort((a, b) => Number(b.front) - Number(a.front) || Number(a.diagonal) - Number(b.diagonal) || a.path.length - b.path.length);
     return candidates[0] ?? null;
   }
 
@@ -1353,6 +1388,7 @@ export class RoomScreen implements Screen {
       : process ? process.phase === 'ready' ? 0 : process.phase === 'cooking'
         ? process.durationMs - process.elapsedMs : LOCAL_COOKING_DURATION_MS : 0;
     this.stoveActions.setRemaining(remaining);
+    this.stoveActions.setSpoiled(!!job && this.cookingClient !== undefined && this.cookingClient.serverNowMs() >= cookingTime(job.spoilsAt ?? ''));
   }
 
   private cancelStoveCooking(stove: RoomItem): void {
@@ -1378,6 +1414,58 @@ export class RoomScreen implements Screen {
         if (!this.occupiedStoves.has(stove.instanceId!) && this.cookingProcess?.stove === stove) this.clearCookingProcess();
       }).catch((refreshError: unknown) => console.warn('[cooking] falha ao atualizar fogão', refreshError));
     });
+  }
+
+  /** Fogão sujo: o chef vai até ele e limpa (o servidor confirma e anima a limpeza). */
+  private startCleaning(stove: RoomItem): void {
+    if (!this.cookingClient || !stove.instanceId) return;
+    const approach = this.findCookingApproach(stove);
+    if (!approach) { this.showNotice('O chef não consegue chegar a esse fogão.'); return; }
+    this.closeStoveActions();
+    this.cleaningProcess = { stove, phase: 'walking' };
+    if (approach.path.length) {
+      this.movePlayerAlong(approach.path);
+      this.drawTarget(approach.destination);
+    } else {
+      this.requestCleaning();
+    }
+  }
+
+  private requestCleaning(): void {
+    const process = this.cleaningProcess;
+    if (!process || process.phase !== 'walking' || !this.cookingClient || !process.stove.instanceId) return;
+    process.phase = 'requesting';
+    this.target.clear();
+    void this.cookingClient.clean(process.stove.instanceId).then((snapshot) => {
+      if (!this.destroyed) this.acceptCookingSnapshot(snapshot, false);
+    }).catch((error: unknown) => {
+      if (!this.destroyed && error instanceof Error) this.showNotice(error.message);
+    }).finally(() => {
+      if (this.cleaningProcess === process) this.cleaningProcess = undefined;
+    });
+  }
+
+  /** Prato nas mãos do chef enquanto ele o leva do fogão ao balcão. */
+  private updateCarriedDish(id: string, state: SharedActor, actorView: Container): void {
+    const art = isCarrying(state) && state.food ? this.recipeArt(state.food.recipeId) : undefined;
+    let view = this.carriedViews.get(id);
+    if (!art) {
+      view?.destroy(); this.carriedViews.delete(id);
+      return;
+    }
+    if (!view) {
+      view = new Sprite(art.stage2);
+      view.label = 'carried-dish:' + id;
+      view.anchor.set(0.5, 0.5);
+      view.width = 56;
+      view.height = 56;
+      this.carriedViews.set(id, view);
+      this.world.addChild(view);
+    }
+    view.texture = art.stage2;
+    view.position.set(actorView.x, actorView.y - 58);
+    view.zIndex = actorView.zIndex + 1;
+    view.renderable = !this.storeBar?.isOpen && actorView.renderable;
   }
 
   private startServing(stove: RoomItem): void {
@@ -1485,11 +1573,17 @@ export class RoomScreen implements Screen {
     const selected = requested?.instanceId
       ? this.model.items.find((item) => item.kind === 'stove' && item.instanceId === requested.instanceId) ?? requested
       : requested;
-    if (!selected || this.servingProcess || this.startingCook || this.cancellingCook) return;
+    if (!selected || this.servingProcess || this.cleaningProcess || this.startingCook || this.cancellingCook) return;
+    // Estados do fogão, como no original: sujo → limpar; cozinhando ou estragado → menu; pronto → levar ao balcão.
+    if (selected.instanceId && this.dirtyStoves.has(selected.instanceId)) {
+      this.startCleaning(selected);
+      return;
+    }
     const process = this.cookingProcess?.stove === selected ? this.cookingProcess : undefined;
     const job = selected.instanceId ? this.occupiedStoves.get(selected.instanceId) : undefined;
+    const spoiled = !!job && !!this.cookingClient && this.cookingClient.serverNowMs() >= cookingTime(job.spoilsAt ?? '');
     if (process || job) {
-      const ready = process?.phase === 'ready' || (job && this.cookingClient && this.cookingClient.serverNowMs() >= cookingTime(job.readyAt));
+      const ready = !spoiled && (process?.phase === 'ready' || (job && this.cookingClient && this.cookingClient.serverNowMs() >= cookingTime(job.readyAt)));
       if (ready) {
         if (process && process.phase !== 'ready') this.finishCooking();
         this.startServing(selected);
@@ -1509,9 +1603,14 @@ export class RoomScreen implements Screen {
       if (this.destroyed) return;
       this.acceptCookingSnapshot(snapshot, true);
       if (this.isModalOpen || this.storeBar?.isOpen) return;
+      if (this.dirtyStoves.has(selected.instanceId!)) {
+        this.startCleaning(selected);
+        return;
+      }
       const currentJob = this.occupiedStoves.get(selected.instanceId!);
       if (currentJob) {
-        if (this.cookingClient!.serverNowMs() >= cookingTime(currentJob.readyAt)) this.startServing(selected);
+        const now = this.cookingClient!.serverNowMs();
+        if (now >= cookingTime(currentJob.readyAt) && now < cookingTime(currentJob.spoilsAt ?? '')) this.startServing(selected);
         else this.showStoveActions(selected);
         return;
       }
@@ -2370,6 +2469,9 @@ export class RoomScreen implements Screen {
       if (process.elapsedMs >= process.durationMs) this.finishCooking();
     }
     this.updateCookingCallout();
+    if (this.cleaningProcess?.phase === 'walking' && this.networkPending === 0 && this.realtime?.connected !== false && this.player.reachedPathEnd()) {
+      this.requestCleaning();
+    }
     if (this.servingProcess?.phase === 'walking' && this.networkPending === 0 && this.realtime?.connected !== false && this.player.reachedPathEnd()) {
       this.beginServing();
     } else if (this.servingProcess?.phase === 'serving') {
@@ -2468,6 +2570,7 @@ export class RoomScreen implements Screen {
     for (const [id, entry] of this.liveActors) this.removeLiveActor(id, entry);
     this.liveActors.clear(); this.mealViews.clear();
     this.counterDishViews.forEach(({ view, label }) => { view.destroy(); label.destroy(); }); this.counterDishViews.clear();
+    this.carriedViews.forEach((view) => view.destroy()); this.carriedViews.clear();
     this.sharedCookingViews.forEach((view) => view.destroy()); this.sharedCookingViews.clear();
     this.sharedCookingProgress.forEach(({ bar }) => bar.destroy()); this.sharedCookingProgress.clear();
     this.liveEmotions.forEach(({ effect }) => effect.destroy()); this.liveEmotions.clear();

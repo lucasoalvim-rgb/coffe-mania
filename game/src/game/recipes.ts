@@ -22,7 +22,7 @@ export interface Recipe {
   source: string;
 }
 
-/** Receita com os dois estágios do prato: ingredientes no fogão e prato pronto. */
+/** Receita com os dois estágios: o item no fogão durante o preparo (tábua, panela) e o prato pronto. */
 export interface RecipeArt extends Recipe {
   stage1: Texture;
   stage2: Texture;
@@ -47,10 +47,10 @@ export async function loadRecipeArt(): Promise<RecipeArt[]> {
   }));
 }
 
-/** Tempo no formato do Livro de Receitas original: "35 min", "6.0 hs". */
+/** Tempo no formato do card original do Livro de Receitas: "8 minutos", "6.0 horas". */
 export function recipeTimeLabel(seconds: number): string {
   const minutes = Math.round(seconds / 60);
-  if (minutes < 1) return `${seconds} s`;
-  if (minutes < 60) return `${minutes} min`;
-  return `${(minutes / 60).toFixed(1)} hs`;
+  if (minutes < 1) return `${seconds} segundos`;
+  if (minutes < 60) return `${minutes} ${minutes === 1 ? 'minuto' : 'minutos'}`;
+  return `${(minutes / 60).toFixed(1)} horas`;
 }

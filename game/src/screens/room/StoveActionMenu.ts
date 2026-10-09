@@ -17,6 +17,7 @@ export class StoveActionMenu {
   private readonly timerLabel: Text;
   private remainingSeconds = 0;
   private timeRevealed = false;
+  private spoiled = false;
 
   constructor(onRefresh: () => void, onCancel: () => void) {
     this.view.label = 'stove-action-menu';
@@ -25,7 +26,8 @@ export class StoveActionMenu {
       this.updateTimerLabel();
       onRefresh();
     });
-    this.addButton(BUTTON_HEIGHT + BUTTON_GAP, 'cancel', 'Cancelar', onCancel);
+    // Jogar fora vale em qualquer estágio, como no original; o fogão fica sujo.
+    this.addButton(BUTTON_HEIGHT + BUTTON_GAP, 'cancel', 'Jogar fora', onCancel);
   }
 
   setRemaining(ms: number): void {
@@ -33,8 +35,20 @@ export class StoveActionMenu {
     this.updateTimerLabel();
   }
 
+  /** Prato pronto que passou da validade: só resta jogá-lo fora. */
+  setSpoiled(spoiled: boolean): void {
+    if (this.spoiled === spoiled) return;
+    this.spoiled = spoiled;
+    if (spoiled) this.timeRevealed = true;
+    this.updateTimerLabel();
+  }
+
   private updateTimerLabel(): void {
     if (!this.timeRevealed) return;
+    if (this.spoiled) {
+      this.timerLabel.text = 'Prato estragado';
+      return;
+    }
     this.timerLabel.text = `Faltam ${String(Math.floor(this.remainingSeconds / 60)).padStart(2, '0')}:${String(this.remainingSeconds % 60).padStart(2, '0')}`;
   }
 

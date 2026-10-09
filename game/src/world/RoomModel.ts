@@ -92,8 +92,8 @@ export const ITEM_STYLES: Record<RoomItemKind, RoomItemStyle> = {
 
 /** Colocações iniciais da sala. */
 export const DEFAULT_ROOM_ITEMS: readonly RoomItem[] = [
-  { name: 'Stove', id: 3070000, kind: 'stove', tx: 6, ty: 2, rotation: 3 },
-  { name: 'Counter', id: 3020069, kind: 'counter', tx: 7, ty: 3, rotation: 3 },
+  { name: 'Stove', id: 3070000, kind: 'stove', tx: 6, ty: 2, rotation: 1 },
+  { name: 'Counter', id: 3020069, kind: 'counter', tx: 7, ty: 3, rotation: 1 },
   { name: 'Mafia Door', id: 3010000, className: 'Door', kind: 'door', tx: 4, ty: 1, rotation: 1, sizeX: 1, sizeY: 1 },
   { name: 'Basic Window', id: 3000011, kind: 'window', tx: 0, ty: 2, rotation: 0 },
   { name: 'Basic Window', id: 3000011, kind: 'window', tx: 0, ty: 6, rotation: 0 },

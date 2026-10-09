@@ -272,6 +272,15 @@ func (m *Manager) Operate(ctx context.Context, op gamewire.Operation) (gamewire.
 			body, _ := json.Marshal(map[string]string{"message": message})
 			return gamewire.Result{Status: 409, Body: body}
 		}
+		var stoveBody struct {
+			StoveID string `json:"stoveId"`
+		}
+		_ = json.Unmarshal(op.Body, &stoveBody)
+		// The job disappears from the world after serving; keep its recipe for the carry animation.
+		servedRecipe := ""
+		if job := r.cookingJob(stoveBody.StoveID); op.Action == "cook_serve" && job != nil {
+			servedRecipe = job.RecipeID
+		}
 		ioCtx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
 		defer cancel()
 		result, err := m.store.Operate(ioCtx, op)
@@ -290,15 +299,29 @@ func (m *Manager) Operate(ctx context.Context, op gamewire.Operation) (gamewire.
 					r.broadcast(gamewire.Event{Type: "actors", Actors: []gamewire.Actor{r.status(a, false)}}, "")
 				}
 			}
-			if op.Action == "cook_serve" || op.Action == "cook_cancel" {
-				var body struct {
-					StoveID string `json:"stoveId"`
-				}
-				_ = json.Unmarshal(op.Body, &body)
-				if a := r.actors["human:"+op.User]; a != nil && a.Action != nil && a.Action.StoveID == body.StoveID {
+			if op.Action == "cook_cancel" {
+				if a := r.actors["human:"+op.User]; a != nil && a.Action != nil && a.Action.StoveID == stoveBody.StoveID {
 					a.State = "idle"
 					a.Action = nil
 					r.broadcast(gamewire.Event{Type: "actors", Actors: []gamewire.Actor{r.status(a, false)}}, "")
+				}
+			}
+			// validateOperation already required the chef beside the stove; the short "serving"
+			// action has usually ended by the time the client confirms, so it is not required here.
+			if op.Action == "cook_serve" {
+				if a := r.actors["human:"+op.User]; a != nil {
+					a.State = "idle"
+					a.Action = nil
+					r.startCarrying(a, servedRecipe, time.Now())
+					r.broadcast(gamewire.Event{Type: "actors", Actors: []gamewire.Actor{r.status(a, false)}}, "")
+				}
+			}
+			if op.Action == "cook_clean" {
+				if a := r.actors["human:"+op.User]; a != nil {
+					if stove, ok := r.adjacentStove(a, stoveBody.StoveID); ok {
+						r.startStoveAction(a, stove, "cleaning", time.Now(), cleaningDuration)
+						r.broadcast(gamewire.Event{Type: "actors", Actors: []gamewire.Actor{r.status(a, false)}}, "")
+					}
 				}
 			}
 		}
@@ -784,12 +807,12 @@ func (r *room) command(p *Peer, c gamewire.Command) {
 	fail := func(message string) {
 		r.send(p, gamewire.Event{Type: "error", RequestID: c.RequestID, Message: message})
 	}
-	if (a.State == "cooking" || a.State == "serving") && time.Now().Before(a.due) {
+	if busyAtStove(a.State) && time.Now().Before(a.due) {
 		if c.Type == "serve_prepare" && a.State == "serving" && a.Action != nil && a.Action.StoveID == c.StoveID {
 			r.send(p, gamewire.Event{Type: "ack", RequestID: c.RequestID})
 			return
 		}
-		fail("Aguarde o preparo.")
+		fail("Aguarde o chef terminar.")
 		return
 	}
 	now := time.Now()
@@ -968,13 +991,13 @@ func (r *room) validateOperation(op gamewire.Operation) string {
 			}
 		}
 	}
-	if op.Action == "cook_start" || op.Action == "cook_serve" {
+	if op.Action == "cook_start" || op.Action == "cook_serve" || op.Action == "cook_clean" {
 		a := r.actors["human:"+op.User]
 		if _, ok := r.adjacentStove(a, body.StoveID); !ok {
 			return "Aproxime seu personagem do fogão."
 		}
 		if a.Action != nil && time.Now().Before(a.due) {
-			return "Aguarde o preparo."
+			return "Aguarde o chef terminar."
 		}
 	}
 	return ""
@@ -1110,7 +1133,13 @@ func (r *room) tick(now time.Time) {
 				}
 				changed = true
 			}
-			if (a.State == "cooking" || a.State == "serving") && !now.Before(a.due) {
+			if a.State == "carrying" {
+				r.startPlacing(a, now)
+				changed = true
+			} else if busyAtStove(a.State) && !now.Before(a.due) {
+				if a.State == "placing" {
+					a.Food = nil
+				}
 				a.State = "idle"
 				a.Action = nil
 				changed = true

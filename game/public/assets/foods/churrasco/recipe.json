@@ -1,0 +1,12 @@
+{
+  "id": "churrasco",
+  "name": "Churrasco",
+  "level": 1,
+  "durationSeconds": 21600,
+  "portions": 100,
+  "profitGold": 7,
+  "costGold": 250,
+  "xp": 110,
+  "inBook": true,
+  "source": "Card do Livro de Receitas original (dicas-cafemania.blogspot.com, 10/09/2010): 100 porções, 7 c/un., XP 110, preço 250, 6.0 horas. Em 10/09/2010 a Vostu mudou para 110 porções e 75 XP ('Alteração no status do churrasco'); a Alpha usa os valores anteriores. 4º prato do livro. Nível não confirmado."
+}
