@@ -156,7 +156,8 @@ export class Actor {
     // parcialmente percorrido quando o caminho muda no meio da animação.
     const deltaTileX = (dx + 2 * dy) / TILE_WIDTH;
     const deltaTileY = (2 * dy - dx) / (2 * TILE_HEIGHT);
-    const tileDistance = Math.max(Math.abs(deltaTileX), Math.abs(deltaTileY));
+    // Distância real no piso: a diagonal mede √2 tiles e leva mais tempo, para a velocidade não mudar.
+    const tileDistance = Math.hypot(deltaTileX, deltaTileY);
     const tileDuration = Math.max(TILE_WIDTH_HALF / this.moveSpeedX, TILE_HEIGHT_HALF / this.moveSpeedY);
     this.segmentDurationMs = tileDistance * tileDuration;
     this.speedX = this.segmentDurationMs > 0 ? dx / this.segmentDurationMs : 0;

@@ -2,63 +2,45 @@ import { Container, Graphics, Rectangle, Text, TextStyle } from 'pixi.js';
 
 import { FONT_FAMILY } from '../../core/font-tokens';
 
-const BUTTON_WIDTH = 400;
+const BUTTON_WIDTH = 440;
 const BUTTON_HEIGHT = 72;
 const BUTTON_GAP = 4;
 const INK = 0x603a1e;
+const CASH = 0x2f8f3a;
 
 type ButtonState = 'rest' | 'hover' | 'pressed';
-type IconKind = 'clock' | 'cancel';
+export type StoveActionIcon = 'speed' | 'instant' | 'recover' | 'discard' | 'info';
 
-/** Ações contextuais do fogão, com as mesmas três camadas dos painéis de cor. */
+export interface StoveAction {
+  icon: StoveActionIcon;
+  label: string;
+  /** Preço em caféGranas mostrado à direita. */
+  granas?: number;
+  onTap?: () => void;
+  disabled?: boolean;
+}
+
+/**
+ * Ações do fogão com prato, com as mesmas três camadas dos painéis de cor. Como no original, o
+ * preparo é acelerado com temperos pagos em caféGranas; o tempo restante fica no balão do hover.
+ */
 export class StoveActionMenu {
-  static readonly HEIGHT = BUTTON_HEIGHT * 2 + BUTTON_GAP;
   readonly view = new Container();
-  private readonly timerLabel: Text;
-  private remainingSeconds = 0;
-  private timeRevealed = false;
-  private spoiled = false;
 
-  constructor(onRefresh: () => void, onCancel: () => void) {
+  constructor(actions: readonly StoveAction[]) {
     this.view.label = 'stove-action-menu';
-    this.timerLabel = this.addButton(0, 'clock', 'Ver tempo', () => {
-      this.timeRevealed = true;
-      this.updateTimerLabel();
-      onRefresh();
-    });
-    // Jogar fora vale em qualquer estágio, como no original; o fogão fica sujo.
-    this.addButton(BUTTON_HEIGHT + BUTTON_GAP, 'cancel', 'Jogar fora', onCancel);
+    actions.forEach((action, index) => this.addButton(index * (BUTTON_HEIGHT + BUTTON_GAP), action));
   }
 
-  setRemaining(ms: number): void {
-    this.remainingSeconds = Math.max(0, Math.ceil(ms / 1000));
-    this.updateTimerLabel();
-  }
-
-  /** Prato pronto que passou da validade: só resta jogá-lo fora. */
-  setSpoiled(spoiled: boolean): void {
-    if (this.spoiled === spoiled) return;
-    this.spoiled = spoiled;
-    if (spoiled) this.timeRevealed = true;
-    this.updateTimerLabel();
-  }
-
-  private updateTimerLabel(): void {
-    if (!this.timeRevealed) return;
-    if (this.spoiled) {
-      this.timerLabel.text = 'Prato estragado';
-      return;
-    }
-    this.timerLabel.text = `Faltam ${String(Math.floor(this.remainingSeconds / 60)).padStart(2, '0')}:${String(this.remainingSeconds % 60).padStart(2, '0')}`;
-  }
-
-  private addButton(y: number, iconKind: IconKind, caption: string, onTap: () => void): Text {
+  private addButton(y: number, action: StoveAction): void {
     const button = new Container();
-    button.label = `stove-action-${iconKind}`;
+    button.label = `stove-action-${action.icon}`;
     button.y = y;
-    button.eventMode = 'static';
-    button.cursor = 'pointer';
+    const enabled = !action.disabled && Boolean(action.onTap);
+    button.eventMode = enabled ? 'static' : 'none';
+    button.cursor = enabled ? 'pointer' : 'default';
     button.hitArea = new Rectangle(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
+    button.alpha = action.disabled ? 0.55 : 1;
 
     const frame = new Graphics();
     frame.eventMode = 'none';
@@ -67,40 +49,76 @@ export class StoveActionMenu {
       frame.roundRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, 12).fill(0x68401e);
       frame.roundRect(4, 4, BUTTON_WIDTH - 8, BUTTON_HEIGHT - 8, 10).fill(0xb7863b);
       frame.roundRect(9, 9, BUTTON_WIDTH - 18, BUTTON_HEIGHT - 18, 8)
-        .fill(state === 'rest' ? 0xffffff : state === 'hover' ? 0xffefae : 0xf7d47a);
+        .fill(action.icon === 'info' ? 0xf3e6c4 : state === 'rest' ? 0xffffff : state === 'hover' ? 0xffefae : 0xf7d47a);
     };
     draw('rest');
 
-    const icon = new Graphics();
-    icon.eventMode = 'none';
-    if (iconKind === 'clock') {
-      icon.circle(38, BUTTON_HEIGHT / 2, 17).stroke({ color: INK, width: 4 });
-      icon.moveTo(38, BUTTON_HEIGHT / 2 - 11).lineTo(38, BUTTON_HEIGHT / 2)
-        .lineTo(47, BUTTON_HEIGHT / 2 + 5).stroke({ color: INK, width: 3.5, cap: 'round', join: 'round' });
-    } else {
-      icon.moveTo(26, 24).lineTo(50, 48).moveTo(50, 24).lineTo(26, 48)
-        .stroke({ color: INK, width: 4.5, cap: 'round' });
-    }
-
+    const icon = this.drawIcon(action.icon);
     const label = new Text({
-      text: caption,
-      style: new TextStyle({ fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 29, fontWeight: '600', fill: INK }),
+      text: action.label,
+      style: new TextStyle({ fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 25, fontWeight: '600', fill: INK }),
     });
     label.eventMode = 'none';
     label.anchor.set(0, 0.5);
     label.position.set(74, BUTTON_HEIGHT / 2);
-    button.on('pointerover', () => draw('hover'));
-    button.on('pointerout', () => draw('rest'));
-    button.on('pointerdown', () => draw('pressed'));
-    button.on('pointerup', () => draw('hover'));
-    button.on('pointerupoutside', () => draw('rest'));
-    button.on('pointertap', (event) => {
-      event.stopPropagation();
-      onTap();
-    });
     button.addChild(frame, icon, label);
+
+    if (action.granas !== undefined) {
+      const price = new Text({
+        text: String(action.granas),
+        style: new TextStyle({ fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 26, fontWeight: '700', fill: CASH }),
+      });
+      price.eventMode = 'none';
+      price.anchor.set(1, 0.5);
+      price.position.set(BUTTON_WIDTH - 58, BUTTON_HEIGHT / 2);
+      // Nota verde de caféGrana.
+      const bill = new Graphics()
+        .roundRect(BUTTON_WIDTH - 52, BUTTON_HEIGHT / 2 - 11, 32, 22, 4).fill(0x4caf50).stroke({ color: 0x1f6b2a, width: 2.5 })
+        .circle(BUTTON_WIDTH - 36, BUTTON_HEIGHT / 2, 5).stroke({ color: 0xe8f5e9, width: 2 });
+      bill.eventMode = 'none';
+      button.addChild(price, bill);
+    }
+
+    if (enabled) {
+      button.on('pointerover', () => draw('hover'));
+      button.on('pointerout', () => draw('rest'));
+      button.on('pointerdown', (event) => { event.stopPropagation(); draw('pressed'); });
+      button.on('pointerup', () => draw('hover'));
+      button.on('pointerupoutside', () => draw('rest'));
+      button.on('pointertap', (event) => {
+        event.stopPropagation();
+        action.onTap?.();
+      });
+    }
     this.view.addChild(button);
-    return label;
+  }
+
+  private drawIcon(kind: StoveActionIcon): Graphics {
+    const icon = new Graphics();
+    icon.eventMode = 'none';
+    const cy = BUTTON_HEIGHT / 2;
+    switch (kind) {
+      case 'speed':
+        icon.circle(38, cy, 17).stroke({ color: INK, width: 4 });
+        icon.moveTo(38, cy - 11).lineTo(38, cy).lineTo(47, cy + 5).stroke({ color: INK, width: 3.5, cap: 'round', join: 'round' });
+        break;
+      case 'instant':
+        icon.poly([42, cy - 20, 26, cy + 3, 37, cy + 3, 33, cy + 20, 50, cy - 4, 39, cy - 4]).fill(0xf2b230).stroke({ color: INK, width: 3, join: 'round' });
+        break;
+      case 'recover':
+        icon.ellipse(38, cy, 10, 18).fill(0x6dbb4a).stroke({ color: INK, width: 3 });
+        icon.moveTo(38, cy - 16).lineTo(38, cy + 16).stroke({ color: INK, width: 2.5 });
+        break;
+      case 'discard':
+        icon.moveTo(26, cy - 12).lineTo(50, cy + 12).moveTo(50, cy - 12).lineTo(26, cy + 12).stroke({ color: INK, width: 4.5, cap: 'round' });
+        break;
+      case 'info':
+        icon.circle(38, cy, 15).stroke({ color: INK, width: 3.5 });
+        icon.moveTo(38, cy - 2).lineTo(38, cy + 8).stroke({ color: INK, width: 3.5, cap: 'round' });
+        icon.circle(38, cy - 8, 2.2).fill(INK);
+        break;
+    }
+    return icon;
   }
 
   destroy(): void {

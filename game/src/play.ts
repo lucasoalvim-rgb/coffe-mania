@@ -211,6 +211,7 @@ async function boot(): Promise<void> {
         fullscreen.setWardrobeOpen(open);
       },
     });
+    room.bindWheelElement(app.canvas);
     screens.show(room);
     const stopPlayerState = subscribePlayerState((state) => room.setPlayerState(state));
     room.view.once('destroyed', stopPlayerState);

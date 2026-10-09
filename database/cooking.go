@@ -40,6 +40,7 @@ type cookingView struct {
 	// SpoilsAt ends the ready window; after it the dish can only be thrown away.
 	SpoilsAt string `json:"spoilsAt"`
 	Status   string `json:"status"`
+	Spice    string `json:"spice,omitempty"`
 }
 
 type stoveView struct {
@@ -54,6 +55,7 @@ type stoveView struct {
 type cookingSnapshot struct {
 	ServerNow string      `json:"serverNow"`
 	Stoves    []stoveView `json:"stoves"`
+	Spices    []spice     `json:"spices"`
 }
 
 func ensureStarterStove(app core.App, userID string) error {
@@ -76,7 +78,7 @@ func ensureStarterStove(app core.App, userID string) error {
 }
 
 func snapshotCooking(app core.App, userID string, now types.DateTime) (cookingSnapshot, error) {
-	result := cookingSnapshot{ServerNow: now.String(), Stoves: []stoveView{}}
+	result := cookingSnapshot{ServerNow: now.String(), Stoves: []stoveView{}, Spices: spices}
 	stoves, err := app.FindRecordsByFilter("player_stoves", "user={:user}", "created", 100, 0, dbx.Params{"user": userID})
 	if err != nil {
 		return result, err
@@ -113,7 +115,7 @@ func snapshotCooking(app core.App, userID string, now types.DateTime) (cookingSn
 				PreparingAt: preparingAt.String(),
 				StartedAt:   job.GetDateTime("started_at").String(),
 				ReadyAt:     job.GetDateTime("ready_at").String(),
-				SpoilsAt:    spoilsAt.String(), Status: status,
+				SpoilsAt:    spoilsAt.String(), Status: status, Spice: job.GetString("spice"),
 			}
 		}
 		result.Stoves = append(result.Stoves, view)
@@ -425,6 +427,50 @@ func registerCookingRoutes(e *core.ServeEvent) {
 		snapshot, err := snapshotCooking(r.App, user.Id, types.NowDateTime())
 		if err != nil {
 			return r.InternalServerError("Prato servido, mas não foi possível atualizar os dados.", err)
+		}
+		return r.JSON(http.StatusOK, snapshot)
+	}).Bind(apis.BodyLimit(1024)).BindFunc(func(r *core.RequestEvent) error {
+		if r.Request.Header.Get("Origin") == "" {
+			return r.ForbiddenError("Origem inválida.", nil)
+		}
+		return sameOrigin(r)
+	})
+	g.POST("/spice", func(r *core.RequestEvent) error {
+		user := sessionRecord(r)
+		if user == nil {
+			return r.UnauthorizedError("Entre para jogar.", nil)
+		}
+		if !strings.HasPrefix(r.Request.Header.Get("Content-Type"), "application/json") {
+			return r.BadRequestError("Envie JSON.", nil)
+		}
+		var body struct {
+			StoveID string `json:"stoveId"`
+			Spice   string `json:"spice"`
+		}
+		decoder := json.NewDecoder(r.Request.Body)
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&body); err != nil || body.StoveID == "" {
+			return r.BadRequestError("Pedido inválido.", nil)
+		}
+		if _, ok := spiceByID(body.Spice); !ok {
+			return r.BadRequestError(errUnknownSpice.Error(), nil)
+		}
+		if roomService(r.App) != nil {
+			return proxyRoomOperation(r, user.Id, "cook_spice", body)
+		}
+		if err := spiceDish(r.App, user.Id, body.StoveID, body.Spice, types.NowDateTime()); err != nil {
+			switch {
+			case errors.Is(err, errStoveNotOwned):
+				return r.NotFoundError("Fogão indisponível.", nil)
+			case errors.Is(err, errCookingCannotCancel), errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoCash):
+				return apis.NewApiError(http.StatusConflict, err.Error(), nil)
+			default:
+				return r.InternalServerError("Não foi possível usar o tempero.", err)
+			}
+		}
+		snapshot, err := snapshotCooking(r.App, user.Id, types.NowDateTime())
+		if err != nil {
+			return r.InternalServerError("Tempero usado, mas não foi possível atualizar os dados.", err)
 		}
 		return r.JSON(http.StatusOK, snapshot)
 	}).Bind(apis.BodyLimit(1024)).BindFunc(func(r *core.RequestEvent) error {

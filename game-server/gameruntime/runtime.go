@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"math/rand/v2"
 	"sync"
 	"sync/atomic"
@@ -768,6 +769,16 @@ func (r *room) route(a *entity, dest Tile, now time.Time) bool {
 	}
 	return true
 }
+
+// stepDuration keeps walking speed constant in the room: a diagonal step covers √2 tiles,
+// so it takes √2 times a straight step instead of the same time (which looked faster).
+func stepDuration(step time.Duration, from, to Tile) time.Duration {
+	if from.X != to.X && from.Y != to.Y {
+		return time.Duration(math.Round(float64(step) * math.Sqrt2))
+	}
+	return step
+}
+
 func (r *room) nextStep(a *entity, now time.Time) bool {
 	if len(a.path) == 0 {
 		return false
@@ -794,7 +805,7 @@ func (r *room) nextStep(a *entity, now time.Time) bool {
 	}
 	a.path = a.path[1:]
 	a.Direction = direction(from, dest)
-	a.Move = &gamewire.Movement{From: from, To: dest, StartedAt: now.UnixMilli(), Duration: r.manager.options.Step.Milliseconds()}
+	a.Move = &gamewire.Movement{From: from, To: dest, StartedAt: now.UnixMilli(), Duration: stepDuration(r.manager.options.Step, from, dest).Milliseconds()}
 	r.indexActor(a)
 	r.manager.steps.Add(1)
 	return true

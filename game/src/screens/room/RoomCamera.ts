@@ -241,15 +241,24 @@ export class RoomCamera {
     return Math.min(this.maxZoomFactor, Math.max(this.minZoomFactor, snapped)) * base;
   }
 
-  setZoom(zoom: number, focus?: CameraPoint): void {
-    const alvo = this.clampZoom(zoom);
+  /** Zoom final válido (limites e degraus da grade) para um zoom desejado qualquer. */
+  snapZoom(zoom: number): number {
+    return this.clampZoom(zoom);
+  }
+
+  /**
+   * `snap = false` só para os quadros intermediários de uma animação de zoom: respeita os limites,
+   * mas não os degraus de pixel inteiro; o último quadro sempre volta a usar a grade.
+   */
+  setZoom(zoom: number, focus?: CameraPoint, snap = true): void {
+    const alvo = snap ? this.clampZoom(zoom) : Math.min(this.maxZoom, Math.max(this.minZoom, zoom));
     const ponto = focus ?? { x: this.viewport.width / 2, y: this.viewport.height / 2 };
     const mundo = this.toWorld(ponto);
 
     this.currentZoom = alvo;
     this.currentX = ponto.x - mundo.x * alvo;
     this.currentY = ponto.y - mundo.y * alvo;
-    this.clamp();
+    this.clamp(snap);
   }
 
   zoomBy(factor: number, focus?: CameraPoint): void {
@@ -257,8 +266,8 @@ export class RoomCamera {
   }
 
   /** Prende a câmera no conteúdo, com a folga de `PAN_OVERSCROLL`. */
-  private clamp(): void {
-    this.currentZoom = this.clampZoom(this.currentZoom);
+  private clamp(snap = true): void {
+    if (snap) this.currentZoom = this.clampZoom(this.currentZoom);
     this.currentX = this.clampAxis(this.currentX, this.content.left, this.content.right, this.viewport.width);
     this.currentY = this.clampAxis(this.currentY, this.content.top, this.content.bottom, this.viewport.height);
     if (this.horizontalCover) {

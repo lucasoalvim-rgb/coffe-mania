@@ -4,6 +4,36 @@ Mudanças do Coffe Mania por versão. A numeração segue a do jogo original (Al
 
 Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **Observações** (limites conhecidos e o que ficou para depois).
 
+## [0.0.4.22] — 2026-10-07
+
+### Adicionado
+
+- Fogão, balcão, mesa, cadeira, arbusto e janela à venda no menu de construção, cada um na sua categoria: Fogão 200, Balcão 650, Mesa com Toalha Branca 500, Cadeira Clássica 200, Arbusto 600, Janela Básica 150 (preços de referência do catálogo do Restaurant City, até termos os do Café Mania). Caixa de correio, painel de conquistas e porta-cardápio continuam únicos (não estão à venda), mas podem ser movidos.
+- Limite de fogões e balcões por nível, contando os guardados, como no original: 3 de cada no nível 1, +1 balcão no nível 5 e +1 fogão no nível 6.
+- O fogão comprado ganha o seu próprio lugar de cozinha e já pode cozinhar.
+- **Mover com um clique**: no modo construção, clique num móvel e ele passa a seguir o mouse; o próximo clique o coloca (R gira, Esc cancela, Delete guarda). Alt + arrastar continua funcionando. Móvel em uso por um cliente avisa e não sai do lugar.
+- **Pisos e papéis de parede em sequência**: depois de comprar um, ele continua no mouse e cada clique compra e coloca mais um, sem voltar ao menu; arrastar com o botão pressionado pinta vários tiles (Esc para parar).
+- **Temperos no fogão**, como no original (o preparo era acelerado com temperos, não com um botão de pagar): Tomilho Acelerador (−1 hora, 1 caféGrana), Tomilho Ultrarrápido (−6 horas, 3), Condimento Instantâneo (pronto na hora, 5) e, no prato estragado, Sálvia Salvadora (recupera, 1). Cada prato aceita um só tempero, e o prato temperado ganha uma luz em volta (FAQ oficial). Preços em caféGranas do clone de referência; os originais não aparecem nas fontes.
+- O fogão cozinhando pode ser movido, e o prato vai junto; guardar continua bloqueado.
+- **`npm run dev` recompila e reinicia os servidores sozinho** quando o código Go ou os catálogos mudam (e sincroniza o catálogo quando um `item.json`/`recipe.json` muda), salvando os quartos antes. Os catálogos ficam embutidos nos binários: sem isso, o menu de construção continuava mostrando a versão de quando o servidor foi iniciado (por isso fogão, balcão e mesa não apareciam). Compilação com erro mantém os servidores atuais.
+
+### Alterado
+
+- Mover e colocar móveis no modelo do clone de referência: pegar e soltar acontecem no **pressionar** do botão (um clique pega, outro coloca; arrastar e soltar também move); a prévia segue sempre o grid, presa dentro da sala, verde onde pode e vermelha onde não pode; posição inválida não cancela mais: a peça continua no mouse com um aviso.
+- O menu do fogão troca "Ver tempo"/"Cancelar" pelos temperos e "Jogar fora", e abre para cima do fogão. O tempo restante fica no balão do hover.
+- Clique pelo desenho: as partes transparentes da arte de um móvel deixam o clique passar para o que está atrás (ex.: o fogão atrás da cadeira ou do balcão), com alguns pixels de folga na borda.
+- Zoom suave: a roda e a pinça do touchpad acumulam o pedido e a câmera anima até o degrau de pixel inteiro mais próximo; a pinça do touchpad deixou de dar zoom na página.
+- O texto de depuração do canto é redesenhado no máximo uma vez por quadro (antes, a cada evento de roda ou de movimento).
+- O prato do cliente cobre o tampo da mesa, centrado no prato da arte.
+- O passo diagonal dura √2 vezes o passo reto, no servidor e no cliente: clientes e chef andam na mesma velocidade em qualquer direção.
+
+### Corrigido
+
+- A barra da loja bloqueava cliques numa faixa larga acima dela (entre as abas e o botão de confirmar), justamente sobre a parte de baixo da sala: era a principal causa de "clico e não coloca".
+- O prato sobre o fogão engolia o clique no modo construção, e o mesmo pressionar chegava a pegar e soltar o fogão de uma vez.
+- A posição do fogão guardado não impede mais colocar outro fogão no mesmo tile (o índice único de `player_stoves` virou comum).
+- Mensagens de móvel em uso: tentar pegar uma cadeira ou mesa ocupada avisa na hora.
+
 ## [0.0.4.21] — 2026-10-07
 
 ### Adicionado
