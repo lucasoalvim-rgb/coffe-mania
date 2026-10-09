@@ -1,4 +1,4 @@
-# Asset Studio — Coffe Mania 0.0.4.19
+# Asset Studio — Coffe Mania 0.0.4.20
 
 Ferramenta simples, local e independente do jogo. No Windows, dê dois cliques em **abrir.cmd**, ou abra **index.html** no Chrome, Edge ou Firefox. Não precisa de Python, npm, servidor ou internet. Os arquivos permanecem no seu dispositivo.
 

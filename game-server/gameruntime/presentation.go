@@ -15,6 +15,7 @@ const emotionDuration = 6010 * time.Millisecond // NpcEmotion's animation, hold 
 
 type cookingJob struct {
 	ID          string `json:"id"`
+	RecipeID    string `json:"recipeId"`
 	PreparingAt string `json:"preparingAt"`
 	StartedAt   string `json:"startedAt"`
 	ReadyAt     string `json:"readyAt"`
@@ -100,8 +101,47 @@ func (r *room) startServingAction(a *entity, stoveID string, now time.Time) stri
 	if job == nil || jobTime(job.ReadyAt).IsZero() || now.Before(jobTime(job.ReadyAt)) {
 		return "O prato ainda não está pronto."
 	}
+	if !r.counterAccepts(job.RecipeID) {
+		return "Não há balcão livre para este prato."
+	}
 	r.startStoveAction(a, stove, "serving", now, servingDuration)
 	return ""
+}
+
+// counterAccepts mirrors persistence: a dish goes to the counter that already holds its
+// recipe, or to an empty counter.
+func (r *room) counterAccepts(recipeID string) bool {
+	held := map[string]string{}
+	for _, food := range r.world.Foods {
+		if food.Counter != "" {
+			held[food.Counter] = food.Recipe
+		}
+	}
+	for _, u := range r.world.Units {
+		item, ok := roomcatalog.ByID(u.ItemID)
+		if !ok || !u.Placed || item.Kind != "counter" {
+			continue
+		}
+		if recipe, busy := held[u.ID]; !busy || recipe == recipeID {
+			return true
+		}
+	}
+	return false
+}
+
+// servingFood picks the counter dish with the most portions, spreading consumption.
+// Dishes saved before counters existed are served first so they do not linger.
+func (r *room) servingFood() int {
+	best := -1
+	for i, food := range r.world.Foods {
+		if food.Counter == "" {
+			return i
+		}
+		if best < 0 || food.Portions > r.world.Foods[best].Portions {
+			best = i
+		}
+	}
+	return best
 }
 
 func (r *room) startEmotion(a *entity, kind string, now time.Time) {

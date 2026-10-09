@@ -1,0 +1,12 @@
+{
+  "id": "cake_1",
+  "name": "bolo beta",
+  "level": 1,
+  "durationSeconds": 30,
+  "portions": 1,
+  "profitGold": 0,
+  "costGold": 0,
+  "xp": 0,
+  "inBook": false,
+  "source": "Receita de teste da versão beta. Fora do livro; mantida para concluir preparos e porções já salvos."
+}

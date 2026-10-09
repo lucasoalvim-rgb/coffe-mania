@@ -1243,14 +1243,18 @@ func (r *room) advanceNPC(a *entity, now time.Time) bool {
 		a.visits++
 		a.due = now.Add(2 * time.Second)
 	case "seated":
-		if a.TableID != "" && len(r.world.Foods) > 0 {
-			food := r.world.Foods[0]
+		if index := r.servingFood(); a.TableID != "" && index >= 0 {
+			food := r.world.Foods[index]
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			err := r.manager.store.Consume(ctx, r.id, food.ID)
 			cancel()
 			if err == nil {
-				r.world.Foods = r.world.Foods[1:]
-				a.Food = &food
+				if food.Portions > 1 {
+					r.world.Foods[index].Portions--
+				} else {
+					r.world.Foods = append(r.world.Foods[:index:index], r.world.Foods[index+1:]...)
+				}
+				a.Food = &gamewire.Food{ID: food.ID, Recipe: food.Recipe}
 				a.State = "eating"
 				a.due = now.Add(8 * time.Second)
 				a.Action = &gamewire.ActorAction{Kind: "eating", StartedAt: now.UnixMilli(), Duration: 8000}

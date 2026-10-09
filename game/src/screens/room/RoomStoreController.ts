@@ -93,7 +93,7 @@ export class RoomStoreController {
   private refreshEntries(): void {
     const category = this.store?.selectedCategory;
     const categoryFor = (item: RoomCatalogItem): string => item.type === 0 ? 'floor' : item.type === 1 ? 'wallpaper' : item.type === 2 ? 'door'
-      : ({ stove: 'stove', table: 'table', chair: 'chair', window: 'flower-window', panel: 'flower-window', bush: 'flower', letterbox: 'flower', decor: 'flower', wall: 'wallpaper', door: 'door' } as const)[item.kind];
+      : ({ stove: 'stove', counter: 'counter', table: 'table', chair: 'chair', window: 'flower-window', panel: 'flower-window', bush: 'flower', letterbox: 'flower', decor: 'flower', wall: 'wallpaper', door: 'door' } as const)[item.kind];
     const texture = (item: RoomCatalogItem) => {
       const frame = this.options.art.art.get(item.classname)?.frames[0]; return frame ? this.options.art.textureFor(frame.file) : undefined;
     };

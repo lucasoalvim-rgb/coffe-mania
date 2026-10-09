@@ -9,6 +9,9 @@ import (
 	"strings"
 	"time"
 
+	"coffe-mania/database/playerstate"
+	"coffe-mania/shared/recipecatalog"
+	"coffe-mania/shared/roomcatalog"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
@@ -17,12 +20,13 @@ import (
 
 const starterStoveItemID = 3070000
 const cookingPlacementDuration = 2 * time.Second
-const betaCakeDuration = 30 * time.Second
 
 var errStoveOccupied = errors.New("stove occupied")
 var errStoveNotOwned = errors.New("stove not owned")
 var errDishNotReady = errors.New("dish not ready")
 var errCookingCannotCancel = errors.New("cooking cannot be canceled")
+var errUnknownRecipe = errors.New("unknown recipe")
+var errNoCounter = errors.New("Não há balcão livre para este prato.")
 
 type cookingView struct {
 	ID          string `json:"id"`
@@ -107,9 +111,11 @@ func snapshotCooking(app core.App, userID string, now types.DateTime) (cookingSn
 	return result, nil
 }
 
+// Starting a dish pays its cost and grants its XP immediately, as in the original game.
 func startCooking(app core.App, userID, stoveID, recipeID string, now types.DateTime) error {
-	if recipeID != "cake_1" {
-		return errors.New("unknown recipe")
+	recipe, ok := recipecatalog.Cookable(recipeID)
+	if !ok {
+		return errUnknownRecipe
 	}
 	return app.RunInTransaction(func(txApp core.App) error {
 		stove, err := txApp.FindRecordById("player_stoves", stoveID)
@@ -133,16 +139,29 @@ func startCooking(app core.App, userID, stoveID, recipeID string, now types.Date
 		if !errors.Is(err, sql.ErrNoRows) {
 			return err
 		}
+		state, err := txApp.FindFirstRecordByData(playerstate.Collection, "user", userID)
+		if err != nil {
+			return err
+		}
+		if state.GetInt64("gold") < recipe.CostGold {
+			return errRoomGold
+		}
+		state.Set("gold", state.GetInt64("gold")-recipe.CostGold)
+		// Levels are not simulated yet: experience saturates at the current level's maximum.
+		state.Set("experience_current", min(state.GetInt64("experience_current")+recipe.XP, state.GetInt64("experience_max")))
+		if err := txApp.Save(state); err != nil {
+			return err
+		}
 		collection, err := txApp.FindCollectionByNameOrId("stove_cooking")
 		if err != nil {
 			return err
 		}
 		job := core.NewRecord(collection)
 		job.Load(map[string]any{
-			"user": userID, "stove": stoveID, "recipe_id": recipeID,
+			"user": userID, "stove": stoveID, "recipe_id": recipe.ID,
 			"preparing_at": now,
 			"started_at":   now.Add(cookingPlacementDuration),
-			"ready_at":     now.Add(cookingPlacementDuration + betaCakeDuration),
+			"ready_at":     now.Add(cookingPlacementDuration + recipe.Duration()),
 		})
 		return txApp.Save(job)
 	})
@@ -164,17 +183,64 @@ func serveCooking(app core.App, userID, stoveID string, now types.DateTime) erro
 		if job.GetString("user") != userID || now.Before(job.GetDateTime("ready_at")) {
 			return errDishNotReady
 		}
-		foods, err := txApp.FindCollectionByNameOrId("room_food")
+		recipeID := job.GetString("recipe_id")
+		portions := 1
+		if recipe, ok := recipecatalog.ByID(recipeID); ok {
+			portions = recipe.Portions
+		}
+		food, err := counterForDish(txApp, userID, recipeID)
 		if err != nil {
 			return err
 		}
-		food := core.NewRecord(foods)
-		food.Load(map[string]any{"user": userID, "recipe_id": job.GetString("recipe_id"), "job_id": job.Id})
+		food.Set("portions", food.GetInt("portions")+portions)
+		if food.IsNew() {
+			food.Set("job_id", job.Id)
+		}
 		if err = txApp.Save(food); err != nil {
 			return err
 		}
 		return txApp.Delete(job)
 	})
+}
+
+// counterForDish returns the counter row that receives a finished dish: the counter that
+// already holds this recipe (portions accumulate), otherwise a new row on an empty counter.
+func counterForDish(txApp core.App, userID, recipeID string) (*core.Record, error) {
+	units, err := txApp.FindRecordsByFilter("player_inventory", "user={:user} && placed=true", "id", 0, 0, dbx.Params{"user": userID})
+	if err != nil {
+		return nil, err
+	}
+	foods, err := txApp.FindRecordsByFilter("room_food", "user={:user} && counter!=''", "created", 0, 0, dbx.Params{"user": userID})
+	if err != nil {
+		return nil, err
+	}
+	byCounter := map[string]*core.Record{}
+	for _, food := range foods {
+		byCounter[food.GetString("counter")] = food
+	}
+	var empty string
+	for _, unit := range units {
+		if item, ok := roomcatalog.ByID(unit.GetInt("item_id")); !ok || item.Kind != "counter" {
+			continue
+		}
+		if food := byCounter[unit.Id]; food != nil {
+			if food.GetString("recipe_id") == recipeID {
+				return food, nil
+			}
+		} else if empty == "" {
+			empty = unit.Id
+		}
+	}
+	if empty == "" {
+		return nil, errNoCounter
+	}
+	collection, err := txApp.FindCollectionByNameOrId("room_food")
+	if err != nil {
+		return nil, err
+	}
+	food := core.NewRecord(collection)
+	food.Load(map[string]any{"user": userID, "recipe_id": recipeID, "counter": empty, "portions": 0})
+	return food, nil
 }
 
 func cancelCooking(app core.App, userID, stoveID string, now types.DateTime) error {
@@ -244,7 +310,7 @@ func registerCookingRoutes(e *core.ServeEvent) {
 		if err := decoder.Decode(new(any)); err != io.EOF {
 			return r.BadRequestError("Pedido inválido.", nil)
 		}
-		if body.StoveID == "" || body.RecipeID != "cake_1" {
+		if _, ok := recipecatalog.Cookable(body.RecipeID); body.StoveID == "" || !ok {
 			return r.BadRequestError("Fogão ou receita inválidos.", nil)
 		}
 		if roomService(r.App) != nil {
@@ -256,6 +322,8 @@ func registerCookingRoutes(e *core.ServeEvent) {
 				return r.NotFoundError("Fogão indisponível.", nil)
 			case errors.Is(err, errStoveOccupied):
 				return apis.NewApiError(http.StatusConflict, "Fogão ocupado.", nil)
+			case errors.Is(err, errRoomGold):
+				return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 			default:
 				return r.InternalServerError("Não foi possível iniciar o preparo.", err)
 			}
@@ -300,6 +368,8 @@ func registerCookingRoutes(e *core.ServeEvent) {
 				return r.NotFoundError("Fogão indisponível.", nil)
 			case errors.Is(err, errDishNotReady):
 				return apis.NewApiError(http.StatusConflict, "O prato ainda não está pronto.", nil)
+			case errors.Is(err, errNoCounter):
+				return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 			default:
 				return r.InternalServerError("Não foi possível servir o prato.", err)
 			}

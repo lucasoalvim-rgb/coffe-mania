@@ -1,7 +1,7 @@
 {
   "name": "coffe-mania-source",
-  "version": "0.0.4-19",
-  "gameVersion": "0.0.4.19",
+  "version": "0.0.4-20",
+  "gameVersion": "0.0.4.20",
   "private": true,
   "type": "module",
   "license": "MIT",

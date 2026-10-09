@@ -1,0 +1,28 @@
+{
+  "recipes": [
+    {
+      "id": "cake_1",
+      "name": "bolo beta",
+      "level": 1,
+      "durationSeconds": 30,
+      "portions": 1,
+      "profitGold": 0,
+      "costGold": 0,
+      "xp": 0,
+      "inBook": false,
+      "source": "Receita de teste da versão beta. Fora do livro; mantida para concluir preparos e porções já salvos."
+    },
+    {
+      "id": "passion_fruit_mousse",
+      "name": "Mousse de Maracujá",
+      "level": 3,
+      "durationSeconds": 2100,
+      "portions": 22,
+      "profitGold": 12,
+      "costGold": 60,
+      "xp": 30,
+      "inBook": true,
+      "source": "Tabela de jogadores 'Alimentos, lucro e XP' (dicas-cafemania.blogspot.com, 10/09/2010): lucro 12, quantidade 22, preço 60, XP 30, tempo 35 min. Nível 3 na tabela de níveis iniciais (cafemaniamania.blogspot.com, 2014). Arte provisória."
+    }
+  ]
+}
