@@ -1,8 +1,8 @@
 {
   "name": "@coffe-mania/game",
   "private": true,
-  "version": "0.0.4-30",
-  "gameVersion": "0.0.4.30",
+  "version": "0.0.4-19",
+  "gameVersion": "0.0.4.19",
   "type": "module",
   "scripts": {
     "dev": "vite",
