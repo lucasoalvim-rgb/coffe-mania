@@ -1,10 +1,10 @@
 # Changelog
 
-Mudanças do Coffe Mania por versão. A numeração segue a do jogo original (Alpha `0.0.4.x`): cada conjunto de mudanças publicado sobe o último número. O campo npm `version` usa `-` no lugar do último ponto (`0.0.4-20`) por compatibilidade com SemVer.
+Notas das mudanças em desenvolvimento, ainda sem atribuição de versão. A versão só é atualizada por quem mantém o projeto ao preparar uma release. O campo npm `version` usa hífen no último componente por compatibilidade com SemVer.
 
 Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **Observações** (limites conhecidos e o que ficou para depois).
 
-## [0.0.4.30] — 2026-10-08
+## Em desenvolvimento — Relógio dos cards do Livro de Receitas (2026-10-08)
 
 ### Alterado
 
@@ -14,7 +14,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 
 - Verificação: typecheck e card ampliado na prévia isolada no Chrome headless.
 
-## [0.0.4.29] — 2026-10-08
+## Em desenvolvimento — Visual dos cards e ações do Livro de Receitas (2026-10-08)
 
 ### Alterado
 
@@ -30,7 +30,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 
 - Verificação: typecheck e prévia isolada no Chrome headless com texturas reais: card ampliado nos estados normal, hover no Cozinhar e sem ouro, além do livro inteiro. Sem sessão no quarto ao vivo.
 
-## [0.0.4.28] — 2026-10-08
+## Em desenvolvimento — Livro de Receitas (2026-10-08)
 
 ### Adicionado
 
@@ -55,7 +55,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - O catálogo ainda não separa cardápios: todos os pratos do livro estão no Básico. Avançado abre no nível 30; Especiais fica trancada; Deluxe, vazia. Os botões Grana, Ouro e comprar aparecem, mas a compra ainda não existe no jogo.
 - Verificação: typecheck e prévia isolada no Chrome headless com texturas reais (dica, hover, sem ouro, favoritos, página cheia, segunda página e clique em Cozinhar). Sem sessão no quarto ao vivo.
 
-## [0.0.4.27] — 2026-10-08
+## Em desenvolvimento — Encaixe da arte no tile (2026-10-08)
 
 ### Adicionado
 
@@ -77,7 +77,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - Cadeira, caixa de correio, arbusto e mesa não formam um losango pela silhueta (pés, folhas, toalha). O relatório os marca, e os cantos precisam ser posicionados manualmente no Studio.
 - Verificação: medição dos PNGs regravados com `npm run assets:fit`; `npm run assets:room`; fluxo do Studio no Chrome headless (detectar, encaixar nos três modos, espelhar e ler offsets). Typecheck rodado. Sem conferência visual dentro do quarto ao vivo.
 
-## [0.0.4.26] — 2026-10-08
+## Em desenvolvimento — Transporte de pratos pelo chef (2026-10-08)
 
 ### Adicionado
 
@@ -104,7 +104,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - Typecheck e Playwright/Chromium com WebGL: quatro quadros de caminhada nas oito direções, contato entre mão e borda do prato, camadas, parada, entrega, atlas sem o clipe novo e troca de tile na metade do passo. Conferência isolada, sem sessão multiplayer completa.
 - Recarregar o jogo gera os novos quadros do avatar. Durante o carregamento, a posição aproximada mantém o prato elevado.
 
-## [0.0.4.25] — 2026-10-08
+## Em desenvolvimento — Camadas do prato carregado (2026-10-08)
 
 ### Adicionado
 
@@ -129,7 +129,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - Verificados os tipos e a renderização isolada Chromium/WebGL nas oito direções, incluindo troca de direção, ordem das camadas e acompanhamento do personagem. Sem sessão multiplayer completa.
 - Sem alterações nas imagens, na simulação ou na calibração da hitbox.
 
-## [0.0.4.24] — 2026-10-08
+## Em desenvolvimento — Apresentação de pratos prontos (2026-10-08)
 
 ### Adicionado
 
@@ -156,7 +156,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - Verificados os tipos e um cenário isolado Chromium/WebGL com os assets reais, transições de preparo, hover e chef nas oito direções. Não foi executada uma sessão multiplayer completa.
 - Assets existentes preservados; o novo balão é vetorial, com transparência real fora da borda. A calibração de movimento e hitbox permanece igual.
 
-## [0.0.4.23] — 2026-10-08
+## Em desenvolvimento — Compilação do launcher no Windows (2026-10-08)
 
 ### Adicionado
 
@@ -178,7 +178,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 
 - Os servidores continuam em processos separados para que o launcher possa salvar os quartos antes de encerrá-los. A alteração vale na próxima inicialização.
 
-## [0.0.4.22] — 2026-10-07
+## Em desenvolvimento — Construção, movimento e temperos (2026-10-07)
 
 ### Adicionado
 
@@ -208,7 +208,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - A posição do fogão guardado não impede mais colocar outro fogão no mesmo tile (o índice único de `player_stoves` virou comum).
 - Mensagens de móvel em uso: tentar pegar uma cadeira ou mesa ocupada avisa na hora.
 
-## [0.0.4.21] — 2026-10-07
+## Em desenvolvimento — Fogão inicial e ciclo de receitas (2026-10-07)
 
 ### Adicionado
 
@@ -242,7 +242,7 @@ Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **O
 - Fontes do ciclo: FAQ oficial ("clique nelas para levá-las até um balcão"; "sempre após servir a comida, seus fogões ficarão sujos"; "sua comida pode passar do ponto e estragar") e relatos de jogadores em 2010–2011 sobre o avatar andando até o balcão com o prato, ficando "travado limpando ou servindo" e o item de preparo que aparece no fogão.
 - Ainda faltam garçons: o cliente sentado consome a porção direto do balcão.
 
-## [0.0.4.20] — 2026-10-07
+## Em desenvolvimento — Mousse e balcão inicial (2026-10-07)
 
 ### Adicionado
 
