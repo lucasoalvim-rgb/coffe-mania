@@ -55,6 +55,12 @@ export class CookingClient {
     return response;
   }
 
+  /** As recusas do servidor trazem a mensagem para o jogador (ouro, balcão, fogão ocupado). */
+  private async reject(response: Response, fallback: string): Promise<never> {
+    const body = await response.json().catch(() => null) as { message?: unknown } | null;
+    throw new Error(typeof body?.message === 'string' && body.message ? body.message : fallback);
+  }
+
   private async read(response: Response): Promise<CookingSnapshot> {
     if (!response.ok) throw new Error('Não foi possível atualizar os fogões.');
     const snapshot = await response.json() as CookingSnapshot;
@@ -80,7 +86,7 @@ export class CookingClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stoveId, recipeId }),
     });
-    if (response.status === 409) throw new Error('Fogão ocupado.');
+    if (response.status === 409) return this.reject(response, 'Fogão ocupado.');
     return this.read(response);
   }
 
@@ -90,7 +96,7 @@ export class CookingClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stoveId }),
     });
-    if (response.status === 409) throw new Error('O prato ainda não está pronto.');
+    if (response.status === 409) return this.reject(response, 'O prato ainda não está pronto.');
     return this.read(response);
   }
 

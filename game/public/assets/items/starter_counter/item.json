@@ -1,0 +1,47 @@
+{
+  "id": 3020069,
+  "classname": "starter_counter",
+  "name": "Balcão",
+  "type": 3,
+  "kind": "counter",
+  "priceGold": 0,
+  "purchasable": false,
+  "legacyClassName": "StainlessSteelKitchenCounter",
+  "sizeX": 1,
+  "sizeY": 1,
+  "itemHeight": 45.6,
+  "parts": [
+    {
+      "file": "rotation-0.png",
+      "width": 162,
+      "height": 126,
+      "left": -80,
+      "top": -45.6,
+      "rotation": 0
+    },
+    {
+      "file": "rotation-1.png",
+      "width": 162,
+      "height": 126,
+      "left": -82,
+      "top": -45.6,
+      "rotation": 1
+    },
+    {
+      "file": "rotation-2.png",
+      "width": 162,
+      "height": 126,
+      "left": -80,
+      "top": -44,
+      "rotation": 2
+    },
+    {
+      "file": "rotation-3.png",
+      "width": 162,
+      "height": 126,
+      "left": -82,
+      "top": -44,
+      "rotation": 3
+    }
+  ]
+}

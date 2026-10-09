@@ -4,25 +4,21 @@ import { playRandomSfx } from '../../audio/sfx';
 import { FONT_FAMILY } from '../../core/fonts';
 import { STAGE_HEIGHT, STAGE_WIDTH } from '../../core/stage';
 import { SFX_BOOK_URLS } from '../../game/asset-manifest';
+import { recipeTimeLabel, type RecipeArt } from '../../game/recipes';
 
 export interface CookScreenTextures {
   cookScreen: Texture;
   foodCard: Texture;
   closeButton?: Texture;
-  cakeStage1?: Texture;
-  cakeStage2?: Texture;
+  /** Todas as receitas conhecidas; o livro mostra só as marcadas com inBook. */
+  recipes?: RecipeArt[];
   progressBack?: Texture;
   progressFront?: Texture;
   progressCallout?: Texture;
   calloutClock?: Texture;
 }
 
-export interface CookRecipeEvent {
-  id: string;
-  name: string;
-  stage1: Texture;
-  stage2: Texture;
-}
+export type CookRecipeEvent = RecipeArt;
 
 export interface CookScreenModalOptions {
   textures: CookScreenTextures;
@@ -58,7 +54,8 @@ const easeInCubic = (t: number): number => t * t * t;
  * Modal do Livro de Receitas aberto ao clicar no fogão.
  *
  * Exibe o fundo escurecido e a janela cook_screen com 6 cards em 2 colunas x 3 linhas,
- * com animação de zoom in ao abrir e zoom out ao fechar.
+ * com animação de zoom in ao abrir e zoom out ao fechar. Cada card segue o do original:
+ * porções, lucro por unidade, XP, tempo de preparo e custo.
  */
 export class CookScreenModal {
   readonly view = new Container();
@@ -112,6 +109,8 @@ export class CookScreenModal {
     const cardW = 370;
     const cardH = 185;
     const cornerRadius = 14;
+    const bookRecipes = (options.textures.recipes ?? []).filter((recipe) => recipe.inBook);
+    const infoStyle = new TextStyle({ fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 16, fontWeight: '600', fill: 0x603a1e, padding: 2 });
 
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 2; col++) {
@@ -143,10 +142,11 @@ export class CookScreenModal {
         inner.mask = mask;
         inner.addChild(mask, sprite);
 
-        if (cardIndex === 0) {
+        const recipe = bookRecipes[cardIndex];
+        if (recipe) {
           // Título centralizado na barra escura superior (y=23, entre os arabescos laterais)
           const title = new Text({
-            text: 'bolo beta',
+            text: recipe.name,
             style: new TextStyle({
               fontFamily: [FONT_FAMILY, 'sans-serif'],
               fontSize: 18,
@@ -156,32 +156,37 @@ export class CookScreenModal {
               padding: 4,
             }),
           });
-          title.label = 'cook-card-title-1';
+          title.label = `cook-card-title-${cardIndex + 1}`;
           title.anchor.set(0.5, 0.5);
           title.position.set(cardW / 2, 23);
           inner.addChild(title);
 
-          if (options.textures.cakeStage2) {
-            const cakeSprite = new Sprite(options.textures.cakeStage2);
-            cakeSprite.label = 'cook-card-cake-preview';
-            cakeSprite.anchor.set(0.5, 0.5);
-            cakeSprite.width = 110;
-            cakeSprite.height = 110;
-            cakeSprite.position.set(75, 114);
-            inner.addChild(cakeSprite);
-          }
+          const dish = new Sprite(recipe.stage2);
+          dish.label = `cook-card-dish-${recipe.id}`;
+          dish.anchor.set(0.5, 0.5);
+          dish.width = 110;
+          dish.height = 110;
+          dish.position.set(75, 114);
+          inner.addChild(dish);
+
+          const lines = [
+            `${recipe.portions} porções`,
+            `Lucros: ${recipe.profitGold} c/un.`,
+            `XP: ${recipe.xp}`,
+            `Pronto: ${recipeTimeLabel(recipe.durationSeconds)}`,
+            `Custo: ${recipe.costGold} ouros`,
+          ];
+          lines.forEach((line, index) => {
+            const info = new Text({ text: line, style: infoStyle });
+            info.label = `cook-card-info-${cardIndex + 1}-${index}`;
+            info.position.set(150, 60 + index * 22);
+            inner.addChild(info);
+          });
 
           card.on('pointertap', (e) => {
             e.stopPropagation();
             this.close();
-            if (options.textures.cakeStage1 && options.textures.cakeStage2) {
-              options.onCookRecipe?.({
-                id: 'cake_1',
-                name: 'bolo beta',
-                stage1: options.textures.cakeStage1,
-                stage2: options.textures.cakeStage2,
-              });
-            }
+            options.onCookRecipe?.(recipe);
           });
         }
 

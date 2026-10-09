@@ -24,7 +24,8 @@ import { createActionBarBetaSlots } from './ActionBarBetaSlots';
 import { MAIN_ACTION_BAR_SCALE, StoreActionBar } from './StoreActionBar';
 import { RoomStoreController } from './RoomStoreController';
 import { roomModelItems, type RoomSnapshot, type RoomInventoryClient } from '../../game/room-inventory';
-import { RoomRealtime, type RoomEvent, type SharedActor, type SharedWorld } from '../../game/room-realtime';
+import { RoomRealtime, type RoomEvent, type SharedActor, type SharedFood, type SharedWorld } from '../../game/room-realtime';
+import type { RecipeArt } from '../../game/recipes';
 import { WardrobeScreenModal, type WardrobeScreenTextures } from './WardrobeScreenModal';
 import { SettingsModal, type SettingsModalOptions } from '../../ui/SettingsModal';
 import { findPath } from '../../world/PathFinder';
@@ -279,6 +280,9 @@ export class RoomScreen implements Screen {
   private readonly realtime?: RoomRealtime;
   private readonly liveActors = new Map<string, { actor: Actor; view: ActorRenderer; state: SharedActor; bundle?: BakedAvatarBundle; appearanceRevision: number; appearanceController?: AbortController }>();
   private readonly mealViews = new Map<string, Sprite>();
+  /** Pratos nos balcões, por unidade de inventário do balcão. */
+  private readonly counterDishViews = new Map<string, { view: Sprite; label: Text }>();
+  private sharedFoods: SharedFood[] = [];
   private readonly sharedCookingViews = new Map<string, Sprite>();
   private readonly sharedCookingProgress = new Map<string, { mode: 'cooking' | 'serving'; bar: CookProgressBar }>();
   private readonly liveEmotions = new Map<string, { id: string; effect: NpcEmotion }>();
@@ -657,6 +661,7 @@ export class RoomScreen implements Screen {
           this.outsideNpcManager?.setRenderingEnabled(!open);
           this.liveActors.forEach(({ view }) => { view.view.renderable = !open; });
           this.mealViews.forEach((view) => { view.renderable = !open; });
+          this.counterDishViews.forEach(({ view, label }) => { view.renderable = !open; label.renderable = !open; });
           this.liveEmotions.forEach(({ effect }) => { effect.view.renderable = !open; });
           this.sharedCookingViews.forEach((view) => { view.renderable = !open; });
           this.sharedCookingProgress.forEach(({ bar }) => { bar.view.renderable = !open; });
@@ -789,12 +794,19 @@ export class RoomScreen implements Screen {
       if ((event.units?.length ?? 0) > 0) this.applyRoomSnapshot({ ...this.roomSnapshot, revision: event.revision, inventory: [...units.values()] }, false);
     }
     if (event.cooking) this.acceptSharedCooking(event.cooking);
+    // Uma lista vazia é omitida no evento; num evento "food" ela significa balcões vazios.
+    if (event.type === 'food') this.sharedFoods = event.foods ?? [];
+    else if (event.foods) this.sharedFoods = event.foods;
     if (event.type === 'error') {
       this.target.clear();
-      if (this.connectionHint) { clearTimeout(this.noticeTimer); this.connectionHint.text = event.message ?? 'Ação recusada.'; this.connectionHint.visible = true;
-        this.noticeTimer = setTimeout(() => { if (this.connectionHint && this.realtime?.connected) this.connectionHint.visible = false; }, 3000);
-      }
+      this.showNotice(event.message ?? 'Ação recusada.');
     }
+  }
+
+  private showNotice(message: string): void {
+    if (!this.connectionHint) return;
+    clearTimeout(this.noticeTimer); this.connectionHint.text = message; this.connectionHint.visible = true;
+    this.noticeTimer = setTimeout(() => { if (this.connectionHint && this.realtime?.connected) this.connectionHint.visible = false; }, 3000);
   }
 
   private acceptSharedWorld(world: SharedWorld): void {
@@ -803,6 +815,57 @@ export class RoomScreen implements Screen {
     for (const unit of world.units) units.set(unit.unitId, unit);
     this.applyRoomSnapshot({ ...this.roomSnapshot, revision: world.revision, inventory: [...units.values()].filter((unit) => this.roomSnapshot!.canEdit !== false || unit.placed) }, false);
     if (world.cooking) this.acceptSharedCooking(world.cooking);
+    this.sharedFoods = world.foods ?? [];
+  }
+
+  private recipeArt(id: string): RecipeArt | undefined {
+    return this.cookProgressTextures?.recipes?.find((recipe) => recipe.id === id);
+  }
+
+  /** Prato de cada balcão; ao passar o mouse, mostra o nome e as porções restantes. */
+  private updateCounterDishes(): void {
+    const shown = new Set<string>();
+    for (const counter of this.model.items) {
+      if (counter.kind !== 'counter' || !counter.inventoryUnitId) continue;
+      const food = this.sharedFoods.find((entry) => entry.counterId === counter.inventoryUnitId);
+      const art = food ? this.recipeArt(food.recipeId) : undefined;
+      if (!food || !art) continue;
+      shown.add(counter.inventoryUnitId);
+      let dish = this.counterDishViews.get(counter.inventoryUnitId);
+      if (!dish) {
+        const view = new Sprite(art.stage2);
+        view.label = 'counter-dish:' + counter.inventoryUnitId;
+        view.anchor.set(0.5, 0.72);
+        view.width = 80;
+        view.height = 80;
+        view.eventMode = 'static';
+        const label = new Text({ text: '', style: new TextStyle({
+          fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 22, fontWeight: '600', fill: 0xffffff, align: 'center',
+          stroke: { color: 0x5a3915, width: 4, join: 'round' },
+        }) });
+        label.anchor.set(0.5, 1);
+        label.visible = false;
+        label.zIndex = POPUP_DRAW_PRIORITY;
+        view.on('pointerover', () => { label.visible = true; });
+        view.on('pointerout', () => { label.visible = false; });
+        this.world.addChild(view, label);
+        dish = { view, label };
+        this.counterDishViews.set(counter.inventoryUnitId, dish);
+      }
+      if (dish.view.texture !== art.stage2) dish.view.texture = art.stage2;
+      const portions = food.portions ?? 1;
+      dish.label.text = `${art.name}\n${portions} ${portions === 1 ? 'porção' : 'porções'}`;
+      const x = tileToScreenX(counter.tx, counter.ty);
+      const y = tileToScreenY(counter.tx, counter.ty) - 14;
+      dish.view.position.set(x, y);
+      setItemOverlayDepth(dish.view, counter);
+      dish.label.position.set(x, y - 62);
+      dish.view.renderable = dish.label.renderable = !this.storeBar?.isOpen;
+    }
+    for (const [id, dish] of this.counterDishViews) {
+      if (shown.has(id)) continue;
+      dish.view.destroy(); dish.label.destroy(); this.counterDishViews.delete(id);
+    }
   }
 
   private acceptSharedCooking(snapshot: CookingSnapshot): void {
@@ -854,15 +917,18 @@ export class RoomScreen implements Screen {
       this.advanceActorView(entry.view, deltaMs);
       this.updateLiveEmotion(id, state, entry.view.view, now);
       const table = state.tableId && this.model.items.find((item) => item.inventoryUnitId === state.tableId);
-      if (state.food && table && this.cookProgressTextures?.cakeStage2) {
+      const mealTexture = state.food ? this.recipeArt(state.food.recipeId)?.stage2 : undefined;
+      if (state.food && table && mealTexture) {
         let meal = this.mealViews.get(id);
-        if (!meal) { meal = new Sprite(this.cookProgressTextures.cakeStage2); meal.label = 'meal:' + state.food.id; meal.anchor.set(.5, .72); meal.width = 64; meal.height = 64; this.mealViews.set(id, meal); this.world.addChild(meal); }
+        if (meal && meal.label !== 'meal:' + state.food.id) { meal.destroy(); this.mealViews.delete(id); meal = undefined; }
+        if (!meal) { meal = new Sprite(mealTexture); meal.label = 'meal:' + state.food.id; meal.anchor.set(.5, .72); meal.width = 64; meal.height = 64; this.mealViews.set(id, meal); this.world.addChild(meal); }
         meal.position.set(tileToScreenX(table.tx, table.ty), tileToScreenY(table.tx, table.ty) - 30);
         meal.zIndex = itemDepth(table.tx, table.ty) + 1; meal.renderable = !this.storeBar?.isOpen;
         setItemOverlayDepth(meal, table);
       } else { this.mealViews.get(id)?.destroy(); this.mealViews.delete(id); }
     }
     this.updateSharedStoves(now);
+    this.updateCounterDishes();
   }
 
   private updateLiveEmotion(id: string, state: SharedActor, actorView: Container, now: number): void {
@@ -915,7 +981,8 @@ export class RoomScreen implements Screen {
         }
         if (progress) { progress.bar.setProgress(elapsed / Math.max(1, duration)); progress.bar.view.renderable = !this.storeBar?.isOpen; }
       }
-      const texture = now >= cookingTime(job?.readyAt ?? '') ? this.cookProgressTextures?.cakeStage2 : this.cookProgressTextures?.cakeStage1;
+      const art = job ? this.recipeArt(job.recipeId) : undefined;
+      const texture = now >= cookingTime(job?.readyAt ?? '') ? art?.stage2 : art?.stage1;
       if (!job || !texture || this.cookingProcess?.stove === stove) { this.sharedCookingViews.get(stove.instanceId)?.destroy(); this.sharedCookingViews.delete(stove.instanceId); continue; }
       let view = this.sharedCookingViews.get(stove.instanceId);
       if (!view) { view = new Sprite(texture); view.anchor.set(.5, .72); view.width = 92; view.height = 92; view.label = 'shared-stove:' + stove.instanceId; this.sharedCookingViews.set(stove.instanceId, view); this.world.addChild(view); }
@@ -980,6 +1047,7 @@ export class RoomScreen implements Screen {
         this.startingCook = false;
         this.stoveViews.get(pending.stove)?.forEach((view) => { view.alpha = 1; });
         console.warn('[cooking] preparo rejeitado', error);
+        if (error instanceof Error) this.showNotice(error.message);
         void this.cookingClient!.refresh().then((snapshot) => {
           if (!this.destroyed) this.acceptCookingSnapshot(snapshot, true);
         }).catch((refreshError: unknown) => console.warn('[cooking] falha ao atualizar fogões', refreshError));
@@ -993,13 +1061,12 @@ export class RoomScreen implements Screen {
       if (stove.cooking) this.occupiedStoves.set(stove.id, stove.cooking);
     }
     if (!restore || this.cookingProcess) return;
-    const textures = this.cookProgressTextures;
-    if (!textures?.cakeStage1 || !textures.cakeStage2) return;
     for (const stove of this.model.items) {
       if (stove.kind !== 'stove' || !stove.instanceId) continue;
       const job = this.occupiedStoves.get(stove.instanceId);
-      if (!job || job.recipeId !== 'cake_1') continue;
-      this.showCooking({ id: 'cake_1', name: 'bolo beta', stage1: textures.cakeStage1, stage2: textures.cakeStage2 }, stove, job, true);
+      const recipe = job ? this.recipeArt(job.recipeId) : undefined;
+      if (!job || !recipe) continue;
+      this.showCooking(recipe, stove, job, true);
       break;
     }
   }
@@ -1136,12 +1203,13 @@ export class RoomScreen implements Screen {
       callout.view.visible = false;
       return;
     }
-    const readyDish = process?.stage2Texture ?? (job?.recipeId === 'cake_1' ? this.cookProgressTextures?.cakeStage2 : undefined);
+    const art = job ? this.recipeArt(job.recipeId) : undefined;
+    const readyDish = process?.stage2Texture ?? art?.stage2;
     if (!readyDish) {
       callout.view.visible = false;
       return;
     }
-    callout.setRecipe(process?.recipeName ?? 'bolo beta', readyDish);
+    callout.setRecipe(process?.recipeName ?? art?.name ?? '', readyDish);
     callout.setProgress(progress);
     callout.setRemaining(remainingMs);
     const stoveSprite = this.stoveViews.get(stove)?.find((view): view is Sprite => view instanceof Sprite);
@@ -1388,6 +1456,7 @@ export class RoomScreen implements Screen {
     }).catch((error: unknown) => {
       console.warn('[cooking] não foi possível servir', error);
       if (this.destroyed) return;
+      if (error instanceof Error) this.showNotice(error.message);
       this.clearServingProcess();
       void this.cookingClient!.refresh().then((snapshot) => {
         if (this.destroyed) return;
@@ -2398,6 +2467,7 @@ export class RoomScreen implements Screen {
     this.realtime?.destroy();
     for (const [id, entry] of this.liveActors) this.removeLiveActor(id, entry);
     this.liveActors.clear(); this.mealViews.clear();
+    this.counterDishViews.forEach(({ view, label }) => { view.destroy(); label.destroy(); }); this.counterDishViews.clear();
     this.sharedCookingViews.forEach((view) => view.destroy()); this.sharedCookingViews.clear();
     this.sharedCookingProgress.forEach(({ bar }) => bar.destroy()); this.sharedCookingProgress.clear();
     this.liveEmotions.forEach(({ effect }) => effect.destroy()); this.liveEmotions.clear();

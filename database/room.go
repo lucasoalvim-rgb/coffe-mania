@@ -22,6 +22,10 @@ var errRoomPosition = errors.New("Posição inválida ou ocupada para este item.
 var errRoomOwned = errors.New("Esta unidade não pertence ao seu inventário.")
 var errRoomOperation = errors.New("Identificador de operação já utilizado em outro pedido.")
 var errRoomBusy = errors.New("Não é possível mover um fogão durante o preparo.")
+var errCounterBusy = errors.New("Não é possível guardar um balcão com comida.")
+
+const starterCounterItemID = 3020069
+
 var requestKeyPattern = regexp.MustCompile(`^[a-zA-Z0-9_-]{16,80}$`)
 
 type roomUnit struct {
@@ -56,7 +60,7 @@ type roomCommand struct {
 // Provision the starter room and its owned inventory units once, without charging gold.
 func ensureRoom(app core.App, userID string) error {
 	if _, err := app.FindFirstRecordByData("player_rooms", "user", userID); err == nil {
-		return nil
+		return ensureStarterCounter(app, userID)
 	} else if !errors.Is(err, sql.ErrNoRows) {
 		return err
 	}
@@ -100,7 +104,7 @@ func ensureRoom(app core.App, userID string) error {
 			}
 			return tx.Save(unit)
 		}
-		starters := [][4]int{{3070000, 6, 2, 3}, {3010000, 4, 1, 1}, {3000011, 0, 2, 0}, {3000011, 0, 6, 0},
+		starters := [][4]int{{3070000, 6, 2, 3}, {starterCounterItemID, 7, 3, 3}, {3010000, 4, 1, 1}, {3000011, 0, 2, 0}, {3000011, 0, 6, 0},
 			{3040001, 2, 3, 0}, {3040001, 2, 5, 0}, {3040001, 5, 5, 0}, {3030010, 3, 3, 0}, {3030010, 3, 5, 0}, {3030010, 6, 5, 0},
 			{3200000, 2, 0, 1}, {3300000, 1, 7, 0}, {3100000, 5, 0, 1}, {3020003, 1, 1, 0}, {3020003, 7, 1, 0}, {3020003, 7, 7, 0}}
 		for _, starter := range starters {
@@ -135,6 +139,78 @@ func ensureRoom(app core.App, userID string) error {
 		}
 		room := core.NewRecord(rooms)
 		room.Load(map[string]any{"user": userID, "revision": 1, "tiles_x": 8, "tiles_y": 8})
+		return tx.Save(room)
+	})
+}
+
+// Rooms created before counters receive the starter counter once. A stored counter still
+// counts as owned, so selling or storing it never makes a new one appear.
+func ensureStarterCounter(app core.App, userID string) error {
+	if _, err := app.FindFirstRecordByFilter("player_inventory", "user={:user} && item_id={:item}", dbx.Params{"user": userID, "item": starterCounterItemID}); err == nil {
+		return nil
+	} else if !errors.Is(err, sql.ErrNoRows) {
+		return err
+	}
+	item, ok := roomcatalog.ByID(starterCounterItemID)
+	if !ok {
+		return errors.New("starter counter missing")
+	}
+	return app.RunInTransaction(func(tx core.App) error {
+		if _, err := tx.FindFirstRecordByFilter("player_inventory", "user={:user} && item_id={:item}", dbx.Params{"user": userID, "item": starterCounterItemID}); err == nil {
+			return nil
+		} else if !errors.Is(err, sql.ErrNoRows) {
+			return err
+		}
+		room, err := tx.FindFirstRecordByData("player_rooms", "user", userID)
+		if err != nil {
+			return err
+		}
+		units, err := tx.FindRecordsByFilter("player_inventory", "user={:user} && placed=true && layer='object'", "", 0, 0, dbx.Params{"user": userID})
+		if err != nil {
+			return err
+		}
+		busy := map[[2]int]bool{}
+		for _, other := range units {
+			otherItem, ok := roomcatalog.ByID(other.GetInt("item_id"))
+			if !ok {
+				continue
+			}
+			sx, sy := otherItem.SizeX, otherItem.SizeY
+			if other.GetInt("rotation")%2 == 1 {
+				sx, sy = sy, sx
+			}
+			for dy := 0; dy < sy; dy++ {
+				for dx := 0; dx < sx; dx++ {
+					busy[[2]int{other.GetInt("tx") + dx, other.GetInt("ty") + dy}] = true
+				}
+			}
+		}
+		tilesX, tilesY := room.GetInt("tiles_x"), room.GetInt("tiles_y")
+		// Prefer the starter layout's tile; otherwise the free tile farthest from the door wall.
+		candidates := [][2]int{{7, 3}}
+		for y := tilesY - 1; y >= 1; y-- {
+			for x := tilesX - 1; x >= 1; x-- {
+				candidates = append(candidates, [2]int{x, y})
+			}
+		}
+		inventory, err := tx.FindCollectionByNameOrId("player_inventory")
+		if err != nil {
+			return err
+		}
+		unit := core.NewRecord(inventory)
+		unit.Load(map[string]any{"user": userID, "item_id": item.ID, "rotation": 3, "layer": roomcatalog.Layer(item)})
+		for _, tile := range candidates {
+			if !busy[tile] && validRoomPosition(item, tile[0], tile[1], 3, tilesX, tilesY) {
+				unit.Set("placed", true)
+				unit.Set("tx", tile[0])
+				unit.Set("ty", tile[1])
+				break
+			}
+		}
+		if err := tx.Save(unit); err != nil {
+			return err
+		}
+		room.Set("revision", room.GetInt("revision")+1)
 		return tx.Save(room)
 	})
 }
@@ -251,6 +327,15 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 				_, err := tx.FindFirstRecordByData("stove_cooking", "stove", stoveID)
 				if err == nil {
 					return errRoomBusy
+				}
+				if !errors.Is(err, sql.ErrNoRows) {
+					return err
+				}
+			}
+			if item.Kind == "counter" && action == "store" {
+				_, err := tx.FindFirstRecordByData("room_food", "counter", unit.Id)
+				if err == nil {
+					return errCounterBusy
 				}
 				if !errors.Is(err, sql.ErrNoRows) {
 					return err
@@ -416,7 +501,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 					return r.NotFoundError(err.Error(), nil)
 				case errors.Is(err, errRoomPosition):
 					return r.BadRequestError(err.Error(), nil)
-				case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy):
+				case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy):
 					return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 				default:
 					return r.InternalServerError("Não foi possível salvar esta operação.", err)
