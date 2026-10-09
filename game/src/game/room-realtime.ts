@@ -2,8 +2,9 @@ import type { CookingSnapshot } from './cooking';
 import type { RoomUnit } from './room-inventory';
 import type { Tile } from '../world/iso';
 
-export interface SharedFood { id: string; recipeId: string }
-export interface SharedAction { kind: 'cooking' | 'serving' | 'seated' | 'eating'; stoveId?: string; startedAt: number; duration: number }
+/** Prato de um balcão; `counterId` é a unidade do balcão no inventário (vazio em pratos antigos). */
+export interface SharedFood { id: string; recipeId: string; counterId?: string; portions?: number }
+export interface SharedAction { kind: 'cooking' | 'serving' | 'cleaning' | 'placing' | 'seated' | 'eating'; stoveId?: string; startedAt: number; duration: number }
 export interface SharedEmotion { id: string; kind: 'satisfied' | 'dissatisfied'; startedAt: number; duration: number }
 export interface SharedActor {
   id: string; kind?: 'human' | 'npc'; name?: string; appearance?: string;

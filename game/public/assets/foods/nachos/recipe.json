@@ -1,0 +1,12 @@
+{
+  "id": "nachos",
+  "name": "Nachos de Queijo",
+  "level": 1,
+  "durationSeconds": 180,
+  "portions": 15,
+  "profitGold": 2,
+  "costGold": 8,
+  "xp": 3,
+  "inBook": true,
+  "source": "Tabela de jogadores 'Alimentos, lucro e XP' (dicas-cafemania.blogspot.com, 10/09/2010): lucro 2, quantidade 15, preço 8, XP 3, tempo 3 min. Nome do documento 'Menu Café Mania: Pratos e Tempos' (Scribd). 1º prato do Livro de Receitas. Nível não confirmado."
+}

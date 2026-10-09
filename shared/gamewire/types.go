@@ -17,9 +17,13 @@ type Unit struct {
 	Rotation int    `json:"rotation"`
 	StoveID  string `json:"stoveId,omitempty"`
 }
+
+// Food is a counter's dish. Counter is empty for dishes saved before counters existed.
 type Food struct {
-	ID     string `json:"id"`
-	Recipe string `json:"recipeId"`
+	ID       string `json:"id"`
+	Recipe   string `json:"recipeId"`
+	Counter  string `json:"counterId,omitempty"`
+	Portions int    `json:"portions,omitempty"`
 }
 type World struct {
 	RoomID   string          `json:"roomId"`

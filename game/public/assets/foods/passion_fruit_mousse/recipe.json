@@ -1,0 +1,12 @@
+{
+  "id": "passion_fruit_mousse",
+  "name": "Mousse de Maracujá",
+  "level": 3,
+  "durationSeconds": 2100,
+  "portions": 22,
+  "profitGold": 12,
+  "costGold": 60,
+  "xp": 30,
+  "inBook": true,
+  "source": "Tabela de jogadores 'Alimentos, lucro e XP' (dicas-cafemania.blogspot.com, 10/09/2010): lucro 12, quantidade 22, preço 60, XP 30, tempo 35 min. Nível 3 na tabela de níveis iniciais (cafemaniamania.blogspot.com, 2014). 3º prato do livro."
+}

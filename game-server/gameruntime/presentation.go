@@ -6,18 +6,23 @@ import (
 	"time"
 
 	"coffe-mania/shared/gamewire"
+	"coffe-mania/shared/recipecatalog"
 	"coffe-mania/shared/roomcatalog"
 	"github.com/google/uuid"
 )
 
 const servingDuration = 2 * time.Second
+const cleaningDuration = 2 * time.Second
+const placingDuration = 600 * time.Millisecond
 const emotionDuration = 6010 * time.Millisecond // NpcEmotion's animation, hold and fade.
 
 type cookingJob struct {
 	ID          string `json:"id"`
+	RecipeID    string `json:"recipeId"`
 	PreparingAt string `json:"preparingAt"`
 	StartedAt   string `json:"startedAt"`
 	ReadyAt     string `json:"readyAt"`
+	SpoilsAt    string `json:"spoilsAt"`
 }
 
 func (r *room) cookingJob(stoveID string) *cookingJob {
@@ -100,8 +105,111 @@ func (r *room) startServingAction(a *entity, stoveID string, now time.Time) stri
 	if job == nil || jobTime(job.ReadyAt).IsZero() || now.Before(jobTime(job.ReadyAt)) {
 		return "O prato ainda não está pronto."
 	}
+	if spoils := jobTime(job.SpoilsAt); !spoils.IsZero() && !now.Before(spoils) {
+		return "O prato estragou. Jogue-o fora para liberar o fogão."
+	}
+	if !r.counterAccepts(job.RecipeID) {
+		return "Não há balcão livre para este prato."
+	}
 	r.startStoveAction(a, stove, "serving", now, servingDuration)
 	return ""
+}
+
+// busyAtStove covers the short chef actions that lock the avatar in place.
+func busyAtStove(state string) bool {
+	return state == "cooking" || state == "serving" || state == "cleaning" || state == "placing"
+}
+
+// startCarrying walks the chef from the stove to the counter that received the dish. Persistence
+// already stored the portions; the carried Food lets clients show them in the chef's hands until
+// "placing" ends. A new walk command simply drops the animation.
+func (r *room) startCarrying(a *entity, recipeID string, now time.Time) {
+	var food gamewire.Food
+	for _, f := range r.world.Foods {
+		if f.Counter != "" && f.Recipe == recipeID {
+			food = f
+			break
+		}
+	}
+	var counter Unit
+	for _, u := range r.world.Units {
+		if u.ID == food.Counter && u.Placed {
+			counter = u
+			break
+		}
+	}
+	if food.ID == "" || counter.ID == "" {
+		return
+	}
+	portions := 1
+	if recipe, ok := recipecatalog.ByID(recipeID); ok {
+		portions = recipe.Portions
+	}
+	a.Food = &gamewire.Food{ID: food.ID, Recipe: recipeID, Counter: counter.ID, Portions: portions}
+	a.State = "carrying"
+	for _, tile := range footprint(counter) {
+		if abs(a.X-tile.X)+abs(a.Y-tile.Y) == 1 {
+			return // already beside the counter: the next tick places the dish
+		}
+	}
+	for _, tile := range footprint(counter) {
+		for _, d := range neighbours[:4] {
+			dest := Tile{X: tile.X + d.X, Y: tile.Y + d.Y}
+			if r.grid.walkable(dest) && !r.occupied(dest, a.ID) && r.route(a, dest, now) {
+				return
+			}
+		}
+	}
+}
+
+func (r *room) startPlacing(a *entity, now time.Time) {
+	a.State = "placing"
+	if a.Food != nil {
+		for _, u := range r.world.Units {
+			if u.ID == a.Food.Counter {
+				a.Direction = direction(Tile{X: a.X, Y: a.Y}, Tile{X: u.X, Y: u.Y})
+				break
+			}
+		}
+	}
+	a.Action = &gamewire.ActorAction{Kind: "placing", StartedAt: now.UnixMilli(), Duration: placingDuration.Milliseconds()}
+	a.due = now.Add(placingDuration)
+}
+
+// counterAccepts mirrors persistence: a dish goes to the counter that already holds its
+// recipe, or to an empty counter.
+func (r *room) counterAccepts(recipeID string) bool {
+	held := map[string]string{}
+	for _, food := range r.world.Foods {
+		if food.Counter != "" {
+			held[food.Counter] = food.Recipe
+		}
+	}
+	for _, u := range r.world.Units {
+		item, ok := roomcatalog.ByID(u.ItemID)
+		if !ok || !u.Placed || item.Kind != "counter" {
+			continue
+		}
+		if recipe, busy := held[u.ID]; !busy || recipe == recipeID {
+			return true
+		}
+	}
+	return false
+}
+
+// servingFood picks the counter dish with the most portions, spreading consumption.
+// Dishes saved before counters existed are served first so they do not linger.
+func (r *room) servingFood() int {
+	best := -1
+	for i, food := range r.world.Foods {
+		if food.Counter == "" {
+			return i
+		}
+		if best < 0 || food.Portions > r.world.Foods[best].Portions {
+			best = i
+		}
+	}
+	return best
 }
 
 func (r *room) startEmotion(a *entity, kind string, now time.Time) {

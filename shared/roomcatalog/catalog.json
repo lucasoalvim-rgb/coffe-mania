@@ -6,8 +6,8 @@
       "name": "Janela Básica",
       "type": 3,
       "kind": "window",
-      "priceGold": 0,
-      "purchasable": false,
+      "priceGold": 150,
+      "purchasable": true,
       "legacyClassName": "WindowInside11",
       "sizeX": 1,
       "sizeY": 1,
@@ -68,8 +68,8 @@
       "name": "Arbusto",
       "type": 3,
       "kind": "bush",
-      "priceGold": 0,
-      "purchasable": false,
+      "priceGold": 600,
+      "purchasable": true,
       "legacyClassName": "DelicateBush",
       "sizeX": 1,
       "sizeY": 1,
@@ -85,13 +85,60 @@
       ]
     },
     {
+      "id": 3020069,
+      "classname": "starter_counter",
+      "name": "Balcão",
+      "type": 3,
+      "kind": "counter",
+      "priceGold": 650,
+      "purchasable": true,
+      "legacyClassName": "StainlessSteelKitchenCounter",
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 32,
+      "parts": [
+        {
+          "file": "rotation-0.png",
+          "width": 160,
+          "height": 112,
+          "left": -80,
+          "top": -32,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 160,
+          "height": 112,
+          "left": -80,
+          "top": -32,
+          "rotation": 1
+        },
+        {
+          "file": "rotation-2.png",
+          "width": 160,
+          "height": 111,
+          "left": -80,
+          "top": -31,
+          "rotation": 2
+        },
+        {
+          "file": "rotation-3.png",
+          "width": 160,
+          "height": 111,
+          "left": -80,
+          "top": -31,
+          "rotation": 3
+        }
+      ]
+    },
+    {
       "id": 3030010,
       "classname": "white_cloth_table",
       "name": "Mesa com Toalha Branca",
       "type": 3,
       "kind": "table",
-      "priceGold": 0,
-      "purchasable": false,
+      "priceGold": 500,
+      "purchasable": true,
       "legacyClassName": "WhiteTableCloth",
       "sizeX": 1,
       "sizeY": 1,
@@ -112,8 +159,8 @@
       "name": "Cadeira Clássica",
       "type": 3,
       "kind": "chair",
-      "priceGold": 0,
-      "purchasable": false,
+      "priceGold": 200,
+      "purchasable": true,
       "legacyClassName": "Chair02",
       "sizeX": 1,
       "sizeY": 1,
@@ -204,19 +251,44 @@
       "name": "Fogão",
       "type": 3,
       "kind": "stove",
-      "priceGold": 0,
-      "purchasable": false,
+      "priceGold": 200,
+      "purchasable": true,
       "legacyClassName": "Stove01",
       "sizeX": 1,
       "sizeY": 1,
-      "itemHeight": 47,
+      "itemHeight": 31,
       "parts": [
         {
-          "file": "starter_stove.png",
+          "file": "rotation-0.png",
           "width": 160,
-          "height": 127,
+          "height": 110,
           "left": -80,
-          "top": -47
+          "top": -30,
+          "rotation": 0
+        },
+        {
+          "file": "rotation-1.png",
+          "width": 160,
+          "height": 110,
+          "left": -80,
+          "top": -30,
+          "rotation": 1
+        },
+        {
+          "file": "rotation-2.png",
+          "width": 160,
+          "height": 111,
+          "left": -80,
+          "top": -31,
+          "rotation": 2
+        },
+        {
+          "file": "rotation-3.png",
+          "width": 160,
+          "height": 111,
+          "left": -80,
+          "top": -31,
+          "rotation": 3
         }
       ]
     },

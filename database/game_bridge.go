@@ -18,6 +18,7 @@ import (
 	"coffe-mania/database/npcappearance"
 	"coffe-mania/database/playerstate"
 	"coffe-mania/shared/gamewire"
+	"coffe-mania/shared/recipecatalog"
 	"github.com/google/uuid"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
@@ -94,7 +95,7 @@ func publicWorld(app core.App, owner string) (gamewire.World, error) {
 		return w, err
 	}
 	for _, food := range foods {
-		w.Foods = append(w.Foods, gamewire.Food{ID: food.Id, Recipe: food.GetString("recipe_id")})
+		w.Foods = append(w.Foods, gamewire.Food{ID: food.Id, Recipe: food.GetString("recipe_id"), Counter: food.GetString("counter"), Portions: foodPortions(food)})
 	}
 	return w, nil
 }
@@ -115,10 +116,11 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(400, "Pedido inválido.")
 		}
 		body, err = mutateRoom(app, op.Owner, op.Action, command)
-	case "cook_start", "cook_serve", "cook_cancel":
+	case "cook_start", "cook_serve", "cook_cancel", "cook_clean", "cook_spice":
 		var command struct {
 			StoveID  string `json:"stoveId"`
 			RecipeID string `json:"recipeId"`
+			Spice    string `json:"spice"`
 		}
 		if json.Unmarshal(op.Body, &command) != nil || command.StoveID == "" {
 			return fail(400, "Pedido inválido.")
@@ -130,6 +132,10 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			err = serveCooking(app, op.Owner, command.StoveID, types.NowDateTime())
 		case "cook_cancel":
 			err = cancelCooking(app, op.Owner, command.StoveID, types.NowDateTime())
+		case "cook_clean":
+			err = cleanStove(app, op.Owner, command.StoveID)
+		case "cook_spice":
+			err = spiceDish(app, op.Owner, command.StoveID, command.Spice, types.NowDateTime())
 		}
 		if err == nil {
 			body, err = snapshotCooking(app, op.Owner, types.NowDateTime())
@@ -143,7 +149,14 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(404, "Item indisponível.")
 		case errors.Is(err, errRoomPosition):
 			return fail(400, err.Error())
-		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel):
+		case errors.Is(err, errUnknownRecipe):
+			return fail(400, "Receita inválida.")
+		case errors.Is(err, errUnknownSpice):
+			return fail(400, err.Error())
+		case errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoCash):
+			return fail(409, err.Error())
+		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel), errors.Is(err, errNoCounter),
+			errors.Is(err, errStoveDirty), errors.Is(err, errStoveClean), errors.Is(err, errDishSpoiled):
 			return fail(409, err.Error())
 		default:
 			return fail(500, "Não foi possível salvar a operação.")
@@ -341,16 +354,51 @@ func registerGameBridge(e *core.ServeEvent) error {
 		if r.BindBody(&body) != nil {
 			return r.BadRequestError("Inválido.", nil)
 		}
-		food, err := r.App.FindRecordById("room_food", body.FoodID)
-		if err != nil || food.GetString("user") != r.Request.PathValue("owner") {
+		owner := r.Request.PathValue("owner")
+		err := r.App.RunInTransaction(func(tx core.App) error { return consumePortion(tx, owner, body.FoodID) })
+		if errors.Is(err, errFoodUnavailable) {
 			return r.NotFoundError("Prato indisponível.", nil)
 		}
-		if err = r.App.Delete(food); err != nil {
+		if err != nil {
 			return err
 		}
 		return r.JSON(200, map[string]bool{"ok": true})
 	})
 	return nil
+}
+
+var errFoodUnavailable = errors.New("food unavailable")
+
+// Rows saved before counters existed have no portion count and hold a single portion.
+func foodPortions(food *core.Record) int {
+	return max(1, food.GetInt("portions"))
+}
+
+// consumePortion serves one portion to a customer and pays its profit to the café owner.
+func consumePortion(tx core.App, owner, foodID string) error {
+	food, err := tx.FindRecordById("room_food", foodID)
+	if err != nil || food.GetString("user") != owner {
+		return errFoodUnavailable
+	}
+	if remaining := foodPortions(food) - 1; remaining > 0 {
+		food.Set("portions", remaining)
+		err = tx.Save(food)
+	} else {
+		err = tx.Delete(food)
+	}
+	if err != nil {
+		return err
+	}
+	recipe, ok := recipecatalog.ByID(food.GetString("recipe_id"))
+	if !ok || recipe.ProfitGold == 0 {
+		return nil
+	}
+	state, err := tx.FindFirstRecordByData(playerstate.Collection, "user", owner)
+	if err != nil {
+		return err
+	}
+	state.Set("gold", state.GetInt64("gold")+recipe.ProfitGold)
+	return tx.Save(state)
 }
 
 // Activity is a lease, so a crashed room process cannot leave the DB active forever.

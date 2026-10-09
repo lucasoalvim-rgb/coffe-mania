@@ -17,6 +17,7 @@ import {
 import type { RoomItem, RoomItemStyle, RoomModel } from '../../world/RoomModel';
 import { ITEM_STYLES, footprintTiles } from '../../world/RoomModel';
 import { setItemRoomDepth } from './RoomDepthSorter';
+import { alphaHitArea } from './alpha-hit';
 
 /** Desenho procedural de fallback e grade de diagnóstico, independente dos sprites. */
 
@@ -167,6 +168,8 @@ export function createArtView(
     ? wallDepth(frenteX, frenteY, bias)
     : itemDepth(frenteX, frenteY, bias, options.occlusionAnchor ?? item.occlusionAnchor);
   setItemRoomDepth(sprite, item, sprite.zIndex);
+  // Só pesa quando o sprite é interativo: o clique segue o desenho, não o retângulo da imagem.
+  sprite.hitArea = alphaHitArea(texture);
 
   return sprite;
 }

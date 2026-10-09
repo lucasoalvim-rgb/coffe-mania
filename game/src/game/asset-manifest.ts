@@ -4,6 +4,7 @@ import { LOADING_ASSET_URLS } from '../screens/loading/assets';
 import { Wardrobe } from '../avatar/wardrobe';
 import { IndoorArt } from './indoor-art';
 import { ItemCatalog } from './item-catalog';
+import { RECIPE_CATALOG_URL, loadRecipeArt, type RecipeArt } from './recipes';
 
 const base = import.meta.env.BASE_URL ?? '/';
 const dataUrl = (file: string) =>
@@ -48,9 +49,20 @@ export const UI_TOP_BARS_URLS = {
   icons: new URL('assets/ui/icon_bundle_1.png', new URL(base, document.baseURI)).href,
 } as const;
 
-/** Livro de receitas (cook screen) e card interno de comida. */
-export const UI_COOK_SCREEN_URL = new URL('assets/ui/cook_screen.png', new URL(base, document.baseURI)).href;
-export const UI_FOOD_CARD_URL = new URL('assets/ui/inside_food_card.png', new URL(base, document.baseURI)).href;
+/**
+ * Livro de Receitas: arte do livro original (folha 1448 × 1086), card de prato, abas, relógio e seta.
+ * O botão Cozinhar, o + e os ícones do card são desenhados em CookScreenModal.
+ */
+const recipeBookUrl = (file: string) => new URL(`assets/ui/recipe-book/${file}`, new URL(base, document.baseURI)).href;
+export const UI_RECIPE_BOOK_URLS = {
+  book: recipeBookUrl('book.png'),
+  card: new URL('assets/ui/inside_food_card.png', new URL(base, document.baseURI)).href,
+  tab: recipeBookUrl('tab.png'),
+  tabHover: recipeBookUrl('tab-hover.png'),
+  tabActive: recipeBookUrl('tab-active.png'),
+  clock: recipeBookUrl('clock.png'),
+  pageArrow: recipeBookUrl('page-arrow.png'),
+} as const;
 export const UI_COOK_PROGRESS_URLS = {
   back: new URL('assets/ui/cook_prog_bar_1.png', new URL(base, document.baseURI)).href,
   front: new URL('assets/ui/cook_prog_bar_2.png', new URL(base, document.baseURI)).href,
@@ -81,10 +93,6 @@ const WARDROBE_ICON_NAMES = [
 ] as const;
 const UI_WARDROBE_ICON_URLS = WARDROBE_ICON_NAMES.map((name) =>
   new URL(`assets/ui/wardrobe-icons/${name}.png`, new URL(base, document.baseURI)).href);
-
-/** Sprites de comida: bolo beta (estágio 1 - ingredientes / estágio 2 - bolo pronto). */
-export const FOOD_CAKE_STAGE_1_URL = new URL('assets/foods/cake_1/stage_1.png', new URL(base, document.baseURI)).href;
-export const FOOD_CAKE_STAGE_2_URL = new URL('assets/foods/cake_1/stage_2.png', new URL(base, document.baseURI)).href;
 
 /** Coleção de botões da UI e posições de corte JSON. */
 export const UI_BUTTONS_COLLECTION_URL = new URL('assets/ui/buttons_collection_1.png', new URL(base, document.baseURI)).href;
@@ -173,8 +181,7 @@ export const GAME_ASSET_URLS: readonly string[] = [
   UI_TOP_BARS_URLS.back,
   UI_TOP_BARS_URLS.front,
   UI_TOP_BARS_URLS.icons,
-  UI_COOK_SCREEN_URL,
-  UI_FOOD_CARD_URL,
+  ...Object.values(UI_RECIPE_BOOK_URLS),
   ...Object.values(UI_COOK_PROGRESS_URLS),
   ...Object.values(UI_WARDROBE_URLS),
   ...UI_WARDROBE_ICON_URLS,
@@ -183,8 +190,7 @@ export const GAME_ASSET_URLS: readonly string[] = [
   UI_BUTTONS_POSITIONS_URL,
   ...UI_ACTION_BAR_ICONS_URLS,
   UI_EMOTION_BUNDLE_URL,
-  FOOD_CAKE_STAGE_1_URL,
-  FOOD_CAKE_STAGE_2_URL,
+  RECIPE_CATALOG_URL,
 ];
 
 let catalogCache: ItemCatalog | null = null;
@@ -383,25 +389,40 @@ export interface ButtonsCollectionJson {
   }>;
 }
 
-/** Carrega as texturas da tela de receitas do fogão. */
+export interface RecipeBookTextures {
+  book: Texture;
+  card: Texture;
+  tab: { idle: Texture; hover: Texture; active: Texture };
+  clock: Texture;
+  pageArrow: Texture;
+  /** Atlas dos ícones do HUD (caféGrana, caféOuro, XP, energia, suprimentos), recortado com TOP_BAR_ICON_FRAMES. */
+  hudIcons: Texture;
+}
+
+/** Carrega as texturas do Livro de Receitas e do preparo no fogão. */
 export async function loadCookScreenTextures(): Promise<{
-  cookScreen: Texture;
-  foodCard: Texture;
+  book: RecipeBookTextures;
   closeButton: Texture;
-  cakeStage1: Texture;
-  cakeStage2: Texture;
+  recipes: RecipeArt[];
   progressBack: Texture;
   progressFront: Texture;
   progressCallout: Texture;
   calloutClock: Texture;
 }> {
-  const [cookScreen, foodCard, buttonsSheet, buttonsData, cakeStage1, cakeStage2, progressBack, progressFront, progressCallout, calloutClock] = await Promise.all([
-    Assets.load<Texture>(UI_COOK_SCREEN_URL),
-    Assets.load<Texture>(UI_FOOD_CARD_URL),
+  const urls = UI_RECIPE_BOOK_URLS;
+  const [bookTextures, hudIcons] = await Promise.all([
+    Promise.all([urls.book, urls.card, urls.tab, urls.tabHover, urls.tabActive, urls.clock, urls.pageArrow].map(loadResourceIcon)),
+    loadResourceIcon(UI_TOP_BARS_URLS.icons),
+  ]);
+  const [bookArt, card, tab, tabHover, tabActive, clock, pageArrow] = bookTextures;
+  const book: RecipeBookTextures = {
+    book: bookArt, card, clock, pageArrow, hudIcons,
+    tab: { idle: tab, hover: tabHover, active: tabActive },
+  };
+  const [buttonsSheet, buttonsData, recipes, progressBack, progressFront, progressCallout, calloutClock] = await Promise.all([
     Assets.load<Texture>(UI_BUTTONS_COLLECTION_URL),
     Assets.load<ButtonsCollectionJson>(UI_BUTTONS_POSITIONS_URL).catch(() => null),
-    Assets.load<Texture>(FOOD_CAKE_STAGE_1_URL),
-    Assets.load<Texture>(FOOD_CAKE_STAGE_2_URL),
+    loadRecipeArt(),
     Assets.load<Texture>(UI_COOK_PROGRESS_URLS.back),
     Assets.load<Texture>(UI_COOK_PROGRESS_URLS.front),
     Assets.load<Texture>(UI_COOK_CALLOUT_URL),
@@ -418,16 +439,12 @@ export async function loadCookScreenTextures(): Promise<{
     frame,
   });
 
-  cookScreen.source.autoGenerateMipmaps = true;
-  foodCard.source.autoGenerateMipmaps = true;
   buttonsSheet.source.autoGenerateMipmaps = true;
-  cakeStage1.source.autoGenerateMipmaps = true;
-  cakeStage2.source.autoGenerateMipmaps = true;
   progressBack.source.autoGenerateMipmaps = true;
   progressFront.source.autoGenerateMipmaps = true;
   progressCallout.source.autoGenerateMipmaps = true;
 
-  return { cookScreen, foodCard, closeButton, cakeStage1, cakeStage2, progressBack, progressFront, progressCallout, calloutClock };
+  return { book, closeButton, recipes, progressBack, progressFront, progressCallout, calloutClock };
 }
 
 /**

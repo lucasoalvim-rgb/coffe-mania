@@ -19,6 +19,7 @@
     "typecheck": "npm run typecheck --workspace game",
     "build": "npm run build --workspace game",
     "assets:room": "node scripts/sync-room-catalog.mjs",
+    "assets:fit": "node scripts/fit-item-art.mjs",
     "tools": "node scripts/serve-tools.mjs"
   }
 }

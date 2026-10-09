@@ -5,7 +5,20 @@ export interface StoveCooking {
   preparingAt: string;
   startedAt: string;
   readyAt: string;
-  status: 'preparing' | 'cooking' | 'ready';
+  /** Fim da validade do prato pronto; depois disso ele só pode ser jogado fora. */
+  spoilsAt: string;
+  status: 'preparing' | 'cooking' | 'ready' | 'spoiled';
+  /** Tempero usado no prato (um por prato). */
+  spice?: string;
+}
+
+/** Tempero do fogão, pago em caféGranas. */
+export interface CookingSpice {
+  id: string;
+  name: string;
+  granas: number;
+  effect: 'speed' | 'instant' | 'recover';
+  shortcutSeconds?: number;
 }
 
 export interface OwnedStove {
@@ -13,12 +26,15 @@ export interface OwnedStove {
   itemId: number;
   tx: number;
   ty: number;
+  /** Levar o prato ao balcão ou jogá-lo fora suja o fogão; o chef precisa limpá-lo. */
+  dirty: boolean;
   cooking: StoveCooking | null;
 }
 
 export interface CookingSnapshot {
   serverNow: string;
   stoves: OwnedStove[];
+  spices?: CookingSpice[];
 }
 
 const endpoint = '/api/coffe/cooking';
@@ -55,6 +71,12 @@ export class CookingClient {
     return response;
   }
 
+  /** As recusas do servidor trazem a mensagem para o jogador (ouro, balcão, fogão ocupado). */
+  private async reject(response: Response, fallback: string): Promise<never> {
+    const body = await response.json().catch(() => null) as { message?: unknown } | null;
+    throw new Error(typeof body?.message === 'string' && body.message ? body.message : fallback);
+  }
+
   private async read(response: Response): Promise<CookingSnapshot> {
     if (!response.ok) throw new Error('Não foi possível atualizar os fogões.');
     const snapshot = await response.json() as CookingSnapshot;
@@ -80,7 +102,7 @@ export class CookingClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stoveId, recipeId }),
     });
-    if (response.status === 409) throw new Error('Fogão ocupado.');
+    if (response.status === 409) return this.reject(response, 'Fogão ocupado.');
     return this.read(response);
   }
 
@@ -90,7 +112,7 @@ export class CookingClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stoveId }),
     });
-    if (response.status === 409) throw new Error('O prato ainda não está pronto.');
+    if (response.status === 409) return this.reject(response, 'O prato ainda não está pronto.');
     return this.read(response);
   }
 
@@ -100,7 +122,27 @@ export class CookingClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stoveId }),
     });
-    if (response.status === 409) throw new Error('Este preparo não pode mais ser cancelado.');
+    if (response.status === 409) return this.reject(response, 'Não há prato neste fogão.');
+    return this.read(response);
+  }
+
+  async spice(stoveId: string, spice: string): Promise<CookingSnapshot> {
+    const response = await this.request('/spice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stoveId, spice }),
+    });
+    if (response.status === 409 || response.status === 400) return this.reject(response, 'Não foi possível usar o tempero.');
+    return this.read(response);
+  }
+
+  async clean(stoveId: string): Promise<CookingSnapshot> {
+    const response = await this.request('/clean', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stoveId }),
+    });
+    if (response.status === 409) return this.reject(response, 'O fogão já está limpo.');
     return this.read(response);
   }
 }
