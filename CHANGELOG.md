@@ -4,6 +4,180 @@ Mudanças do Coffe Mania por versão. A numeração segue a do jogo original (Al
 
 Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **Observações** (limites conhecidos e o que ficou para depois).
 
+## [0.0.4.30] — 2026-10-08
+
+### Alterado
+
+- O card de prato do Livro de Receitas usa o mesmo relógio do painel da direita (`recipe-book/clock.png`), no lugar do relógio desenhado em código.
+
+### Observações
+
+- Verificação: typecheck e card ampliado na prévia isolada no Chrome headless.
+
+## [0.0.4.29] — 2026-10-08
+
+### Alterado
+
+- Card de prato do Livro de Receitas igual ao do original. O fundo volta a ser `inside_food_card.png`, com cantos arredondados: faixa caramelo com arabescos e painel claro. O título fica branco com sombra suave; o relógio é azul com aro marinho; o "XP" é amarelo com contorno marrom e halo claro; os números ficam em marrom escuro. As posições foram medidas no card original.
+- Botão Cozinhar desenhado como no original: verde chapado, borda escura chanfrada e texto branco, com estados normal, hover, pressionado e sem ouro (cinza).
+- Botão + dos favoritos em marrom com borda escura (dourado quando favorito). O + e a ★ passam a ser formas desenhadas e ficam centralizados na caixa.
+
+### Removido
+
+- `card.png`, `card-swirl.png` e `cook-button*.png` de `assets/ui/recipe-book/`, copiados na versão anterior e agora substituídos pelo card original e pelo botão desenhado.
+
+### Observações
+
+- Verificação: typecheck e prévia isolada no Chrome headless com texturas reais: card ampliado nos estados normal, hover no Cozinhar e sem ouro, além do livro inteiro. Sem sessão no quarto ao vivo.
+
+## [0.0.4.28] — 2026-10-08
+
+### Adicionado
+
+- Livro de Receitas no layout do Café Mania original. No alto ficam os recursos (caféGrana, caféOuro, suprimentos e energia) com os botões Grana, Ouro e comprar, e as abas Básico, Avançado, Especiais, ★ Favoritos! e Deluxe. A página mostra seis pratos (2 × 3), e as setas azuis viram as páginas.
+- Painel da direita que mostra o prato sob o mouse (ou tocado): nome, foto, balão com o tempo e relógio, preço de compra, XP total, porções e lucro por unidade. Sem prato em foco, mostra uma dica "Sabia que...?".
+- Favoritos pelo + de cada card, guardados no navegador (`localStorage`).
+- Arte em `game/public/assets/ui/recipe-book/`: livro, card, abas, botão Cozinhar (normal, hover e press), relógio e seta, trazidos do clone. O arabesco dos cards foi extraído do `inside_food_card.png` anterior.
+
+### Alterado
+
+- Cozinhar fica só no botão verde, como no original; clicar no card mostra o prato no painel. Sem caféOuros suficientes, o botão fica cinza e o painel avisa. O servidor continua validando o ouro.
+- Tempos no formato do livro original: "3 min", "35 min", "6.0 hs". `recipeTimeLabel` deu lugar a `recipeBookTime` e `recipeBookTimeLabel`.
+- Ícones de recursos, XP e moeda reaproveitam o atlas do HUD (`icon_bundle_1.png`); o botão de fechar continua o mesmo.
+
+### Removido
+
+- `cook_screen.png` e `inside_food_card.png` deixaram de ser carregados pelo livro. Os arquivos continuam na pasta.
+
+### Observações
+
+- Faltam assets do original: a fatia de bolo das porções e o cadeado da aba Especiais (desenhados provisoriamente em código), a arte amarela do "Sabia que...?" com o logo caféGrana e os pratos Pamonha e Tacos Triplos (arte e dados).
+- O catálogo ainda não separa cardápios: todos os pratos do livro estão no Básico. Avançado abre no nível 30; Especiais fica trancada; Deluxe, vazia. Os botões Grana, Ouro e comprar aparecem, mas a compra ainda não existe no jogo.
+- Verificação: typecheck e prévia isolada no Chrome headless com texturas reais (dica, hover, sem ouro, favoritos, página cheia, segunda página e clique em Cozinhar). Sem sessão no quarto ao vivo.
+
+## [0.0.4.27] — 2026-10-08
+
+### Adicionado
+
+- Seção **Encaixe no tile** no Posicionador do Asset Studio. Ela detecta os cantos da base e do tampo pela silhueta, permite arrastá-los e mede os ângulos da arte em relação a 26,565°. Também encaixa base ou tampo na pegada em três modos: só mover (1:1), escala uniforme ou correção de ângulo com verticais preservadas.
+- `tools/asset-positioner/fit-geometry.js`: detecção, solução e reamostragem compartilhadas entre o Studio e Node.
+- `npm run assets:fit` (`scripts/fit-item-art.mjs`): relatório de ângulos e desvios dos móveis cadastrados, prévias sobre o contorno do tile e regravação com `--write`. `scripts/png.mjs` lê e grava PNG sem dependências.
+
+### Alterado
+
+- `STOVE_DISH_Y` passou de 2 para 11 e `COUNTER_DISH_Y`, de 2 para 9, acompanhando a nova altura do tampo do fogão e do balcão.
+
+### Corrigido
+
+- Arte do fogão (`starter_stove`) e do balcão (`starter_counter`) desalinhada com o tile. As arestas estavam entre 27,4° e 30,2°, e os cantos do fogão, até 4,4 px acima dos cantos do tile. Agora o fogão encaixa pela base e o balcão pelo tampo, a 26,565°, com desvio de 0,1–0,2 px nas quatro rotações. O corpo do balcão continua recuado sob o tampo.
+
+### Observações
+
+- A correção de ângulo reamostra a arte: escala vertical de 89–92% no fogão e de 92–93% no balcão, com ajuste horizontal por face. Os modos uniforme e só mover preservam o ângulo original e deixam 2–4 px de desvio nesses itens.
+- Cadeira, caixa de correio, arbusto e mesa não formam um losango pela silhueta (pés, folhas, toalha). O relatório os marca, e os cantos precisam ser posicionados manualmente no Studio.
+- Verificação: medição dos PNGs regravados com `npm run assets:fit`; `npm run assets:room`; fluxo do Studio no Chrome headless (detectar, encaixar nos três modos, espelhar e ler offsets). Typecheck rodado. Sem conferência visual dentro do quarto ao vivo.
+
+## [0.0.4.26] — 2026-10-08
+
+### Adicionado
+
+- Apoio do prato medido na junta da mão direita em cada quadro do atlas do chef. Ajustes finos relativos à mão em `CARRIED_DISH_HAND_X/Y`, em `DishPresentation.ts`.
+- Oito vistas próprias da animação de transporte, mantendo a mão direita nas direções que antes usavam espelhamento.
+
+### Alterado
+
+- Chef transporta o prato com o braço na pose de carregar. Ao parar, mantém a pose sem caminhar no lugar; ao entregar, volta à animação normal.
+- Âncora do prato carregado passa para sua borda inferior, acompanhando a mão na caminhada e na animação de colocar na bancada.
+
+### Corrigido
+
+- Prato baixo, próximo ao chão, e desconectado do braço durante o passo. A posição agora vem do quadro renderizado, em vez de offsets fixos por direção.
+- Espelhamento que trocava a mão de apoio no transporte. Na animação de colocar, a mão correspondente é selecionada também nos quadros espelhados.
+
+### Removido
+
+- Bandeja do modelo 3D na animação de transporte; o prato 2D ocupa seu lugar.
+
+### Observações
+
+- Tamanho 140 preservado; imagens existentes, profundidade do personagem no quarto, simulação e calibração da hitbox permanecem iguais.
+- Typecheck e Playwright/Chromium com WebGL: quatro quadros de caminhada nas oito direções, contato entre mão e borda do prato, camadas, parada, entrega, atlas sem o clipe novo e troca de tile na metade do passo. Conferência isolada, sem sessão multiplayer completa.
+- Recarregar o jogo gera os novos quadros do avatar. Durante o carregamento, a posição aproximada mantém o prato elevado.
+
+## [0.0.4.25] — 2026-10-08
+
+### Adicionado
+
+- Posições do prato na mão direita para as direções cima-direita, cima e cima-esquerda, ajustáveis em `DishPresentation.ts`.
+
+### Alterado
+
+- De costas, o prato carregado passa para trás do corpo e para o lado da mão direita. Nas demais direções, conserva a posição frontal.
+- Camadas internas do personagem ordenadas como sombra, prato traseiro, corpo e prato frontal, sem alterar sua profundidade no quarto.
+
+### Corrigido
+
+- Prato desenhado sobre as costas do chef ao caminhar para cima. A camada e o deslocamento agora acompanham as mudanças de direção.
+
+### Removido
+
+- Nenhum.
+
+### Observações
+
+- Preservados os ajustes locais de tamanho do prato (140) e altura frontal (-20).
+- Verificados os tipos e a renderização isolada Chromium/WebGL nas oito direções, incluindo troca de direção, ordem das camadas e acompanhamento do personagem. Sem sessão multiplayer completa.
+- Sem alterações nas imagens, na simulação ou na calibração da hitbox.
+
+## [0.0.4.24] — 2026-10-08
+
+### Adicionado
+
+- Balão de hover para comida pronta no fogão: "Prato pronto." e "Clique para servir!", com interior branco, contorno marrom e exterior transparente.
+
+### Alterado
+
+- Pratos na mesa, no fogão pronto e na mão do chef usam a mesma escala de 104 px da bancada, preservando a proporção da textura.
+- Prato carregado posicionado diante do peito, próximo à cabeça, cobrindo o braço; acompanha a interpolação e a camada do chef.
+
+### Corrigido
+
+- Prato do cliente maior que o da bancada (132 px).
+- Prato carregado pequeno (56 px) e independente da camada do personagem.
+- Escala e apoio do prato pronto no fogão, tanto na transição de preparo quanto ao restaurar o estado compartilhado.
+- Hover e clique de servir também sobre a arte dos pratos dos fogões compartilhados. Comida estragada, serviço em andamento e modo construção não exibem o balão de pronto.
+
+### Removido
+
+- Nenhum.
+
+### Observações
+
+- Verificados os tipos e um cenário isolado Chromium/WebGL com os assets reais, transições de preparo, hover e chef nas oito direções. Não foi executada uma sessão multiplayer completa.
+- Assets existentes preservados; o novo balão é vetorial, com transparência real fora da borda. A calibração de movimento e hitbox permanece igual.
+
+## [0.0.4.23] — 2026-10-08
+
+### Adicionado
+
+- Nenhum.
+
+### Alterado
+
+- Os comandos de compilação Go agora reutilizam o console do launcher no Windows, evitando janelas de terminal separadas para as ferramentas auxiliares.
+
+### Corrigido
+
+- A compilação inicial não deve mais abrir e fechar repetidamente janelas de console no Windows.
+
+### Removido
+
+- Nenhum.
+
+### Observações
+
+- Os servidores continuam em processos separados para que o launcher possa salvar os quartos antes de encerrá-los. A alteração vale na próxima inicialização.
+
 ## [0.0.4.22] — 2026-10-07
 
 ### Adicionado

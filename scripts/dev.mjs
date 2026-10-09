@@ -49,7 +49,10 @@ function launch(command, args, cwd, options = {}, service = false) {
 }
 function compile(go, path, binary) {
   return new Promise((resolve, reject) => {
-    const child = launch(go, ['build', '-o', binary, path], root);
+    // Go build starts several helper processes; keep them in the launcher's console on Windows.
+    const child = launch(go, ['build', '-o', binary, path], root, {
+      detached: process.platform !== 'win32',
+    });
     child.once('error', () => reject(new Error('Go não encontrado. Instale Go 1.27+ ou configure COFFE_GO.')));
     child.once('close', (code) => code === 0 ? resolve() : reject(new Error(`Falha ao compilar ${path}.`)));
   });

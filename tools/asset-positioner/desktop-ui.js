@@ -159,6 +159,7 @@
     sectionGroup(sections[0], 'Documento');
     sectionGroup(sections[1], cutter ? 'Máscara isométrica' : 'Gabarito e pegada');
     sectionGroup(sections[2], cutter ? 'Transformação da imagem' : 'Transformação');
+    if (!cutter && sections[5]) sectionGroup(sections[5], 'Encaixe no tile');
     // Nested notes also fold away, while every original input remains accessible.
     left.querySelectorAll('.panel-body div > p.muted').forEach(help);
     left.querySelectorAll('button').forEach((button) => button.classList.add('full-width'));

@@ -9,38 +9,38 @@
   "legacyClassName": "StainlessSteelKitchenCounter",
   "sizeX": 1,
   "sizeY": 1,
-  "itemHeight": 41,
+  "itemHeight": 32,
   "parts": [
     {
       "file": "rotation-0.png",
       "width": 160,
-      "height": 119,
+      "height": 112,
       "left": -80,
-      "top": -39,
+      "top": -32,
       "rotation": 0
     },
     {
       "file": "rotation-1.png",
       "width": 160,
-      "height": 119,
+      "height": 112,
       "left": -80,
-      "top": -39,
+      "top": -32,
       "rotation": 1
     },
     {
       "file": "rotation-2.png",
       "width": 160,
-      "height": 121,
+      "height": 111,
       "left": -80,
-      "top": -41,
+      "top": -31,
       "rotation": 2
     },
     {
       "file": "rotation-3.png",
       "width": 160,
-      "height": 121,
+      "height": 111,
       "left": -80,
-      "top": -41,
+      "top": -31,
       "rotation": 3
     }
   ]

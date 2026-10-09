@@ -49,9 +49,20 @@ export const UI_TOP_BARS_URLS = {
   icons: new URL('assets/ui/icon_bundle_1.png', new URL(base, document.baseURI)).href,
 } as const;
 
-/** Livro de receitas (cook screen) e card interno de comida. */
-export const UI_COOK_SCREEN_URL = new URL('assets/ui/cook_screen.png', new URL(base, document.baseURI)).href;
-export const UI_FOOD_CARD_URL = new URL('assets/ui/inside_food_card.png', new URL(base, document.baseURI)).href;
+/**
+ * Livro de Receitas: arte do livro original (folha 1448 × 1086), card de prato, abas, relógio e seta.
+ * O botão Cozinhar, o + e os ícones do card são desenhados em CookScreenModal.
+ */
+const recipeBookUrl = (file: string) => new URL(`assets/ui/recipe-book/${file}`, new URL(base, document.baseURI)).href;
+export const UI_RECIPE_BOOK_URLS = {
+  book: recipeBookUrl('book.png'),
+  card: new URL('assets/ui/inside_food_card.png', new URL(base, document.baseURI)).href,
+  tab: recipeBookUrl('tab.png'),
+  tabHover: recipeBookUrl('tab-hover.png'),
+  tabActive: recipeBookUrl('tab-active.png'),
+  clock: recipeBookUrl('clock.png'),
+  pageArrow: recipeBookUrl('page-arrow.png'),
+} as const;
 export const UI_COOK_PROGRESS_URLS = {
   back: new URL('assets/ui/cook_prog_bar_1.png', new URL(base, document.baseURI)).href,
   front: new URL('assets/ui/cook_prog_bar_2.png', new URL(base, document.baseURI)).href,
@@ -170,8 +181,7 @@ export const GAME_ASSET_URLS: readonly string[] = [
   UI_TOP_BARS_URLS.back,
   UI_TOP_BARS_URLS.front,
   UI_TOP_BARS_URLS.icons,
-  UI_COOK_SCREEN_URL,
-  UI_FOOD_CARD_URL,
+  ...Object.values(UI_RECIPE_BOOK_URLS),
   ...Object.values(UI_COOK_PROGRESS_URLS),
   ...Object.values(UI_WARDROBE_URLS),
   ...UI_WARDROBE_ICON_URLS,
@@ -379,10 +389,19 @@ export interface ButtonsCollectionJson {
   }>;
 }
 
-/** Carrega as texturas da tela de receitas do fogão. */
+export interface RecipeBookTextures {
+  book: Texture;
+  card: Texture;
+  tab: { idle: Texture; hover: Texture; active: Texture };
+  clock: Texture;
+  pageArrow: Texture;
+  /** Atlas dos ícones do HUD (caféGrana, caféOuro, XP, energia, suprimentos), recortado com TOP_BAR_ICON_FRAMES. */
+  hudIcons: Texture;
+}
+
+/** Carrega as texturas do Livro de Receitas e do preparo no fogão. */
 export async function loadCookScreenTextures(): Promise<{
-  cookScreen: Texture;
-  foodCard: Texture;
+  book: RecipeBookTextures;
   closeButton: Texture;
   recipes: RecipeArt[];
   progressBack: Texture;
@@ -390,9 +409,17 @@ export async function loadCookScreenTextures(): Promise<{
   progressCallout: Texture;
   calloutClock: Texture;
 }> {
-  const [cookScreen, foodCard, buttonsSheet, buttonsData, recipes, progressBack, progressFront, progressCallout, calloutClock] = await Promise.all([
-    Assets.load<Texture>(UI_COOK_SCREEN_URL),
-    Assets.load<Texture>(UI_FOOD_CARD_URL),
+  const urls = UI_RECIPE_BOOK_URLS;
+  const [bookTextures, hudIcons] = await Promise.all([
+    Promise.all([urls.book, urls.card, urls.tab, urls.tabHover, urls.tabActive, urls.clock, urls.pageArrow].map(loadResourceIcon)),
+    loadResourceIcon(UI_TOP_BARS_URLS.icons),
+  ]);
+  const [bookArt, card, tab, tabHover, tabActive, clock, pageArrow] = bookTextures;
+  const book: RecipeBookTextures = {
+    book: bookArt, card, clock, pageArrow, hudIcons,
+    tab: { idle: tab, hover: tabHover, active: tabActive },
+  };
+  const [buttonsSheet, buttonsData, recipes, progressBack, progressFront, progressCallout, calloutClock] = await Promise.all([
     Assets.load<Texture>(UI_BUTTONS_COLLECTION_URL),
     Assets.load<ButtonsCollectionJson>(UI_BUTTONS_POSITIONS_URL).catch(() => null),
     loadRecipeArt(),
@@ -412,14 +439,12 @@ export async function loadCookScreenTextures(): Promise<{
     frame,
   });
 
-  cookScreen.source.autoGenerateMipmaps = true;
-  foodCard.source.autoGenerateMipmaps = true;
   buttonsSheet.source.autoGenerateMipmaps = true;
   progressBack.source.autoGenerateMipmaps = true;
   progressFront.source.autoGenerateMipmaps = true;
   progressCallout.source.autoGenerateMipmaps = true;
 
-  return { cookScreen, foodCard, closeButton, recipes, progressBack, progressFront, progressCallout, calloutClock };
+  return { book, closeButton, recipes, progressBack, progressFront, progressCallout, calloutClock };
 }
 
 /**

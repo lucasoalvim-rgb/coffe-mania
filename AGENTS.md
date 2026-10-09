@@ -1,4 +1,4 @@
-# Coffe Mania 0.0.4.22 — instruções para agentes de IA
+# Coffe Mania 0.0.4.30 — instruções para agentes de IA
 
 Este documento reúne contexto técnico, referências, comandos e critérios de verificação para continuar o desenvolvimento. O README.md da raiz fica reservado aos textos do responsável pelo projeto; não o preencha automaticamente.
 
@@ -26,7 +26,7 @@ No Discord do projeto existem imagens dos assets em PNG. Esses arquivos precisam
 
 Use o Asset Studio em tools/asset-positioner/ para esse processamento:
 
-- Posicionador: apoio no chão, pegada, tamanho, offsets e exportação PNG/JSON.
+- Posicionador: apoio no chão, pegada, tamanho, offsets e exportação PNG/JSON. A seção Encaixe no tile mede o ângulo da arte e alinha base ou tampo ao losango; Corrigir ângulo leva as arestas a 26,565° sem tombar as verticais. `npm run assets:fit` faz o mesmo relatório e a mesma correção nos itens cadastrados.
 - Image Cutter: seleção e recorte pela máscara isométrica, inclusive itens altos.
 - Twister: conversão de paredes e pisos entre projeção isométrica e textura retangular.
 
@@ -147,11 +147,11 @@ npm run assets:room
 
 O comando valida os manifestos e sincroniza os catálogos do cliente e de `shared/roomcatalog/`. Ele também valida as receitas de `game/public/assets/foods/<id>/` (`recipe.json`, `stage_1.png` no fogão e `stage_2.png` pronto) e gera `foods/catalog.json` e `shared/recipecatalog/catalog.json`. Custo, tempo, porções, lucro e XP são regras do servidor; registre a fonte de cada número em `source`. Reinicie os serviços para recompilar o catálogo incorporado ao Go. Aparência e texturas do avatar ficam em `game/public/assets/avatar/`; os catálogos de validação do servidor ficam em `database/appearance/` e `database/npcappearance/`.
 
-`npm run typecheck` verifica os tipos. `npm run build` gera o cliente em `game/dist/`, mas não é necessário para o modo dev. A versão do jogo é `0.0.4.22` em `VERSION`, nos campos `gameVersion`, em `shared/buildinfo/version.go` e em `game/src/core/version.ts`. O campo npm `version` usa `0.0.4-22` por compatibilidade com SemVer.
+`npm run typecheck` verifica os tipos. `npm run build` gera o cliente em `game/dist/`, mas não é necessário para o modo dev. A versão do jogo é `0.0.4.30` em `VERSION`, nos campos `gameVersion`, em `shared/buildinfo/version.go` e em `game/src/core/version.ts`. O campo npm `version` usa `0.0.4-30` por compatibilidade com SemVer.
 
 ### Versionamento e changelog
 
-Cada conjunto de mudanças entregue sobe o último número da versão (`0.0.4.22` → `0.0.4.23`) em todos os locais acima, no `package-lock.json` e no título do Asset Studio (`tools/asset-positioner/README.md` e `index.html`), e ganha uma entrada no `CHANGELOG.md` com as seções Adicionado, Alterado, Corrigido, Removido e Observações. O título do `README.md` é do responsável pelo projeto: avise-o em vez de editar.
+Cada conjunto de mudanças entregue sobe o último número da versão (`0.0.4.30` → `0.0.4.31`) em todos os locais acima, no `package-lock.json` e no título do Asset Studio (`tools/asset-positioner/README.md` e `index.html`), e ganha uma entrada no `CHANGELOG.md` com as seções Adicionado, Alterado, Corrigido, Removido e Observações. O título do `README.md` é do responsável pelo projeto: avise-o em vez de editar.
 
 ## Ferramentas de assets
 

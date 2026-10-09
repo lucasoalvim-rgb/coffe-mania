@@ -71,7 +71,7 @@ export const CLIP_SHOW_OBJECTS: readonly (readonly string[])[] = [
   [],
   [],
   [],
-  ['tray'],
+  [], // O prato 2D ocupa a mão no transporte; não assar a bandeja do modelo junto.
   [],
   [],
   [],
@@ -161,8 +161,10 @@ export function resolveDirection(direction: number): ResolvedDirection {
   return dir >= 5 ? { source: 8 - dir, mirrored: true } : { source: dir, mirrored: false };
 }
 
-/** Direções que precisam ser assadas para um clipe (sem as espelhadas). */
+/** Direções assadas: clipes simétricos omitem as vistas que podem ser espelhadas. */
 export function bakedDirections(clip: number): number[] {
+  // O transporte é assimétrico: espelhar trocaria a mão direita pela esquerda.
+  if (clip === CLIP.WAITOR_WALK) return [...DIRECTIONS_ALL];
   const pedidas = CLIP_DIRECTIONS[clip] ?? DIRECTIONS_ALL;
   const fontes = new Set(pedidas.map((direction) => resolveDirection(direction).source));
   return [...fontes].sort((a, b) => a - b);

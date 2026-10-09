@@ -47,10 +47,15 @@ export async function loadRecipeArt(): Promise<RecipeArt[]> {
   }));
 }
 
-/** Tempo no formato do card original do Livro de Receitas: "8 minutos", "6.0 horas". */
-export function recipeTimeLabel(seconds: number): string {
+/** Tempo como no Livro de Receitas original: "3 min", "35 min", "6.0 hs", "12.0 hs". */
+export function recipeBookTime(seconds: number): { value: string; unit: string } {
   const minutes = Math.round(seconds / 60);
-  if (minutes < 1) return `${seconds} segundos`;
-  if (minutes < 60) return `${minutes} ${minutes === 1 ? 'minuto' : 'minutos'}`;
-  return `${(minutes / 60).toFixed(1)} horas`;
+  if (minutes < 1) return { value: String(Math.max(1, Math.round(seconds))), unit: 's' };
+  if (minutes < 60) return { value: String(minutes), unit: 'min' };
+  return { value: (minutes / 60).toFixed(1), unit: 'hs' };
+}
+
+export function recipeBookTimeLabel(seconds: number): string {
+  const { value, unit } = recipeBookTime(seconds);
+  return `${value} ${unit}`;
 }
