@@ -109,7 +109,17 @@ export class StoreActionBar {
     const settingsX = barWidth - 62;
     const confirmX = settingsX - SETTINGS_BUTTON_SIZE / 2 - CLOSE_BUTTON_SIZE / 2 - HEADER_BUTTON_GAP;
     const topExtent = Math.max(CLOSE_BUTTON_SIZE * 0.55, topTabHeight + TOP_TAB_LIFT);
-    content.hitArea = new Rectangle(0, -topExtent, barWidth, barHeight + topExtent);
+    // Acima do corpo da barra só contam as abas e os botões que sobem dela: o resto da faixa mostra
+    // a sala e precisa deixar o clique passar (pegar e colocar móveis na parte de baixo da sala).
+    const body = new Rectangle(0, 0, barWidth, barHeight);
+    content.hitArea = {
+      contains: (x: number, y: number) => {
+        if (body.contains(x, y)) return true;
+        if (y >= 0 || y < -topExtent) return false;
+        return content.children.some((child) => child.eventMode === 'static' && child.visible && Boolean(child.hitArea?.contains(
+          (x - child.x) / (child.scale.x || 1), (y - child.y) / (child.scale.y || 1))));
+      },
+    };
     content.eventMode = 'static';
     for (const name of ['pointerdown', 'pointerup', 'pointertap', 'wheel'] as const) {
       content.on(name, (event) => event.stopPropagation());

@@ -116,10 +116,11 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(400, "Pedido inválido.")
 		}
 		body, err = mutateRoom(app, op.Owner, op.Action, command)
-	case "cook_start", "cook_serve", "cook_cancel", "cook_clean":
+	case "cook_start", "cook_serve", "cook_cancel", "cook_clean", "cook_spice":
 		var command struct {
 			StoveID  string `json:"stoveId"`
 			RecipeID string `json:"recipeId"`
+			Spice    string `json:"spice"`
 		}
 		if json.Unmarshal(op.Body, &command) != nil || command.StoveID == "" {
 			return fail(400, "Pedido inválido.")
@@ -133,6 +134,8 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			err = cancelCooking(app, op.Owner, command.StoveID, types.NowDateTime())
 		case "cook_clean":
 			err = cleanStove(app, op.Owner, command.StoveID)
+		case "cook_spice":
+			err = spiceDish(app, op.Owner, command.StoveID, command.Spice, types.NowDateTime())
 		}
 		if err == nil {
 			body, err = snapshotCooking(app, op.Owner, types.NowDateTime())
@@ -148,7 +151,11 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(400, err.Error())
 		case errors.Is(err, errUnknownRecipe):
 			return fail(400, "Receita inválida.")
-		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel), errors.Is(err, errNoCounter),
+		case errors.Is(err, errUnknownSpice):
+			return fail(400, err.Error())
+		case errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoCash):
+			return fail(409, err.Error())
+		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel), errors.Is(err, errNoCounter),
 			errors.Is(err, errStoveDirty), errors.Is(err, errStoveClean), errors.Is(err, errDishSpoiled):
 			return fail(409, err.Error())
 		default:

@@ -21,8 +21,9 @@ var errRoomGold = errors.New("Ouro insuficiente.")
 var errRoomPosition = errors.New("Posição inválida ou ocupada para este item.")
 var errRoomOwned = errors.New("Esta unidade não pertence ao seu inventário.")
 var errRoomOperation = errors.New("Identificador de operação já utilizado em outro pedido.")
-var errRoomBusy = errors.New("Não é possível mover um fogão durante o preparo.")
+var errRoomBusy = errors.New("Não é possível guardar um fogão com comida.")
 var errCounterBusy = errors.New("Não é possível guardar um balcão com comida.")
+var errKitchenLimit = errors.New("Você já tem o máximo de itens deste tipo permitido no seu nível.")
 
 const starterCounterItemID = 3020069
 
@@ -216,6 +217,25 @@ func ensureStarterCounter(app core.App, userID string) error {
 	})
 }
 
+// kitchenLimit is how many stoves or counters a level may own (stored ones included), as in the
+// original: the FAQ ties both to the level; players report 3 of each at level 1, +1 counter at
+// level 5 and +1 stove at level 6. Later steps are not documented yet. 0 means no limit.
+func kitchenLimit(kind string, level int) int {
+	switch kind {
+	case "stove":
+		if level >= 6 {
+			return 4
+		}
+		return 3
+	case "counter":
+		if level >= 5 {
+			return 4
+		}
+		return 3
+	}
+	return 0
+}
+
 func snapshotRoom(app core.App, userID string) (roomSnapshot, error) {
 	result := roomSnapshot{RoomID: userID, CanEdit: true, Inventory: []roomUnit{}, Catalog: roomcatalog.Items}
 	room, err := app.FindFirstRecordByData("player_rooms", "user", userID)
@@ -308,8 +328,36 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 			if err != nil {
 				return err
 			}
+			if limit := kitchenLimit(item.Kind, state.GetInt("level")); limit > 0 {
+				owned, err := tx.FindRecordsByFilter("player_inventory", "user={:user}", "", 0, 0, dbx.Params{"user": userID})
+				if err != nil {
+					return err
+				}
+				count := 0
+				for _, other := range owned {
+					if otherItem, ok := roomcatalog.ByID(other.GetInt("item_id")); ok && otherItem.Kind == item.Kind {
+						count++
+					}
+				}
+				if count >= limit {
+					return errKitchenLimit
+				}
+			}
 			unit = core.NewRecord(collection)
 			unit.Load(map[string]any{"user": userID, "item_id": item.ID, "layer": roomcatalog.Layer(item)})
+			if item.Kind == "stove" {
+				// Each stove unit owns one cooking slot; its position is kept in sync below.
+				stoves, err := tx.FindCollectionByNameOrId("player_stoves")
+				if err != nil {
+					return err
+				}
+				stove := core.NewRecord(stoves)
+				stove.Load(map[string]any{"user": userID, "item_id": item.ID, "tx": *command.TX, "ty": *command.TY})
+				if err := tx.Save(stove); err != nil {
+					return err
+				}
+				unit.Set("stove_id", stove.Id)
+			}
 			state.Set("gold", state.GetInt64("gold")-item.PriceGold)
 			if err := tx.Save(state); err != nil {
 				return err
@@ -324,7 +372,8 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 			if !ok || roomcatalog.Layer(item) == "structure" {
 				return errRoomPosition
 			}
-			if stoveID := unit.GetString("stove_id"); stoveID != "" {
+			// A stove keeps cooking while it moves (the dish goes with it); it cannot be stored.
+			if stoveID := unit.GetString("stove_id"); stoveID != "" && action == "store" {
 				_, err := tx.FindFirstRecordByData("stove_cooking", "stove", stoveID)
 				if err == nil {
 					return errRoomBusy
@@ -502,7 +551,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 					return r.NotFoundError(err.Error(), nil)
 				case errors.Is(err, errRoomPosition):
 					return r.BadRequestError(err.Error(), nil)
-				case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy):
+				case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit):
 					return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 				default:
 					return r.InternalServerError("Não foi possível salvar esta operação.", err)

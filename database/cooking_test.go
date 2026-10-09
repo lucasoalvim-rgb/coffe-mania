@@ -252,3 +252,104 @@ func TestStoveCycleDirtySpoiledAndClean(t *testing.T) {
 		t.Fatal("o prato jogado fora sai do fogão")
 	}
 }
+
+func TestBuyingStoveCreatesCookingSlotWithinLevelLimit(t *testing.T) {
+	app, userID := newCookingTestApp(t)
+	state, _ := app.FindFirstRecordByData(playerstate.Collection, "user", userID)
+	state.Set("gold", 100000)
+	if err := app.Save(state); err != nil {
+		t.Fatal(err)
+	}
+	buy := func(tx, ty int, key string) (roomSnapshot, error) {
+		room, _ := app.FindFirstRecordByData("player_rooms", "user", userID)
+		revision, rotation := room.GetInt("revision"), 1
+		return mutateRoom(app, userID, "purchase", roomCommand{ItemID: starterStoveItemID, TX: &tx, TY: &ty, Rotation: &rotation, Revision: &revision, RequestID: "buy-stove-" + key + "-000000"})
+	}
+	snapshot, err := buy(4, 6, "a")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var bought *roomUnit
+	for i, u := range snapshot.Inventory {
+		if u.ItemID == starterStoveItemID && u.TX == 4 && u.TY == 6 {
+			bought = &snapshot.Inventory[i]
+		}
+	}
+	if bought == nil || bought.StoveID == "" {
+		t.Fatalf("o fogão comprado precisa de um lugar de cozinha: %+v", bought)
+	}
+	if err := startCooking(app, userID, bought.StoveID, "nachos", types.NowDateTime()); err != nil {
+		t.Fatalf("o fogão comprado cozinha: %v", err)
+	}
+	if _, err := buy(5, 6, "b"); err != nil {
+		t.Fatal(err)
+	}
+	// Nível 1: 3 fogões (o inicial e os dois comprados).
+	if _, err := buy(6, 6, "c"); !errors.Is(err, errKitchenLimit) {
+		t.Fatalf("o quarto fogão passa do limite do nível 1: %v", err)
+	}
+}
+
+func TestSpicesSpeedUpAndRecoverDishes(t *testing.T) {
+	app, userID := newCookingTestApp(t)
+	stove, _ := app.FindFirstRecordByData("player_stoves", "user", userID)
+	state, _ := app.FindFirstRecordByData(playerstate.Collection, "user", userID)
+	state.Set("gold", 10000)
+	state.Set("cash", 10)
+	if err := app.Save(state); err != nil {
+		t.Fatal(err)
+	}
+	cash := func() int64 {
+		s, _ := app.FindFirstRecordByData(playerstate.Collection, "user", userID)
+		return s.GetInt64("cash")
+	}
+	if err := startCooking(app, userID, stove.Id, "churrasco", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	job, _ := app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
+	before := job.GetDateTime("ready_at").Time()
+	if err := spiceDish(app, userID, stove.Id, "thyme", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	job, _ = app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
+	if d := before.Sub(job.GetDateTime("ready_at").Time()); d != time.Hour || cash() != 9 {
+		t.Fatalf("Tomilho Acelerador tira 1 hora e custa 1 caféGrana: %v, %d", d, cash())
+	}
+	if err := spiceDish(app, userID, stove.Id, "instant", types.NowDateTime()); !errors.Is(err, errAlreadySpiced) {
+		t.Fatalf("cada prato só pode ser temperado uma vez: %v", err)
+	}
+
+	// Sálvia Salvadora: só no prato estragado, que volta a ficar pronto.
+	if err := cancelCooking(app, userID, stove.Id, types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	if err := cleanStove(app, userID, stove.Id); err != nil {
+		t.Fatal(err)
+	}
+	if err := startCooking(app, userID, stove.Id, "nachos", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	if err := spiceDish(app, userID, stove.Id, "sage", types.NowDateTime()); !errors.Is(err, errSpiceNotUsable) {
+		t.Fatalf("sálvia só serve para prato estragado: %v", err)
+	}
+	job, _ = app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
+	job.Set("ready_at", types.NowDateTime().Add(-2*time.Hour))
+	if err := app.Save(job); err != nil {
+		t.Fatal(err)
+	}
+	if err := spiceDish(app, userID, stove.Id, "sage", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	if err := serveCooking(app, userID, stove.Id, types.NowDateTime()); err != nil {
+		t.Fatalf("depois da sálvia o prato vai ao balcão: %v", err)
+	}
+
+	state, _ = app.FindFirstRecordByData(playerstate.Collection, "user", userID)
+	state.Set("cash", 0)
+	_ = app.Save(state)
+	_ = cleanStove(app, userID, stove.Id)
+	_ = startCooking(app, userID, stove.Id, "churrasco", types.NowDateTime())
+	if err := spiceDish(app, userID, stove.Id, "instant", types.NowDateTime()); !errors.Is(err, errNoCash) {
+		t.Fatalf("sem caféGranas: %v", err)
+	}
+}
