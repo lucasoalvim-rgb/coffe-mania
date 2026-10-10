@@ -21,15 +21,16 @@ type Resource struct {
 }
 
 type Snapshot struct {
-	Appearance   string   `json:"appearance"`
-	CafeName     string   `json:"cafeName"`
-	Cash         int64    `json:"cash"`
-	Gold         int64    `json:"gold"`
-	Level        int      `json:"level"`
-	Experience   Resource `json:"experience"`
-	Energy       Resource `json:"energy"`
-	Crates       Resource `json:"crates"`
-	Satisfaction Resource `json:"satisfaction"`
+	SpiceInventory map[string]int64 `json:"spiceInventory"`
+	Appearance     string           `json:"appearance"`
+	CafeName       string           `json:"cafeName"`
+	Cash           int64            `json:"cash"`
+	Gold           int64            `json:"gold"`
+	Level          int              `json:"level"`
+	Experience     Resource         `json:"experience"`
+	Energy         Resource         `json:"energy"`
+	Crates         Resource         `json:"crates"`
+	Satisfaction   Resource         `json:"satisfaction"`
 }
 
 // Initial resources for newly provisioned players.
@@ -47,14 +48,20 @@ func NewRecord(collection *core.Collection, userID string) *core.Record {
 }
 
 func View(record *core.Record) Snapshot {
+	stock := map[string]int64{}
+	_ = record.UnmarshalJSONField("spice_inventory", &stock)
+	if stock == nil {
+		stock = map[string]int64{}
+	}
 	resource := func(current, maximum string, divisor float64) Resource {
 		return Resource{record.GetFloat(current) / divisor, record.GetFloat(maximum) / divisor}
 	}
 	return Snapshot{
-		Appearance: record.GetString("appearance"),
-		CafeName:   record.GetString("cafe_name"),
-		Cash:       record.GetInt64("cash"), Gold: record.GetInt64("gold"), Level: record.GetInt("level"),
 		Experience:   resource("experience_current", "experience_max", 1),
+		SpiceInventory: stock,
+		Appearance:     record.GetString("appearance"),
+		CafeName:       record.GetString("cafe_name"),
+		Cash:           record.GetInt64("cash"), Gold: record.GetInt64("gold"), Level: record.GetInt("level"),
 		Energy:       resource("energy_current", "energy_max", 1),
 		Crates:       resource("crates_current", "crates_max", 1),
 		Satisfaction: resource("satisfaction_current_tenths", "satisfaction_max_tenths", 10),

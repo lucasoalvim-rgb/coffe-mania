@@ -1,7 +1,7 @@
 import type { Sprite, Texture } from 'pixi.js';
 
 /** Mesma escala de arte no fogão pronto, balcão, mesa e transporte. */
-export const READY_DISH_SIZE = 140;
+export const READY_DISH_SIZE = 100;
 /** A borda inferior do prato apoia na mão, não o centro do seu PNG. */
 export const CARRIED_DISH_ANCHOR_Y = 0.96;
 export const CARRIED_DISH_HAND_X = 0;

@@ -38,6 +38,7 @@ import {
 import { CookProgressBar } from './CookProgressBar';
 import { CookProgressCallout } from './CookProgressCallout';
 import { ReadyDishCallout } from './ReadyDishCallout';
+import { SpoiledDishCallout } from './SpoiledDishCallout';
 import { carriedDishPose, fitDish } from './DishPresentation';
 import { DoorView } from './DoorView';
 import { doorOpeningTile } from '../../world/doorGeometry';
@@ -69,7 +70,9 @@ import { RoomDepthSorter, setItemOverlayDepth } from './RoomDepthSorter';
 import { OutsideNpcManager, type PreparedNpcView } from './OutsideNpcManager';
 import { createProceduralWallView, type WallWallpaper } from './ProceduralWallView';
 import { TopBars, type TopBarsTextures } from './TopBars';
-import type { PlayerState } from '../../game/player-state';
+import { loadPlayerState, type PlayerState } from '../../game/player-state';
+import { canUseSpice, type SpiceId, type SpiceScreenTextures } from '../../game/spices';
+import { SpiceScreenModal } from './SpiceScreenModal';
 import { cookingTime, type CookingClient, type CookingSnapshot, type CookingSpice, type StoveCooking } from '../../game/cooking';
 import {
   PAN_KEY_STEP,
@@ -242,6 +245,7 @@ export interface RoomScreenOptions {
   /** Sessão de preparo e estado durável retornados pelo servidor. */
   cookingClient?: CookingClient;
   cookingSnapshot?: CookingSnapshot;
+  spiceTextures?: SpiceScreenTextures;
   wardrobeTextures?: WardrobeScreenTextures;
   onWardrobeVisibilityChange?: (open: boolean) => void;
 }
@@ -260,6 +264,7 @@ export class RoomScreen implements Screen {
 
   /** Modal da tela de receitas aberto ao clicar no fogão. */
   readonly cookModal?: CookScreenModal;
+  readonly spiceModal?: SpiceScreenModal;
   readonly wardrobeModal?: WardrobeScreenModal;
   readonly settingsModal?: SettingsModal;
   readonly storeBar?: StoreActionBar;
@@ -308,6 +313,10 @@ export class RoomScreen implements Screen {
   private readonly heldUnits = new Set<string>();
   /** Temperos que o servidor aceita, com preço em caféGranas (vêm no snapshot da cozinha). */
   private cookingSpices: CookingSpice[] = [];
+  private spiceStove?: RoomItem;
+  private readonly spiceTextures?: SpiceScreenTextures;
+  private readonly spiceMenuTexture?: Texture;
+  private playerState?: PlayerState;
   private cleaningProcess?: { stove: RoomItem; phase: 'walking' | 'requesting' };
   /** Pratos nos balcões, por unidade de inventário do balcão. */
   private readonly counterDishViews = new Map<string, { view: Sprite; label: Text }>();
@@ -348,6 +357,7 @@ export class RoomScreen implements Screen {
   private stoveActionsStove?: RoomItem;
   private cookCallout?: CookProgressCallout;
   private readonly readyCallout = new ReadyDishCallout();
+  private readonly spoiledCallout?: SpoiledDishCallout;
   private hoveredStove?: RoomItem;
   private servingProcess?: {
     stove: RoomItem;
@@ -409,6 +419,9 @@ export class RoomScreen implements Screen {
     this.artProvider = options.artProvider;
     this.cookProgressTextures = options.cookTextures;
     this.cookingClient = options.cookingClient;
+    this.spiceTextures = options.spiceTextures;
+    this.spiceMenuTexture = options.actionBarIcons?.find(({ name }) => name === 'mortar')?.texture;
+    this.playerState = options.playerState ?? options.roomSnapshot?.playerState;
     this.floorClassName = options.floorClassName ?? 'FloorTile';
     this.roomSnapshot = options.roomSnapshot;
     this.realtime = options.realtime;
@@ -613,6 +626,7 @@ export class RoomScreen implements Screen {
           event.stopPropagation();
           if (name === 'shirt') this.openWardrobeScreen();
           if (name === 'house') this.openStoreBar();
+          if (name === 'mortar') this.openSpiceScreen();
         });
         this.actionBarLayer.addChild(holder);
       });
@@ -729,6 +743,11 @@ export class RoomScreen implements Screen {
 
     this.readyCallout.view.zIndex = POPUP_DRAW_PRIORITY + 2;
     this.world.addChild(this.readyCallout.view);
+    if (options.spiceTextures) {
+      this.spoiledCallout = new SpoiledDishCallout(options.spiceTextures.icons.sage, options.spiceTextures.stove.callout);
+      this.spoiledCallout.view.zIndex = POPUP_DRAW_PRIORITY + 2;
+      this.world.addChild(this.spoiledCallout.view);
+    }
     if (options.cookTextures) {
       if (options.cookTextures.progressCallout) {
         this.cookCallout = new CookProgressCallout(options.cookTextures.progressCallout, options.cookTextures.calloutClock);
@@ -742,6 +761,22 @@ export class RoomScreen implements Screen {
         onCookRecipe: (recipe) => this.startCooking(recipe),
       });
       this.view.addChild(this.cookModal.view);
+    }
+    if (options.spiceTextures) {
+      this.spiceModal = new SpiceScreenModal({
+        textures: options.spiceTextures, state: options.playerState,
+        spices: options.cookingSnapshot?.spices,
+        serverNow: () => this.cookingClient?.serverNowMs() ?? 0,
+        onBuy: async (id) => {
+          if (!this.cookingClient) return;
+          const state = await this.cookingClient.buySpice(id);
+          if (!this.destroyed) this.setPlayerState(state);
+        },
+        onUse: (id) => this.useModalSpice(id),
+        onClose: () => { this.spiceStove = undefined; },
+        onError: (message) => this.showNotice(message),
+      });
+      this.view.addChild(this.spiceModal.view);
     }
     if (options.wardrobeTextures) {
       const coveredLayers = [this.backdrop, this.cameraLayer, this.actionBarLayer];
@@ -1151,6 +1186,7 @@ export class RoomScreen implements Screen {
       if (stove.cooking) this.occupiedStoves.set(stove.id, stove.cooking);
       if (stove.dirty) this.dirtyStoves.add(stove.id);
     }
+    this.spiceModal?.setCooking(this.cookingSpices, this.roomSnapshot?.canEdit !== false && this.spiceStove?.instanceId ? this.occupiedStoves.get(this.spiceStove.instanceId) ?? null : null);
     if (!restore || this.cookingProcess) return;
     for (const stove of this.model.items) {
       if (stove.kind !== 'stove' || !stove.instanceId) continue;
@@ -1259,6 +1295,7 @@ export class RoomScreen implements Screen {
     const callout = this.cookCallout;
     if (callout) callout.view.visible = false;
     this.readyCallout.view.visible = false;
+    if (this.spoiledCallout) this.spoiledCallout.view.visible = false;
     const stove = this.hoveredStove;
     if (!stove || this.isModalOpen || this.storeBar?.isOpen || this.stoveActions || this.drag ||
         this.servingProcess?.stove === stove) {
@@ -1267,12 +1304,20 @@ export class RoomScreen implements Screen {
     const process = this.cookingProcess?.stove === stove ? this.cookingProcess : undefined;
     const job = stove.instanceId ? this.occupiedStoves.get(stove.instanceId) : undefined;
     const now = this.cookingClient?.serverNowMs();
+    const spoiled = !!job && now !== undefined && now >= cookingTime(job.spoilsAt);
     const ready = job && now !== undefined
       ? now >= cookingTime(job.readyAt) && !(now >= cookingTime(job.spoilsAt))
       : process?.phase === 'ready';
     const stoveSprite = this.stoveViews.get(stove)?.find((view): view is Sprite => view instanceof Sprite);
     const x = Math.round(stoveSprite ? stoveSprite.x + stoveSprite.width / 2 : tileToScreenX(stove.tx, stove.ty));
     const y = Math.round(stoveSprite ? stoveSprite.y + 6 : tileToScreenY(stove.tx, stove.ty) - 41);
+    if (spoiled) {
+      if (this.spoiledCallout) {
+        this.spoiledCallout.view.position.set(x, y);
+        this.spoiledCallout.view.visible = true;
+      }
+      return;
+    }
     if (ready) {
       this.readyCallout.view.position.set(x, y);
       this.readyCallout.view.visible = true;
@@ -1417,23 +1462,24 @@ export class RoomScreen implements Screen {
       return;
     }
     this.closeStoveActions();
-    const menu = new StoveActionMenu(this.stoveActionsFor(stove));
+    const menu = new StoveActionMenu(this.stoveActionsFor(stove), this.spiceTextures?.stove);
     const stoveSprite = this.stoveViews.get(stove)?.find((view): view is Sprite => view instanceof Sprite);
     const stoveTopX = stoveSprite ? stoveSprite.x + stoveSprite.width / 2 : tileToScreenX(stove.tx, stove.ty);
     const stoveTopY = stoveSprite ? stoveSprite.y : tileToScreenY(stove.tx, stove.ty) - 47;
     // O primeiro botão é o de cima; a referência do ápice recebe uma pequena
     // correção vertical uniforme para qualquer arte de fogão.
     // O menu abre para cima, a partir do tampo: a barra de baixo não cobre os últimos botões.
-    menu.view.position.set(Math.round(stoveTopX), Math.round(stoveTopY + STOVE_MENU_TOP_DROP - menu.view.height));
+    menu.view.position.set(Math.round(stoveTopX), Math.round(stoveTopY + STOVE_MENU_TOP_DROP - menu.height));
     menu.view.zIndex = POPUP_DRAW_PRIORITY + 1;
     this.world.addChild(menu.view);
     this.stoveActions = menu;
     this.stoveActionsStove = stove;
+    this.updateCookingCallout();
     this.updateStoveActionTime();
   }
 
   /**
-   * Como no original: o preparo é acelerado com temperos (caféGranas) e cada prato aceita um só; o
+   * Cada prato aceita um tempero do estoque; o
    * prato estragado só aceita a Sálvia Salvadora. Jogar fora vale em qualquer estágio.
    */
   private stoveActionsFor(stove: RoomItem): StoveAction[] {
@@ -1441,9 +1487,20 @@ export class RoomScreen implements Screen {
     const now = this.cookingClient?.serverNowMs() ?? 0;
     const spoiled = !!job && now >= cookingTime(job.spoilsAt ?? '');
     const ready = !!job && now >= cookingTime(job.readyAt);
-    const spices = this.cookingSpices.filter((spice) => spoiled ? spice.effect === 'recover' : !ready && spice.effect !== 'recover');
+    const spices = this.cookingSpices.filter((spice) => spoiled ? spice.effect === 'recover' : spice.effect === 'portions' || !ready && spice.effect !== 'recover');
     const actions: StoveAction[] = [];
-    if (job?.spice) {
+    if (spoiled) {
+      const sage = this.cookingSpices.find((spice) => spice.effect === 'recover');
+      const hasSage = Boolean(sage && (this.playerState?.spiceInventory?.[sage.id] ?? 0) > 0);
+      actions.push({
+        icon: 'recover', label: hasSage ? 'Usar tempero' : 'Comprar tempero', texture: this.spiceTextures?.icons.sage,
+        disabled: this.roomSnapshot?.canEdit === false || (hasSage
+          ? !sage || !canUseSpice(sage, job ?? null, now) : !this.spiceModal),
+        onTap: () => { if (hasSage && sage) this.useSpice(stove, sage); else this.openSpiceScreen(stove); },
+      });
+    } else if (this.spiceModal) {
+      actions.push({ icon: 'speed', label: 'Temperos', texture: this.spiceMenuTexture, onTap: () => this.openSpiceScreen(stove) });
+    } else if (job?.spice) {
       const used = this.cookingSpices.find((spice) => spice.id === job.spice);
       actions.push({ icon: 'info', label: `Temperado: ${used?.name ?? 'tempero'}` });
     } else {
@@ -1451,7 +1508,7 @@ export class RoomScreen implements Screen {
         actions.push({
           icon: spice.effect === 'instant' ? 'instant' : spice.effect === 'recover' ? 'recover' : 'speed',
           label: spice.name, granas: spice.granas,
-          disabled: (this.roomSnapshot?.playerState?.cash ?? Infinity) < spice.granas,
+          disabled: (this.playerState?.spiceInventory?.[spice.id] ?? 0) <= 0,
           onTap: () => this.useSpice(stove, spice),
         });
       }
@@ -1460,25 +1517,44 @@ export class RoomScreen implements Screen {
     return actions;
   }
 
+  private async useModalSpice(id: SpiceId): Promise<void> {
+    const stove = this.spiceStove;
+    if (stove) await this.applySpice(stove, id);
+  }
+
+  private async applySpice(stove: RoomItem, id: string): Promise<void> {
+    const spice = this.cookingSpices.find((candidate) => candidate.id === id);
+    if (!stove?.instanceId || !spice || !this.cookingClient) return;
+    const snapshot = await this.cookingClient.spice(stove.instanceId, id);
+    if (this.destroyed) return;
+    this.acceptCookingSnapshot(snapshot, false);
+    const job = this.occupiedStoves.get(stove.instanceId);
+    if (this.cookingProcess?.stove === stove && job) {
+      const recipe = this.recipeArt(job.recipeId);
+      if (recipe) this.showCooking(recipe, stove, job, true);
+    }
+    const state = await loadPlayerState();
+    if (this.destroyed) return;
+    this.setPlayerState(state);
+    this.showNotice(`${spice.name} usado.`);
+  }
+
   private useSpice(stove: RoomItem, spice: CookingSpice): void {
     this.closeStoveActions();
-    if (!this.cookingClient || !stove.instanceId) return;
-    void this.cookingClient.spice(stove.instanceId, spice.id).then((snapshot) => {
-      if (this.destroyed) return;
-      this.acceptCookingSnapshot(snapshot, false);
-      const job = this.occupiedStoves.get(stove.instanceId!);
-      // O prato local passa a usar os novos horários (pronto agora ou mais cedo).
-      if (this.cookingProcess?.stove === stove && job) {
-        const recipe = this.recipeArt(job.recipeId);
-        if (recipe) this.showCooking(recipe, stove, job, true);
-      }
-      this.showNotice(`${spice.name} usado.`);
-    }).catch((error: unknown) => {
+    void this.applySpice(stove, spice.id).catch((error: unknown) => {
       if (!this.destroyed && error instanceof Error) this.showNotice(error.message);
     });
   }
 
-  private updateStoveActionTime(): void {}
+  private updateStoveActionTime(): void {
+    const stove = this.stoveActionsStove;
+    const menu = this.stoveActions;
+    if (!menu || !stove || !menu.setActions(this.stoveActionsFor(stove))) return;
+    const sprite = this.stoveViews.get(stove)?.find((view): view is Sprite => view instanceof Sprite);
+    const x = sprite ? sprite.x + sprite.width / 2 : tileToScreenX(stove.tx, stove.ty);
+    const y = sprite ? sprite.y : tileToScreenY(stove.tx, stove.ty) - 47;
+    menu.view.position.set(Math.round(x), Math.round(y + STOVE_MENU_TOP_DROP - menu.height));
+  }
 
   private cancelStoveCooking(stove: RoomItem): void {
     if (this.cancellingCook) return;
@@ -1719,6 +1795,18 @@ export class RoomScreen implements Screen {
     this.cookModal?.close();
   }
 
+  /** O pilão abre a compra geral; pelo fogão, Usar se refere ao prato selecionado. */
+  openSpiceScreen(stove?: RoomItem): void {
+    if (!this.spiceModal || this.isModalOpen || this.storeBar?.isOpen) return;
+    this.closeStoveActions();
+    this.drag = null; this.pinch = null; this.touchPoints.clear(); this.hovered = null; this.highlight.clear();
+    this.spiceStove = stove;
+    const job = this.roomSnapshot?.canEdit !== false && stove?.instanceId
+      ? this.occupiedStoves.get(stove.instanceId) ?? null : null;
+    this.spiceModal.open(job);
+    this.updateCookingCallout();
+  }
+
   openWardrobeScreen(): void {
     if (!this.wardrobeModal || this.isModalOpen || this.storeBar?.isOpen) return;
     this.drag = null;
@@ -1822,6 +1910,7 @@ export class RoomScreen implements Screen {
     this.closeStoveActions();
     if (this.cookCallout) this.cookCallout.view.visible = false;
     this.readyCallout.view.visible = false;
+    if (this.spoiledCallout) this.spoiledCallout.view.visible = false;
     this.settingsModal?.open();
   }
 
@@ -2010,6 +2099,7 @@ export class RoomScreen implements Screen {
       this.hoveredStove = undefined;
       if (this.cookCallout) this.cookCallout.view.visible = false;
       this.readyCallout.view.visible = false;
+      if (this.spoiledCallout) this.spoiledCallout.view.visible = false;
     });
   }
 
@@ -2558,9 +2648,12 @@ export class RoomScreen implements Screen {
 
   /** Apply an authenticated snapshot to both HUDs without rebuilding the room. */
   setPlayerState(state: PlayerState): void {
+    this.playerState = state;
     if (this.roomSnapshot) this.roomSnapshot.playerState = state;
     this.topBars?.setState(state);
     this.cookModal?.setPlayerState(state);
+    this.spiceModal?.setPlayerState(state);
+    this.updateStoveActionTime();
     this.actionBarMood?.setSatisfaction(state.satisfaction);
     this.actionBarMood?.setCafeName(state.cafeName);
     const appearance = state.appearance ?? '';
@@ -2605,6 +2698,7 @@ export class RoomScreen implements Screen {
     this.animateZoom(deltaMs);
     if (this.hudDirty) { this.hudDirty = false; this.updateHud(); }
     this.cookModal?.update(deltaMs);
+    this.spiceModal?.update(deltaMs);
     this.wardrobeModal?.update(deltaMs);
     this.storeBar?.update(deltaMs);
     this.topBars?.update(deltaMs);
@@ -2745,11 +2839,13 @@ export class RoomScreen implements Screen {
     this.closeStoveActions();
     this.cookCallout?.destroy();
     this.readyCallout.destroy();
+    this.spoiledCallout?.destroy();
     this.clearServingProcess();
     this.storeBar?.destroy();
     this.topBars?.destroy();
     this.clearCookingProcess();
     this.cookModal?.destroy();
+    this.spiceModal?.destroy();
     this.wardrobeModal?.destroy();
     this.settingsModal?.destroy();
     this.outsideNpcManager?.destroy();

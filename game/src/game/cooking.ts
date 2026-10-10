@@ -1,3 +1,5 @@
+import type { PlayerState } from './player-state';
+
 /** O servidor define posse, ocupação e relógio; o cliente só apresenta o progresso. */
 export interface StoveCooking {
   id: string;
@@ -12,12 +14,13 @@ export interface StoveCooking {
   spice?: string;
 }
 
-/** Tempero do fogão, pago em caféGranas. */
+/** Comprar paga caféGranas; aplicar consome uma unidade do estoque. */
 export interface CookingSpice {
   id: string;
   name: string;
   granas: number;
-  effect: 'speed' | 'instant' | 'recover';
+  effect: 'speed' | 'instant' | 'recover' | 'portions';
+  bonusPercent?: number;
   shortcutSeconds?: number;
 }
 
@@ -44,6 +47,7 @@ export function cookingTime(value: string): number {
 }
 
 export class CookingClient {
+  private readonly spicePurchaseRequests = new Map<string, string>();
   constructor(readonly roomId?: string) {}
   private serverAnchorMs = 0;
   private localAnchorMs = 0;
@@ -134,6 +138,23 @@ export class CookingClient {
     });
     if (response.status === 409 || response.status === 400) return this.reject(response, 'Não foi possível usar o tempero.');
     return this.read(response);
+  }
+
+  async buySpice(spice: string): Promise<PlayerState> {
+    // Uma resposta perdida pode esconder uma compra salva; a tentativa seguinte reutiliza a chave.
+    const requestId = this.spicePurchaseRequests.get(spice) ?? crypto.randomUUID();
+    this.spicePurchaseRequests.set(spice, requestId);
+    const response = await this.request('/spices/purchase', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ spice, requestId }),
+    });
+    if (!response.ok) {
+      if (response.status < 500) this.spicePurchaseRequests.delete(spice);
+      return this.reject(response, 'Não foi possível comprar o tempero.');
+    }
+    const state = await response.json() as PlayerState;
+    this.spicePurchaseRequests.delete(spice);
+    return state;
   }
 
   async clean(stoveId: string): Promise<CookingSnapshot> {

@@ -1,0 +1,11 @@
+{
+  "source": "Original Café Mania button supplied by the project owner; restoration with built-in imagegen.",
+  "prompt": "Use case: precise-object-edit / background-extraction. The most recently attached image is the exact original Café Mania + button and is the EDIT TARGET. Restore this SAME button at high resolution, do not redesign it. Remove only the surrounding green money bar sliver on the left and the white/grey background, replacing the background outside the button with genuine transparency. Preserve its exact original silhouette and style: broad dark forest-green softly rounded-square outer frame, vivid emerald-green inner rounded-square face, subtle darker green right/lower inset rim. Preserve the original distinctive compact white PLUS SHAPE: tall central vertical stem, broad horizontal arms, small corner rounding, forest-green contour/shadow that is slightly wider along the right and bottom. Match the reference cross proportions and optical position precisely. Cross sits a little above the vertical midpoint. Match original colors, avoid lime green. Remove compression blur and pixelation, reconstruct smooth precise anti-aliased edges, no fringe. Keep original gently imperfect hand-drawn Flash cartoon geometry rather than replacing with a perfect geometric plus. Flat 2D art, not 3D, no glossy bevel, no new lighting or shadow outside the button, no new symbols/text. Button fills approximately 88% of canvas, with symmetric transparent margins. A single button, no duplicates, no labels. Highest fidelity to this exact attached source.",
+  "frame": {
+    "x": 111,
+    "y": 51,
+    "width": 1122,
+    "height": 1067
+  },
+  "background": "transparent"
+}

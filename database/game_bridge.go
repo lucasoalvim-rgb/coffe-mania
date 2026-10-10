@@ -153,7 +153,7 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 			return fail(400, "Receita inválida.")
 		case errors.Is(err, errUnknownSpice):
 			return fail(400, err.Error())
-		case errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoCash):
+		case errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoSpice):
 			return fail(409, err.Error())
 		case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit), errors.Is(err, errStoveOccupied), errors.Is(err, errDishNotReady), errors.Is(err, errCookingCannotCancel), errors.Is(err, errNoCounter),
 			errors.Is(err, errStoveDirty), errors.Is(err, errStoveClean), errors.Is(err, errDishSpoiled):

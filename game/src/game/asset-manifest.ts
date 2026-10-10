@@ -5,6 +5,7 @@ import { Wardrobe } from '../avatar/wardrobe';
 import { IndoorArt } from './indoor-art';
 import { ItemCatalog } from './item-catalog';
 import { RECIPE_CATALOG_URL, loadRecipeArt, type RecipeArt } from './recipes';
+import { SPICE_ASSET_URLS } from './spices';
 
 const base = import.meta.env.BASE_URL ?? '/';
 const dataUrl = (file: string) =>
@@ -47,6 +48,7 @@ export const UI_TOP_BARS_URLS = {
   back: new URL('assets/ui/top_bars_back.png', new URL(base, document.baseURI)).href,
   front: new URL('assets/ui/top_bars_front.png', new URL(base, document.baseURI)).href,
   icons: new URL('assets/ui/icon_bundle_1.png', new URL(base, document.baseURI)).href,
+  currencyAdd: new URL('assets/ui/currency/add-button-restored.png', new URL(base, document.baseURI)).href,
 } as const;
 
 /**
@@ -168,6 +170,7 @@ const indoorFileUrl = (file: string) =>
  * carregadas na sequência, dentro da mesma barra de progresso.
  */
 export const GAME_ASSET_URLS: readonly string[] = [
+  ...SPICE_ASSET_URLS,
   ...Object.values(AVATAR_PLACEHOLDER_URLS),
   LOADING_ASSET_URLS.frame,
   ...LOADING_ASSET_URLS.banners,
@@ -181,6 +184,7 @@ export const GAME_ASSET_URLS: readonly string[] = [
   UI_TOP_BARS_URLS.back,
   UI_TOP_BARS_URLS.front,
   UI_TOP_BARS_URLS.icons,
+  UI_TOP_BARS_URLS.currencyAdd,
   ...Object.values(UI_RECIPE_BOOK_URLS),
   ...Object.values(UI_COOK_PROGRESS_URLS),
   ...Object.values(UI_WARDROBE_URLS),
@@ -349,15 +353,16 @@ export async function loadActionBarButtons(): Promise<ActionBarButtonTextures> {
   };
 }
 
-export async function loadTopBarsTextures(): Promise<{ back: Texture; front: Texture; icons: Texture; energyIcons: { normal: Texture; bonus: Texture } }> {
-  const [back, front, icons, normal, bonus] = await Promise.all([
+export async function loadTopBarsTextures(): Promise<{ back: Texture; front: Texture; icons: Texture; currencyAdd: Texture; energyIcons: { normal: Texture; bonus: Texture } }> {
+  const [back, front, icons, currencyAdd, normal, bonus] = await Promise.all([
     Assets.load<Texture>(UI_TOP_BARS_URLS.back),
     Assets.load<Texture>(UI_TOP_BARS_URLS.front),
     Assets.load<Texture>(UI_TOP_BARS_URLS.icons),
+    loadResourceIcon(UI_TOP_BARS_URLS.currencyAdd),
     loadResourceIcon(UI_RESOURCE_ICON_URLS.energyRed),
     loadResourceIcon(UI_RESOURCE_ICON_URLS.energyBlue),
   ]);
-  return { back, front, icons, energyIcons: { normal, bonus } };
+  return { back, front, icons, currencyAdd, energyIcons: { normal, bonus } };
 }
 
 export async function loadWardrobeScreenTextures(): Promise<{

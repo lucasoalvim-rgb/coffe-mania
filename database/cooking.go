@@ -314,6 +314,7 @@ func cleanStove(app core.App, userID, stoveID string) error {
 }
 
 func registerCookingRoutes(e *core.ServeEvent) {
+	registerSpicePurchaseRoutes(e)
 	g := e.Router.Group("/api/coffe/cooking")
 	g.BindFunc(func(r *core.RequestEvent) error {
 		r.Response.Header().Set("Cache-Control", "no-store")
@@ -452,6 +453,9 @@ func registerCookingRoutes(e *core.ServeEvent) {
 		if err := decoder.Decode(&body); err != nil || body.StoveID == "" {
 			return r.BadRequestError("Pedido inválido.", nil)
 		}
+		if err := decoder.Decode(new(any)); err != io.EOF {
+			return r.BadRequestError("Pedido inválido.", nil)
+		}
 		if _, ok := spiceByID(body.Spice); !ok {
 			return r.BadRequestError(errUnknownSpice.Error(), nil)
 		}
@@ -462,7 +466,7 @@ func registerCookingRoutes(e *core.ServeEvent) {
 			switch {
 			case errors.Is(err, errStoveNotOwned):
 				return r.NotFoundError("Fogão indisponível.", nil)
-			case errors.Is(err, errCookingCannotCancel), errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoCash):
+			case errors.Is(err, errCookingCannotCancel), errors.Is(err, errAlreadySpiced), errors.Is(err, errSpiceNotUsable), errors.Is(err, errNoSpice):
 				return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 			default:
 				return r.InternalServerError("Não foi possível usar o tempero.", err)

@@ -1,0 +1,285 @@
+{
+  "reference": "Final version screenshot supplied by project owner",
+  "parts": {
+    "salt": {
+      "captureCrop": [
+        187,
+        282,
+        398,
+        441
+      ],
+      "trim": [
+        7,
+        10,
+        203,
+        147
+      ],
+      "background": [
+        228,
+        198,
+        133
+      ],
+      "size": [
+        520,
+        366
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6122448979591835
+    },
+    "pepper": {
+      "captureCrop": [
+        442,
+        283,
+        658,
+        443
+      ],
+      "trim": [
+        11,
+        14,
+        207,
+        146
+      ],
+      "background": [
+        228,
+        198,
+        134
+      ],
+      "size": [
+        520,
+        353
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6122448979591835
+    },
+    "thyme": {
+      "captureCrop": [
+        696,
+        283,
+        910,
+        444
+      ],
+      "trim": [
+        12,
+        10,
+        206,
+        148
+      ],
+      "background": [
+        228,
+        198,
+        133
+      ],
+      "size": [
+        520,
+        372
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6391752577319587
+    },
+    "thyme-ultra": {
+      "captureCrop": [
+        959,
+        282,
+        1170,
+        445
+      ],
+      "trim": [
+        10,
+        9,
+        205,
+        147
+      ],
+      "background": [
+        226,
+        197,
+        132
+      ],
+      "size": [
+        520,
+        370
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6256410256410256
+    },
+    "instant": {
+      "captureCrop": [
+        1214,
+        282,
+        1428,
+        446
+      ],
+      "trim": [
+        9,
+        9,
+        206,
+        147
+      ],
+      "background": [
+        228,
+        198,
+        134
+      ],
+      "size": [
+        520,
+        367
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.598984771573604
+    },
+    "sage": {
+      "captureCrop": [
+        1475,
+        282,
+        1684,
+        446
+      ],
+      "trim": [
+        8,
+        9,
+        201,
+        147
+      ],
+      "background": [
+        227,
+        198,
+        133
+      ],
+      "size": [
+        520,
+        374
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6528497409326426
+    },
+    "button-buy": {
+      "captureCrop": [
+        178,
+        516,
+        411,
+        597
+      ],
+      "trim": [
+        5,
+        5,
+        230,
+        78
+      ],
+      "background": [
+        222,
+        186,
+        106
+      ],
+      "size": [
+        608,
+        203
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6666666666666665
+    },
+    "button-use": {
+      "captureCrop": [
+        178,
+        597,
+        411,
+        678
+      ],
+      "trim": [
+        5,
+        5,
+        229,
+        77
+      ],
+      "background": [
+        220,
+        186,
+        106
+      ],
+      "size": [
+        608,
+        201
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6785714285714284
+    },
+    "button-disabled": {
+      "captureCrop": [
+        178,
+        679,
+        411,
+        759
+      ],
+      "trim": [
+        5,
+        4,
+        230,
+        75
+      ],
+      "background": [
+        222,
+        186,
+        108
+      ],
+      "size": [
+        608,
+        197
+      ],
+      "resampling": "Lanczos",
+      "scale": 2.6666666666666665
+    },
+    "button-close": {
+      "atlasCrop": [
+        0,
+        1084,
+        1088,
+        1445
+      ],
+      "trim": [
+        415,
+        41,
+        672,
+        289
+      ],
+      "size": [
+        200,
+        193
+      ],
+      "resampling": "Lanczos",
+      "scale": 0.7470817120622568
+    },
+    "panel": {
+      "size": [
+        1330,
+        600
+      ],
+      "sourceSlices": [
+        [
+          0,
+          13,
+          1869,
+          125
+        ],
+        [
+          0,
+          125,
+          1869,
+          826
+        ]
+      ],
+      "targetSlices": [
+        [
+          0,
+          0,
+          1330,
+          65
+        ],
+        [
+          0,
+          65,
+          1330,
+          600
+        ]
+      ],
+      "resampling": "Lanczos"
+    }
+  }
+}

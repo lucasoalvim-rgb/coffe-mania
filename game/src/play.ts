@@ -34,6 +34,7 @@ import { resolveSession } from './game/session';
 import { loadPlayerState } from './game/player-state';
 import { loadNpcAppearancePolicy } from './game/npc-appearance';
 import { CookingClient } from './game/cooking';
+import { loadSpiceScreenTextures } from './game/spices';
 import { subscribePlayerState } from './game/player-state-realtime';
 import { RoomRealtime } from './game/room-realtime';
 import { loadBitterMode, saveBitterMode } from './game/zoom-preferences';
@@ -108,7 +109,7 @@ async function boot(): Promise<void> {
     const roomSnapshot = await roomClient.refresh();
 
     // Catálogo fornece comportamento e pegada; manifesto fornece geometria visual.
-    const [playerState, cookingSnapshot, art, actionBarTexture, actionBarButtons, actionBarIcons, npcEmotionTextures, topBarsTextures, cookTextures, wardrobeTextures, storeBarTexture, storeBarIcons, npcAppearancePolicy, placeholderAvatar, storeTopButtonTexture, storeToolbarTextures] = await Promise.all([
+    const [playerState, cookingSnapshot, art, actionBarTexture, actionBarButtons, actionBarIcons, npcEmotionTextures, topBarsTextures, cookTextures, wardrobeTextures, storeBarTexture, storeBarIcons, npcAppearancePolicy, placeholderAvatar, storeTopButtonTexture, storeToolbarTextures, spiceTextures] = await Promise.all([
       loadPlayerState(),
       cookingClient.refresh(),
       loadIndoorArt().catch((error) => {
@@ -161,6 +162,7 @@ async function boot(): Promise<void> {
         console.warn('[store-toolbar-icons] indisponíveis', error);
         return undefined;
       }),
+      loadSpiceScreenTextures(),
     ]);
 
     // Only the player is baked at boot. NPC looks are generated per spawn.
@@ -179,6 +181,7 @@ async function boot(): Promise<void> {
       playerState,
       cookingClient,
       cookingSnapshot,
+      spiceTextures,
       model,
       roomSnapshot,
       ...(roomSnapshot.canEdit !== false ? { roomClient } : {}),

@@ -5,6 +5,8 @@ export interface ResourceValue {
 }
 
 export interface PlayerState {
+  /** Estoque privado, atualizado pelo snapshot/SSE do PocketBase. */
+  spiceInventory?: Record<string, number>;
   /** Versioned JSON string; empty/absent means the catalogue's default avatar. */
   appearance?: string;
   cafeName: string;

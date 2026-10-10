@@ -7,6 +7,7 @@ import { SFX_BOOK_URLS, type RecipeBookTextures } from '../../game/asset-manifes
 import type { PlayerState } from '../../game/player-state';
 import { recipeBookTime, recipeBookTimeLabel, type RecipeArt } from '../../game/recipes';
 import { TOP_BAR_ICON_FRAMES } from './TopBars';
+import { modalAnimationFrame, MODAL_OVERLAY_ALPHA, type ModalPhase } from './ModalAnimation';
 
 export interface CookScreenTextures {
   book: RecipeBookTextures;
@@ -32,7 +33,6 @@ export interface CookScreenModalOptions {
   sfxUrls?: readonly string[];
 }
 
-type ModalState = 'closed' | 'opening' | 'open' | 'closing';
 type TabId = 'basic' | 'advanced' | 'specials' | 'favorites' | 'deluxe';
 
 interface CardItem {
@@ -42,9 +42,6 @@ interface CardItem {
   targetScale: number;
 }
 
-const OPEN_DURATION_MS = 260;
-const CLOSE_DURATION_MS = 200;
-const OVERLAY_MAX_ALPHA = 0.65;
 /** Tempo antes de o painel da direita voltar à dica, para não piscar ao passar de um card a outro. */
 const TIP_DELAY_MS = 160;
 const FAVORITES_KEY = 'coffe-recipe-book-favorites';
@@ -121,14 +118,6 @@ const COLORS = {
   warning: 0xb3261e,
 } as const;
 
-const easeOutBack = (t: number): number => {
-  const c1 = 1.70158;
-  const c3 = c1 + 1;
-  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-};
-const easeOutCubic = (t: number): number => 1 - Math.pow(1 - t, 3);
-const easeInCubic = (t: number): number => t * t * t;
-
 function style(options: ConstructorParameters<typeof TextStyle>[0]): TextStyle {
   return new TextStyle({ fontFamily: [FONT_FAMILY, 'sans-serif'], fontWeight: '600', padding: 4, ...options });
 }
@@ -189,7 +178,7 @@ export class CookScreenModal {
   private tipTimer = 0;
   private tip = TIPS[0];
 
-  private state: ModalState = 'closed';
+  private state: ModalPhase = 'closed';
   private animTimer = 0;
 
   constructor(options: CookScreenModalOptions) {
@@ -781,22 +770,22 @@ export class CookScreenModal {
     this.animTimer += deltaMs;
 
     if (this.state === 'opening') {
-      const progress = Math.min(1, this.animTimer / OPEN_DURATION_MS);
-      this.window.scale.set((0.7 + 0.3 * easeOutBack(progress)) * BOOK_SCALE);
-      this.window.alpha = easeOutCubic(progress);
-      this.backdrop.alpha = OVERLAY_MAX_ALPHA * progress;
-      if (progress >= 1) {
+      const frame = modalAnimationFrame('opening', this.animTimer);
+      this.window.scale.set(frame.scale * BOOK_SCALE);
+      this.window.alpha = frame.alpha;
+      this.backdrop.alpha = frame.backdropAlpha;
+      if (frame.finished) {
         this.state = 'open';
         this.window.scale.set(BOOK_SCALE);
         this.window.alpha = 1;
-        this.backdrop.alpha = OVERLAY_MAX_ALPHA;
+        this.backdrop.alpha = MODAL_OVERLAY_ALPHA;
       }
     } else if (this.state === 'closing') {
-      const progress = Math.min(1, this.animTimer / CLOSE_DURATION_MS);
-      this.window.scale.set((1 - 0.25 * easeInCubic(progress)) * BOOK_SCALE);
-      this.window.alpha = Math.max(0, 1 - progress);
-      this.backdrop.alpha = Math.max(0, OVERLAY_MAX_ALPHA * (1 - progress));
-      if (progress >= 1) {
+      const frame = modalAnimationFrame('closing', this.animTimer);
+      this.window.scale.set(frame.scale * BOOK_SCALE);
+      this.window.alpha = frame.alpha;
+      this.backdrop.alpha = frame.backdropAlpha;
+      if (frame.finished) {
         this.state = 'closed';
         this.view.visible = false;
         this.window.scale.set(0.7 * BOOK_SCALE);

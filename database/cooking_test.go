@@ -308,12 +308,15 @@ func TestSpicesSpeedUpAndRecoverDishes(t *testing.T) {
 	}
 	job, _ := app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
 	before := job.GetDateTime("ready_at").Time()
+	if err := purchaseSpice(app, userID, "thyme", "test-thyme"); err != nil {
+		t.Fatal(err)
+	}
 	if err := spiceDish(app, userID, stove.Id, "thyme", types.NowDateTime()); err != nil {
 		t.Fatal(err)
 	}
 	job, _ = app.FindFirstRecordByData("stove_cooking", "stove", stove.Id)
 	if d := before.Sub(job.GetDateTime("ready_at").Time()); d != time.Hour || cash() != 9 {
-		t.Fatalf("Tomilho Acelerador tira 1 hora e custa 1 caféGrana: %v, %d", d, cash())
+		t.Fatalf("Tomilho Acelerador comprado tira 1 hora sem cobrar no uso: %v, %d", d, cash())
 	}
 	if err := spiceDish(app, userID, stove.Id, "instant", types.NowDateTime()); !errors.Is(err, errAlreadySpiced) {
 		t.Fatalf("cada prato só pode ser temperado uma vez: %v", err)
@@ -327,6 +330,9 @@ func TestSpicesSpeedUpAndRecoverDishes(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err := startCooking(app, userID, stove.Id, "nachos", types.NowDateTime()); err != nil {
+		t.Fatal(err)
+	}
+	if err := purchaseSpice(app, userID, "sage", "test-sage"); err != nil {
 		t.Fatal(err)
 	}
 	if err := spiceDish(app, userID, stove.Id, "sage", types.NowDateTime()); !errors.Is(err, errSpiceNotUsable) {
@@ -349,7 +355,10 @@ func TestSpicesSpeedUpAndRecoverDishes(t *testing.T) {
 	_ = app.Save(state)
 	_ = cleanStove(app, userID, stove.Id)
 	_ = startCooking(app, userID, stove.Id, "churrasco", types.NowDateTime())
-	if err := spiceDish(app, userID, stove.Id, "instant", types.NowDateTime()); !errors.Is(err, errNoCash) {
-		t.Fatalf("sem caféGranas: %v", err)
+	if err := purchaseSpice(app, userID, "instant", "test-no-cash"); !errors.Is(err, errNoCash) {
+		t.Fatalf("sem caféGranas não compra: %v", err)
+	}
+	if err := spiceDish(app, userID, stove.Id, "instant", types.NowDateTime()); !errors.Is(err, errNoSpice) {
+		t.Fatalf("sem unidade no estoque não usa: %v", err)
 	}
 }
