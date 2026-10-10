@@ -1,0 +1,30 @@
+{
+  "source": "assets/ui/spices/panel.png (painel Temperos, 1330x600)",
+  "panel.png": "título removido: borda superior (y 0-51) interpolada na horizontal entre x 404 e 926; interior (y 52-79) copiado das colunas 120-400 em espelho",
+  "swirl-left.png": {
+    "crop": [
+      412,
+      6,
+      484,
+      64
+    ],
+    "y": 6,
+    "mask": "pixels que diferem do panel.png limpo (diferença > 18)"
+  },
+  "swirl-right.png": {
+    "crop": [
+      836,
+      6,
+      912,
+      64
+    ],
+    "y": 6,
+    "mask": "pixels que diferem do panel.png limpo (diferença > 18)"
+  },
+  "nineSlice": {
+    "left": 60,
+    "top": 80,
+    "right": 60,
+    "bottom": 60
+  }
+}

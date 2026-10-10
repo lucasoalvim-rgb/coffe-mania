@@ -35,6 +35,7 @@ import { loadPlayerState } from './game/player-state';
 import { loadNpcAppearancePolicy } from './game/npc-appearance';
 import { CookingClient } from './game/cooking';
 import { loadSpiceScreenTextures } from './game/spices';
+import { loadDevMode, saveDevMode } from './game/dev-tools';
 import { subscribePlayerState } from './game/player-state-realtime';
 import { RoomRealtime } from './game/room-realtime';
 import { loadBitterMode, saveBitterMode } from './game/zoom-preferences';
@@ -210,6 +211,10 @@ async function boot(): Promise<void> {
       ...(topBarsTextures ? { topBarsTextures } : {}),
       ...(cookTextures ? { cookTextures } : {}),
       ...(wardrobeTextures ? { wardrobeTextures } : {}),
+      ...(session.devTools ? { devMode: {
+        get: () => loadDevMode(session.playerId),
+        set: (enabled: boolean) => saveDevMode(session.playerId, enabled),
+      } } : {}),
       onWardrobeVisibilityChange: (open) => {
         fullscreen.setWardrobeOpen(open);
       },

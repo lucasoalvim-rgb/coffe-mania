@@ -163,6 +163,7 @@ async function main() {
     COFFE_GAME_ADDR: `127.0.0.1:${gamePort}`,
     COFFE_WEB_PORT: String(webPort),
     COFFE_DEV_SEED: process.env.COFFE_DEV_SEED ?? 'true',
+    COFFE_DEV_TOOLS: process.env.COFFE_DEV_TOOLS ?? 'true',
     COFFE_GAME_SECRET_FILE: resolve(root, process.env.COFFE_GAME_SECRET_FILE ?? '.runtime/game-secret'),
   };
   const binaryDir = join(root, '.runtime', 'bin');

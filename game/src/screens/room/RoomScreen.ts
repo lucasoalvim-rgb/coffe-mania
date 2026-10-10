@@ -2,6 +2,7 @@ import { GAME_VERSION } from '../../core/version';
 import {
   Container,
   Graphics,
+  NineSliceSprite,
   Polygon,
   Rectangle,
   Sprite,
@@ -73,6 +74,7 @@ import { TopBars, type TopBarsTextures } from './TopBars';
 import { loadPlayerState, type PlayerState } from '../../game/player-state';
 import { canUseSpice, type SpiceId, type SpiceScreenTextures } from '../../game/spices';
 import { SpiceScreenModal } from './SpiceScreenModal';
+import { DevToolsModal, loadDevToolsTextures } from './DevToolsModal';
 import { cookingTime, type CookingClient, type CookingSnapshot, type CookingSpice, type StoveCooking } from '../../game/cooking';
 import {
   PAN_KEY_STEP,
@@ -247,6 +249,8 @@ export interface RoomScreenOptions {
   cookingSnapshot?: CookingSnapshot;
   spiceTextures?: SpiceScreenTextures;
   wardrobeTextures?: WardrobeScreenTextures;
+  /** Present only when the server enables developer tools; the toggle lives in Settings. */
+  devMode?: { get: () => boolean; set: (enabled: boolean) => void };
   onWardrobeVisibilityChange?: (open: boolean) => void;
 }
 
@@ -267,6 +271,9 @@ export class RoomScreen implements Screen {
   readonly spiceModal?: SpiceScreenModal;
   readonly wardrobeModal?: WardrobeScreenModal;
   readonly settingsModal?: SettingsModal;
+  private devModal?: DevToolsModal;
+  private devModalLoading = false;
+  private devButton?: Container;
   readonly storeBar?: StoreActionBar;
 
   /** Barras de recursos fora da câmera. */
@@ -679,6 +686,12 @@ export class RoomScreen implements Screen {
       }
     }
 
+    if (options.devMode && options.spiceTextures) {
+      this.devButton = this.createDevButton(options.spiceTextures);
+      this.devButton.visible = options.devMode.get();
+      this.actionBarLayer.addChild(this.devButton);
+    }
+
     if (options.storeBarTexture && options.actionBarTexture) {
       if (options.roomClient && options.roomSnapshot && this.artProvider) {
         this.roomStore = new RoomStoreController({ snapshot: options.roomSnapshot, client: options.roomClient,
@@ -817,6 +830,14 @@ export class RoomScreen implements Screen {
         this.hudDirty = true;
         options.settings?.onBitterModeChange?.(enabled);
       },
+      ...(options.devMode ? {
+        getDevMode: options.devMode.get,
+        onDevModeChange: (enabled: boolean) => {
+          options.devMode!.set(enabled);
+          if (this.devButton) this.devButton.visible = enabled;
+          if (!enabled) this.devModal?.close();
+        },
+      } : {}),
     });
     this.view.addChild(this.settingsModal.view);
     this.updateMobileHudLayout();
@@ -1900,6 +1921,73 @@ export class RoomScreen implements Screen {
     if (!this.realtime) this.player.clearPath();
   }
 
+  /** Blue spice-window button with the game's font; shown only while dev mode is on. */
+  private createDevButton(textures: SpiceScreenTextures): Container {
+    const button = new Container();
+    button.label = 'room-dev-button';
+    const width = 118, height = 56;
+    const face = new NineSliceSprite({ texture: textures.use, leftWidth: 80, rightWidth: 80, topHeight: 60, bottomHeight: 60 });
+    const faceScale = height / textures.use.height;
+    face.width = width / faceScale; face.height = textures.use.height; face.scale.set(faceScale);
+    face.position.set(-width / 2, -height / 2);
+    const caption = new Text({ text: 'DEV', style: new TextStyle({ fontFamily: FONT_FAMILY, fontSize: 28, fontWeight: '700', fill: 0xffffff, stroke: { color: 0x266b7a, width: 4, join: 'round' } }) });
+    caption.anchor.set(0.5);
+    face.eventMode = 'none'; caption.eventMode = 'none';
+    button.addChild(face, caption);
+    const bar = this.actionBarLayer.getChildByLabel('room-action-bar') as Sprite | null;
+    const scale = bar ? bar.scale.y : 1;
+    const left = bar ? bar.x - bar.width / 2 : STAGE_WIDTH - 260;
+    const top = bar ? bar.y - bar.height : STAGE_HEIGHT - 260;
+    // Right of the bar's last slot, where the art is transparent.
+    button.position.set(left + 1510 * scale, top + 800 * scale);
+    button.scale.set(Math.max(0.6, scale * 1.4));
+    button.hitArea = new Rectangle(-width / 2, -height / 2, width, height);
+    button.eventMode = 'static';
+    button.cursor = 'pointer';
+    const base = button.scale.x;
+    button.on('pointerover', () => button.scale.set(base * 1.08));
+    button.on('pointerout', () => button.scale.set(base));
+    button.on('pointerdown', (event) => { event.stopPropagation(); });
+    button.on('pointertap', (event) => { event.stopPropagation(); void this.openDevTools(); });
+    return button;
+  }
+
+  async openDevTools(): Promise<void> {
+    if (this.isModalOpen || this.devModalLoading || this.storeBar?.isOpen) return;
+    if (!this.devModal) {
+      this.devModalLoading = true;
+      try {
+        const textures = await loadDevToolsTextures();
+        if (this.destroyed) return;
+        this.devModal = new DevToolsModal({
+          textures,
+          recipes: () => this.cookProgressTextures?.recipes ?? [],
+          counters: () => this.model.items
+            .filter((item) => item.kind === 'counter' && item.inventoryUnitId)
+            .map((item) => ({ id: item.inventoryUnitId!, tx: item.tx, ty: item.ty })),
+          customerCount: () => this.realtime ? [...this.realtime.actors.values()].filter((actor) => actor.kind === 'npc').length : 0,
+          onSnapshot: (snapshot) => { if (!this.destroyed) this.setPlayerState(snapshot.playerState); },
+        });
+        // Below the settings modal, above the room and the other screens.
+        const settingsIndex = this.settingsModal ? this.view.getChildIndex(this.settingsModal.view) : this.view.children.length;
+        this.view.addChildAt(this.devModal.view, settingsIndex);
+      } catch {
+        this.showNotice('Não foi possível carregar o menu de desenvolvimento.');
+        return;
+      } finally {
+        this.devModalLoading = false;
+      }
+    }
+    if (this.isModalOpen) return;
+    this.drag = null;
+    this.pinch = null;
+    this.touchPoints.clear();
+    this.hovered = null;
+    this.highlight.clear();
+    this.closeStoveActions();
+    this.devModal.open();
+  }
+
   openSettings(): void {
     if (this.isModalOpen) return;
     this.drag = null;
@@ -2701,6 +2789,7 @@ export class RoomScreen implements Screen {
     if (this.hudDirty) { this.hudDirty = false; this.updateHud(); }
     this.cookModal?.update(deltaMs);
     this.spiceModal?.update(deltaMs);
+    this.devModal?.update(deltaMs);
     this.wardrobeModal?.update(deltaMs);
     this.storeBar?.update(deltaMs);
     this.topBars?.update(deltaMs);
@@ -2848,6 +2937,7 @@ export class RoomScreen implements Screen {
     this.clearCookingProcess();
     this.cookModal?.destroy();
     this.spiceModal?.destroy();
+    this.devModal?.destroy();
     this.wardrobeModal?.destroy();
     this.settingsModal?.destroy();
     this.outsideNpcManager?.destroy();

@@ -297,6 +297,9 @@ func (m *Manager) Operate(ctx context.Context, op gamewire.Operation) (gamewire.
 			if result.Business != nil {
 				r.business = *result.Business
 			}
+			if op.Action == "dev" {
+				r.finishDevActions(op.Body)
+			}
 			if op.Action == "cook_start" {
 				if a := r.actors["human:"+op.User]; a != nil {
 					var body struct {
@@ -1023,6 +1026,47 @@ func (r *room) validateOperation(op gamewire.Operation) string {
 		}
 	}
 	return ""
+}
+
+// Debug mutations run in the room queue. Stop animations whose dish was changed,
+// but keep customers' already-served meals and the current movement calibration.
+func (r *room) finishDevActions(body json.RawMessage) {
+	var command struct {
+		Command   string   `json:"command"`
+		StoveID   string   `json:"stoveId"`
+		CounterID string   `json:"counterId"`
+		Value     *float64 `json:"value"`
+	}
+	if json.Unmarshal(body, &command) != nil {
+		return
+	}
+	now := time.Now()
+	switch command.Command {
+	case "spawn_customers":
+		if command.Value != nil {
+			r.spawnCustomers(int(*command.Value), now)
+		}
+		return
+	case "clear_customers":
+		r.clearCustomers()
+		return
+	}
+	for _, actor := range r.actors {
+		stoveChanged := actor.Action != nil && actor.Action.StoveID != "" &&
+			(command.StoveID == "" || command.StoveID == actor.Action.StoveID) &&
+			(command.Command == "finish" || command.Command == "spoil" || command.Command == "clean" || command.Command == "dirty" || command.Command == "empty")
+		counterChanged := command.Command == "clear_counters" && actor.Kind == "human" && actor.Food != nil &&
+			(command.CounterID == "" || command.CounterID == actor.Food.Counter)
+		if !stoveChanged && !counterChanged {
+			continue
+		}
+		actor.State = "idle"
+		actor.Action = nil
+		actor.Food = nil
+		actor.path = nil
+		actor.due = time.Time{}
+		r.broadcast(gamewire.Event{Type: "actors", Actors: []gamewire.Actor{r.status(actor, false)}}, "")
+	}
 }
 func (r *room) updateWorld(w gamewire.World) {
 	old := map[string]Unit{}

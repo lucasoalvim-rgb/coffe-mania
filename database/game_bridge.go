@@ -110,7 +110,20 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 	var body any
 	var err error
 	switch op.Action {
-	case "purchase", "move", "store":
+	case "dev":
+		if !devToolsEnabled() {
+			return fail(403, "Ferramentas de desenvolvimento desabilitadas no servidor.")
+		}
+		command, decodeErr := decodeDevCommand(bytes.NewReader(op.Body))
+		if decodeErr != nil {
+			return fail(400, decodeErr.Error())
+		}
+		err = mutateDev(app, op.Owner, command)
+		if err == nil {
+			body, err = snapshotDev(app, op.Owner)
+		}
+
+	case "purchase", "move", "store", "sell":
 		var command roomCommand
 		if json.Unmarshal(op.Body, &command) != nil || command.Revision == nil || !requestKeyPattern.MatchString(command.RequestID) || (op.Action != "store" && (command.TX == nil || command.TY == nil || command.Rotation == nil)) {
 			return fail(400, "Pedido inválido.")
@@ -144,6 +157,10 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 		return fail(400, "Operação desconhecida.")
 	}
 	if err != nil {
+		var debugErr *devError
+		if errors.As(err, &debugErr) {
+			return fail(debugErr.status, debugErr.message)
+		}
 		switch {
 		case errors.Is(err, errRoomOwned), errors.Is(err, errStoveNotOwned):
 			return fail(404, "Item indisponível.")
@@ -171,7 +188,14 @@ func persistenceOperation(app core.App, op gamewire.Operation) gamewire.Result {
 	if op.Action == "cook_start" {
 		status = 201
 	}
-	return gamewire.Result{Status: status, Body: data, World: &w}
+	result := gamewire.Result{Status: status, Body: data, World: &w}
+	// Developer tools may change popularity or level; the room adopts them immediately.
+	if op.Action == "dev" {
+		if business, err := ownerBusiness(app, op.Owner); err == nil {
+			result.Business = &business
+		}
+	}
+	return result
 }
 func saveDormantRoom(app core.App, owner string, state gamewire.Sleep) error {
 	if len(state.NPCs) > 32 {

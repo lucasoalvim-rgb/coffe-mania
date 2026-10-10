@@ -3,6 +3,7 @@ export interface PlayerSession {
   playerId: string;
   displayName: string;
   email: string;
+  devTools?: boolean;
 }
 
 const endpoint = '/api/coffe/session';
