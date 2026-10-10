@@ -1,4 +1,4 @@
-import { Assets, Texture } from 'pixi.js';
+import { Assets, Rectangle, Texture } from 'pixi.js';
 import { IndoorArt, type ArtProvider, type IndoorArtFrame, type IndoorArtEntry } from './indoor-art';
 import type { PlayerState } from './player-state';
 import type { RoomItem, RoomItemKind } from '../world/RoomModel';
@@ -26,6 +26,8 @@ export function sellGold(item: RoomCatalogItem, snapshot: RoomSnapshot): number 
 export interface ItemManifest extends RoomCatalogItem {
   itemHeight: number; parts: (IndoorArtFrame & { rotation?: number })[];
   wallpaperRotation?: 0 | 1; door?: IndoorArtEntry['door'];
+  /** Folha de sprites em grade; cada quadro tem `gutter` px transparentes em volta. */
+  animation?: { file: string; fps: number; frames: number; columns: number; frameWidth: number; frameHeight: number; gutter: number; resolution?: number };
 }
 
 /** Parts without a rotation belong to the same assembled pose. */
@@ -85,7 +87,28 @@ export async function loadRoomItemArt(snapshot: RoomSnapshot, legacy?: ArtProvid
       texture.source.minFilter = 'linear'; texture.source.mipmapFilter = 'linear';
       return { ...pose.frame, file };
     });
+    let animation: IndoorArtEntry['animation'];
+    const sheet = manifest.animation;
+    if (sheet) {
+      const source = await Assets.load<Texture>(new URL(`${manifest.classname}/${sheet.file}`, root).href);
+      // Video frames are smooth art: linear in both directions, trilinear mipmaps when zoomed out.
+      source.source.scaleMode = 'linear'; source.source.autoGenerateMipmaps = true;
+      source.source.mipmapFilter = 'linear';
+      const resolution = sheet.resolution ?? 1;
+      const files: string[] = [];
+      const cell = { width: (sheet.frameWidth + 2 * sheet.gutter) * resolution, height: (sheet.frameHeight + 2 * sheet.gutter) * resolution };
+      for (let index = 0; index < sheet.frames; index++) {
+        const file = `animation:${manifest.classname}:${index}`;
+        textures.set(file, new Texture({ source: source.source, frame: new Rectangle(
+          (index % sheet.columns) * cell.width + sheet.gutter * resolution,
+          Math.floor(index / sheet.columns) * cell.height + sheet.gutter * resolution,
+          sheet.frameWidth * resolution, sheet.frameHeight * resolution) }));
+        files.push(file);
+      }
+      animation = { fps: sheet.fps, files, resolution };
+    }
     entries[manifest.classname] = {
+      ...(animation ? { animation } : {}),
       characterId: manifest.id, frames, sizeX: manifest.sizeX, sizeY: manifest.sizeY,
       itemHeight: manifest.itemHeight, wallpaperRotation: manifest.wallpaperRotation, door: manifest.door,
       wallCutterIndex: manifest.wall_cutter_index,

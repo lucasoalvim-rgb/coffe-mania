@@ -71,6 +71,11 @@
       "manifest": "letter_box/item.json"
     },
     {
+      "id": 3400001,
+      "classname": "young_wizard",
+      "manifest": "young_wizard/item.json"
+    },
+    {
       "id": 9000001,
       "classname": "mafia_tile_floor",
       "manifest": "mafia_tile_floor/item.json"

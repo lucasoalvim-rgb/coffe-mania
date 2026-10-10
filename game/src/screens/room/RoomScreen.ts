@@ -76,6 +76,7 @@ import { canUseSpice, type SpiceId, type SpiceScreenTextures } from '../../game/
 import { SpiceScreenModal } from './SpiceScreenModal';
 import { DevToolsModal, loadDevToolsTextures } from './DevToolsModal';
 import { GoldBurstEffect } from './GoldBurstEffect';
+import { alphaHitArea } from './alpha-hit';
 import { SellConfirmModal } from './SellConfirmModal';
 import { cookingTime, type CookingClient, type CookingSnapshot, type CookingSpice, type StoveCooking } from '../../game/cooking';
 import {
@@ -340,6 +341,9 @@ export class RoomScreen implements Screen {
   private networkPending = 0;
   private noticeTimer?: ReturnType<typeof setTimeout>;
   private sellModal?: SellConfirmModal;
+  /** Decoration with a sprite sheet: the texture follows the room clock. */
+  private readonly animatedItems: { sprite: Sprite; frames: Texture[]; fps: number; offset: number }[] = [];
+  private animationClock = 0;
   private readonly goldEffects: GoldBurstEffect[] = [];
   private readonly itemViews = new Map<RoomItem, Container[]>();
   private readonly floorUnitViews = new Map<string, Sprite>();
@@ -1962,6 +1966,18 @@ export class RoomScreen implements Screen {
     return button;
   }
 
+  private updateAnimatedItems(deltaMs: number): void {
+    if (this.animatedItems.length === 0) return;
+    this.animationClock += Math.max(0, deltaMs) / 1000;
+    for (let index = this.animatedItems.length - 1; index >= 0; index--) {
+      const item = this.animatedItems[index];
+      // Views are rebuilt on every room change; the old sprites are destroyed with them.
+      if (item.sprite.destroyed) { this.animatedItems.splice(index, 1); continue; }
+      const frame = Math.floor(this.animationClock * item.fps + item.offset) % item.frames.length;
+      if (item.sprite.texture !== item.frames[frame]) item.sprite.texture = item.frames[frame];
+    }
+  }
+
   /** Light, coins and the amount over the piece that was just bought (negative) or sold. */
   private playGoldEffect(event: { item: { sizeX: number; sizeY: number; type: number }; tile: { tx: number; ty: number }; rotation: number; gold: number }): void {
     if (this.destroyed) return;
@@ -2143,6 +2159,17 @@ export class RoomScreen implements Screen {
           bias = DEPTH_BIAS_WALL_DECOR;
         }
         const sprite = createArtView(item, rotated.frame, texture, { bias, occlusionAnchor: item.occlusionAnchor });
+        if (entry.animation && entry.animation.files.length > 1) {
+          const frames = entry.animation.files.flatMap((file) => this.artProvider?.textureFor(file) ?? []);
+          if (frames.length > 1) {
+            // The sheet carries more pixels than the room shows: scale down, keep the click on the drawing.
+            sprite.texture = frames[0];
+            sprite.scale.set(1 / entry.animation.resolution);
+            sprite.hitArea = alphaHitArea(frames[0]);
+            // Each piece starts at its own moment, so repeated figures do not move in unison.
+            this.animatedItems.push({ sprite, frames, fps: entry.animation.fps, offset: Math.random() * frames.length });
+          }
+        }
         if (item.kind === 'stove') {
           this.stoveViews.set(item, [sprite]);
           this.bindStoveTap(sprite, item);
@@ -2813,6 +2840,7 @@ export class RoomScreen implements Screen {
     this.spiceModal?.update(deltaMs);
     this.devModal?.update(deltaMs);
     this.sellModal?.update(deltaMs);
+    this.updateAnimatedItems(deltaMs);
     for (let index = this.goldEffects.length - 1; index >= 0; index--) {
       const effect = this.goldEffects[index];
       effect.update(deltaMs);

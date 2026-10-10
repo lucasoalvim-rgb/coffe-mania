@@ -455,6 +455,37 @@
       ]
     },
     {
+      "id": 3400001,
+      "classname": "young_wizard",
+      "name": "Pequeno Bruxo",
+      "type": 3,
+      "kind": "decor",
+      "priceGold": 800,
+      "purchasable": true,
+      "sizeX": 1,
+      "sizeY": 1,
+      "itemHeight": 180,
+      "parts": [
+        {
+          "file": "frame-000.png",
+          "width": 127,
+          "height": 258,
+          "left": -73.6,
+          "top": -202.1
+        }
+      ],
+      "animation": {
+        "file": "animation.webp",
+        "fps": 15,
+        "frames": 61,
+        "columns": 15,
+        "frameWidth": 127,
+        "frameHeight": 258,
+        "gutter": 4,
+        "resolution": 2
+      }
+    },
+    {
       "id": 9000001,
       "classname": "mafia_tile_floor",
       "name": "Piso Máfia",

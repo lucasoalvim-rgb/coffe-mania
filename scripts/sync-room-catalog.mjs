@@ -2,6 +2,21 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
+
+/** Width and height from a PNG or WebP header, without decoding the image. */
+function imageSize(buffer) {
+  if (buffer.toString('ascii', 1, 4) === 'PNG') return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+  if (buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP') {
+    const chunk = buffer.toString('ascii', 12, 16);
+    if (chunk === 'VP8X') return { width: 1 + buffer.readUIntLE(24, 3), height: 1 + buffer.readUIntLE(27, 3) };
+    if (chunk === 'VP8 ') return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+    if (chunk === 'VP8L') {
+      const bits = buffer.readUInt32LE(21);
+      return { width: 1 + (bits & 0x3fff), height: 1 + ((bits >> 14) & 0x3fff) };
+    }
+  }
+  throw new Error('Formato de imagem não suportado.');
+}
 const directory = resolve(root, 'game/public/assets/items');
 const items = readdirSync(directory, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => {
   const item = JSON.parse(readFileSync(resolve(directory, entry.name, 'item.json'), 'utf8'));
@@ -21,6 +36,22 @@ const items = readdirSync(directory, { withFileTypes: true }).filter((entry) => 
       (part.rotation !== undefined && (!Number.isInteger(part.rotation) || part.rotation < 0 || part.rotation > 3))) throw new Error(`Parte inválida: ${entry.name}`);
     const png = readFileSync(resolve(directory, entry.name, part.file));
     if (png.readUInt32BE(16) !== part.width || png.readUInt32BE(20) !== part.height) throw new Error(`Dimensões incorretas: ${entry.name}/${part.file}`);
+  }
+  // Animação: folha de sprites em grade, quadros iguais à primeira parte, com margem transparente.
+  if (item.animation !== undefined) {
+    const a = item.animation;
+    const part = item.parts[0];
+    const resolution = a.resolution ?? 1;
+    if (!/^[a-zA-Z0-9_-]+\.(png|webp)$/.test(a.file) || ![a.frames, a.columns, a.frameWidth, a.frameHeight, resolution].every((n) => Number.isInteger(n) && n > 0) || resolution > 4 ||
+      !Number.isInteger(a.gutter) || a.gutter < 0 || !Number.isFinite(a.fps) || a.fps <= 0 || a.fps > 60 ||
+      a.frameWidth !== part.width || a.frameHeight !== part.height || a.columns > a.frames) throw new Error(`Animação inválida: ${entry.name}`);
+    const sheet = imageSize(readFileSync(resolve(directory, entry.name, a.file)));
+    const rows = Math.ceil(a.frames / a.columns);
+    // The sheet may be drawn at `resolution` pixels per room pixel; frame sizes stay in room pixels.
+    const width = a.columns * (a.frameWidth + 2 * a.gutter) * resolution, height = rows * (a.frameHeight + 2 * a.gutter) * resolution;
+    if (sheet.width !== width || sheet.height !== height || width > 4096 || height > 4096) {
+      throw new Error(`Folha de animação com dimensões incorretas: ${entry.name}/${a.file}`);
+    }
   }
   return item;
 }).sort((a, b) => a.id - b.id);
