@@ -97,6 +97,11 @@ type entity struct {
 	path   []Tile
 	due    time.Time
 	visits int
+	// A customer that cannot make progress escalates: detour, then walk through other
+	// actors (ghost), then leave the café. stuckSince is the first failure without any
+	// successful step since.
+	stuckSince time.Time
+	ghost      bool
 }
 type room struct {
 	manager       *Manager
@@ -731,7 +736,7 @@ func (r *room) canWalk(t Tile, a *entity) bool {
 	if !r.grid.inside(t) {
 		return false
 	}
-	if r.occupied(t, a.ID) {
+	if !a.ghost && r.occupied(t, a.ID) {
 		return false
 	}
 	if r.grid.walkable(t) {
@@ -773,10 +778,20 @@ func (r *room) route(a *entity, dest Tile, now time.Time) bool {
 	if a.Move != nil {
 		start = a.Move.To
 	}
-	path := findPath(start, dest, func(t Tile) bool { return r.canWalk(t, a) }, r.grid.width*r.grid.height*4)
+	limit := r.grid.width * r.grid.height * 4
+	a.ghost = false
+	path := findPath(start, dest, func(t Tile) bool { return r.canWalk(t, a) }, limit)
+	if path == nil && r.mayGhost(a, now) {
+		a.ghost = true
+		if path = findPath(start, dest, func(t Tile) bool { return r.canWalk(t, a) }, limit); path == nil {
+			a.ghost = false
+		}
+	}
 	if path == nil {
+		r.noteStuck(a, now)
 		return false
 	}
+	a.stuckSince = time.Time{}
 	a.path = path
 	if a.Move == nil {
 		r.nextStep(a, now)
@@ -805,7 +820,18 @@ func (r *room) nextStep(a *entity, now time.Time) bool {
 	}
 	external := a.Kind == "npc" && a.Outside && (dest.X <= 0 || dest.Y <= 0)
 	if !external && !r.canWalk(dest, a) {
-		alternative := findPath(from, a.path[len(a.path)-1], func(t Tile) bool { return r.canWalk(t, a) }, r.grid.width*r.grid.height*4)
+		r.noteStuck(a, now)
+		goal := a.path[len(a.path)-1]
+		limit := r.grid.width * r.grid.height * 4
+		alternative := findPath(from, goal, func(t Tile) bool { return r.canWalk(t, a) }, limit)
+		if len(alternative) == 0 && r.mayGhost(a, now) {
+			// Nobody can get out of the way (a one-tile aisle, two customers face to face):
+			// let this customer pass through the others rather than wait forever.
+			a.ghost = true
+			if alternative = findPath(from, goal, func(t Tile) bool { return r.canWalk(t, a) }, limit); len(alternative) == 0 {
+				a.ghost = false
+			}
+		}
 		if len(alternative) == 0 {
 			a.due = now.Add(time.Second)
 			return false
@@ -816,6 +842,9 @@ func (r *room) nextStep(a *entity, now time.Time) bool {
 	if !external && dest.X != from.X && dest.Y != from.Y && !r.canWalk(Tile{X: dest.X, Y: from.Y}, a) && !r.canWalk(Tile{X: from.X, Y: dest.Y}, a) {
 		a.path = nil
 		return false
+	}
+	if !a.ghost {
+		a.stuckSince = time.Time{}
 	}
 	a.path = a.path[1:]
 	a.Direction = direction(from, dest)
@@ -871,7 +900,7 @@ func (r *room) command(p *Peer, c gamewire.Command) {
 			return
 		}
 	case "stand":
-		dest, ok := r.freeNeighbour(Tile{X: a.X, Y: a.Y}, a)
+		dest, ok := r.freeNeighbour(Tile{X: a.X, Y: a.Y}, a, false)
 		if !ok || !r.route(a, dest, now) {
 			fail("Não há espaço para levantar.")
 			return
@@ -897,10 +926,10 @@ func (r *room) command(p *Peer, c gamewire.Command) {
 	r.broadcast(gamewire.Event{Type: "actors", Actors: []gamewire.Actor{r.status(a, false)}}, "")
 	r.send(p, gamewire.Event{Type: "ack", RequestID: c.RequestID})
 }
-func (r *room) freeNeighbour(t Tile, a *entity) (Tile, bool) {
+func (r *room) freeNeighbour(t Tile, a *entity, ignoreActors bool) (Tile, bool) {
 	for _, d := range neighbours {
 		n := Tile{X: t.X + d.X, Y: t.Y + d.Y}
-		if r.grid.walkable(n) && !r.occupied(n, a.ID) {
+		if r.grid.walkable(n) && (ignoreActors || !r.occupied(n, a.ID)) {
 			return n, true
 		}
 	}
@@ -952,7 +981,8 @@ func (r *room) reserveChair(a *entity, id string, now time.Time) bool {
 }
 func (r *room) sit(a *entity, now time.Time) {
 	a.State = "seated"
-	a.due = now.Add(2 * time.Second)
+	a.visits = 0
+	a.due = now.Add(customerFoodCheck)
 	a.Action = &gamewire.ActorAction{Kind: "seated", StartedAt: now.UnixMilli(), Duration: 2000}
 	for _, u := range r.world.Units {
 		if u.ID == a.ChairID {
@@ -1177,7 +1207,15 @@ func (r *room) tick(now time.Time) {
 				changed = true
 			}
 		}
+		if a.Kind == "npc" && a.Move == nil && r.gaveUp(a, now) {
+			r.releaseSeat(a)
+			delete(r.actors, a.ID)
+			r.unindexActor(a.ID)
+			removed = append(removed, a.ID)
+			continue
+		}
 		if a.Move == nil && len(a.path) == 0 {
+			a.ghost = false
 			if a.State == "to_seat" {
 				atChair := false
 				for _, u := range r.world.Units {
@@ -1334,10 +1372,11 @@ func (r *room) advanceNPC(a *entity, now time.Time) bool {
 			return false
 		}
 		tiles := []Tile{}
+		reachable := r.reachableTiles(Tile{X: a.X, Y: a.Y})
 		for y := 1; y < r.grid.height; y++ {
 			for x := 1; x < r.grid.width; x++ {
 				t := Tile{X: x, Y: y}
-				if r.grid.walkable(t) && !r.occupied(t, a.ID) {
+				if reachable[t] && r.grid.walkable(t) && !r.occupied(t, a.ID) {
 					tiles = append(tiles, t)
 				}
 			}
@@ -1369,9 +1408,9 @@ func (r *room) advanceNPC(a *entity, now time.Time) bool {
 				return false
 			}
 		}
-		a.due = now.Add(2 * time.Second)
+		a.due = nextFoodCheck(a.due, now)
 		a.visits++
-		if a.visits >= 3 {
+		if a.visits >= int(customerFoodWait/customerFoodCheck) {
 			r.standNPC(a, now)
 		}
 	case "eating":
@@ -1385,7 +1424,14 @@ func (r *room) advanceNPC(a *entity, now time.Time) bool {
 	return false
 }
 func (r *room) standNPC(a *entity, now time.Time) {
-	dest, ok := r.freeNeighbour(Tile{X: a.X, Y: a.Y}, a)
+	dest, ok := r.freeNeighbour(Tile{X: a.X, Y: a.Y}, a, false)
+	if !ok {
+		r.noteStuck(a, now)
+		// Boxed in by customers: step onto a neighbour tile through them.
+		if r.mayGhost(a, now) {
+			dest, ok = r.freeNeighbour(Tile{X: a.X, Y: a.Y}, a, true)
+		}
+	}
 	if !ok {
 		a.due = now.Add(time.Second)
 		return
