@@ -1002,7 +1002,7 @@ func (r *room) validateOperation(op gamewire.Operation) string {
 	if json.Unmarshal(op.Body, &body) != nil {
 		return "Pedido inválido."
 	}
-	if op.Action == "move" || op.Action == "store" || op.Action == "purchase" {
+	if op.Action == "move" || op.Action == "store" || op.Action == "sell" || op.Action == "purchase" {
 		var item roomcatalog.Item
 		if op.Action == "purchase" {
 			item, _ = roomcatalog.ByID(body.ItemID)
@@ -1037,7 +1037,7 @@ func (r *room) validateOperation(op gamewire.Operation) string {
 				}
 			}
 		}
-		if op.Action != "store" && item.Type >= 2 && item.Kind != "wall" && item.Kind != "window" && item.Kind != "panel" && body.X != nil && body.Y != nil && body.Rotation != nil {
+		if op.Action != "store" && op.Action != "sell" && item.Type >= 2 && item.Kind != "wall" && item.Kind != "window" && item.Kind != "panel" && body.X != nil && body.Y != nil && body.Rotation != nil {
 			u := Unit{ItemID: item.ID, X: *body.X, Y: *body.Y, Rotation: *body.Rotation}
 			for _, t := range footprint(u) {
 				if r.occupied(t, "") {

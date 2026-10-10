@@ -75,6 +75,8 @@ import { loadPlayerState, type PlayerState } from '../../game/player-state';
 import { canUseSpice, type SpiceId, type SpiceScreenTextures } from '../../game/spices';
 import { SpiceScreenModal } from './SpiceScreenModal';
 import { DevToolsModal, loadDevToolsTextures } from './DevToolsModal';
+import { GoldBurstEffect } from './GoldBurstEffect';
+import { SellConfirmModal } from './SellConfirmModal';
 import { cookingTime, type CookingClient, type CookingSnapshot, type CookingSpice, type StoveCooking } from '../../game/cooking';
 import {
   PAN_KEY_STEP,
@@ -337,6 +339,8 @@ export class RoomScreen implements Screen {
   private connectionHint?: Text;
   private networkPending = 0;
   private noticeTimer?: ReturnType<typeof setTimeout>;
+  private sellModal?: SellConfirmModal;
+  private readonly goldEffects: GoldBurstEffect[] = [];
   private readonly itemViews = new Map<RoomItem, Container[]>();
   private readonly floorUnitViews = new Map<string, Sprite>();
   private readonly avatars: readonly BakedAvatarBundle[];
@@ -698,6 +702,9 @@ export class RoomScreen implements Screen {
           model: this.model, world: this.world, art: this.artProvider,
           apply: (snapshot) => this.applyRoomSnapshot(snapshot),
           alpha: (id, alpha) => this.setUnitAlpha(id, alpha),
+          confirmSell: (_item, gold) => this.sellModal
+            ? this.sellModal.ask(`Você quer mesmo vender esse item por ${gold} Ouros?`) : Promise.resolve(true),
+          onTransaction: (event) => this.playGoldEffect(event),
           isOverUI: (event) => {
             if (this.storeBar?.containsGlobalPoint(event.global) || this.topBars?.containsGlobalPoint(event.global)) return true;
             return [this.hud, this.connectionHint].some((layer) => {
@@ -744,6 +751,7 @@ export class RoomScreen implements Screen {
             if (this.roomStore!.beginEntryDrag(entry, event)) { this.drag = null; this.dragCancelledTap = true; }
           },
           onDragEnd: (event) => this.onDragEnd(event),
+          onSell: () => { void this.roomStore!.sell(); },
         } : undefined,
         options.storeTopButtonTexture,
         options.actionBarIcons?.find(({ name }) => name === 'house')?.texture,
@@ -840,6 +848,8 @@ export class RoomScreen implements Screen {
       } : {}),
     });
     this.view.addChild(this.settingsModal.view);
+    this.sellModal = new SellConfirmModal();
+    this.view.addChild(this.sellModal.view);
     this.updateMobileHudLayout();
     if (options.cookingSnapshot) this.acceptCookingSnapshot(options.cookingSnapshot, true);
     if (this.realtime) {
@@ -1952,6 +1962,18 @@ export class RoomScreen implements Screen {
     return button;
   }
 
+  /** Light, coins and the amount over the piece that was just bought (negative) or sold. */
+  private playGoldEffect(event: { item: { sizeX: number; sizeY: number; type: number }; tile: { tx: number; ty: number }; rotation: number; gold: number }): void {
+    if (this.destroyed) return;
+    const flat = event.item.type < 2;
+    const sx = flat ? 1 : event.rotation % 2 ? event.item.sizeY : event.item.sizeX;
+    const sy = flat ? 1 : event.rotation % 2 ? event.item.sizeX : event.item.sizeY;
+    const cx = event.tile.tx + sx / 2, cy = event.tile.ty + sy / 2;
+    const effect = new GoldBurstEffect({ x: tileToScreenX(cx, cy), y: tileToScreenY(cx, cy) }, event.gold);
+    this.world.addChild(effect.view);
+    this.goldEffects.push(effect);
+  }
+
   async openDevTools(): Promise<void> {
     if (this.isModalOpen || this.devModalLoading || this.storeBar?.isOpen) return;
     if (!this.devModal) {
@@ -2003,7 +2025,7 @@ export class RoomScreen implements Screen {
   }
 
   private get isModalOpen(): boolean {
-    return Boolean(this.cookModal?.isOpen || this.wardrobeModal?.isOpen || this.settingsModal?.isOpen);
+    return Boolean(this.cookModal?.isOpen || this.spiceModal?.isOpen || this.wardrobeModal?.isOpen || this.settingsModal?.isOpen || this.devModal?.isOpen || this.sellModal?.isOpen);
   }
 
   /** Atores em cena, o jogador primeiro. Usado nos testes. */
@@ -2790,6 +2812,12 @@ export class RoomScreen implements Screen {
     this.cookModal?.update(deltaMs);
     this.spiceModal?.update(deltaMs);
     this.devModal?.update(deltaMs);
+    this.sellModal?.update(deltaMs);
+    for (let index = this.goldEffects.length - 1; index >= 0; index--) {
+      const effect = this.goldEffects[index];
+      effect.update(deltaMs);
+      if (effect.done) { effect.destroy(); this.goldEffects.splice(index, 1); }
+    }
     this.wardrobeModal?.update(deltaMs);
     this.storeBar?.update(deltaMs);
     this.topBars?.update(deltaMs);
@@ -2938,6 +2966,8 @@ export class RoomScreen implements Screen {
     this.cookModal?.destroy();
     this.spiceModal?.destroy();
     this.devModal?.destroy();
+    this.sellModal?.destroy();
+    this.goldEffects.splice(0).forEach((effect) => effect.destroy());
     this.wardrobeModal?.destroy();
     this.settingsModal?.destroy();
     this.outsideNpcManager?.destroy();

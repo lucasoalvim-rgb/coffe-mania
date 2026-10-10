@@ -14,6 +14,14 @@ export interface RoomSnapshot {
   roomId?: string; canEdit?: boolean;
   revision: number; tilesX: number; tilesY: number; inventory: RoomUnit[];
   catalog: RoomCatalogItem[]; playerState: PlayerState;
+  /** Share of the price a sold item pays back; the server owns the rule. */
+  sellPercent?: number;
+}
+
+/** What selling this item pays, as the server will compute it (0: it cannot be sold). */
+export function sellGold(item: RoomCatalogItem, snapshot: RoomSnapshot): number {
+  if (!item.purchasable || item.kind === 'wall') return 0;
+  return Math.floor(item.priceGold * (snapshot.sellPercent ?? 30) / 100);
 }
 export interface ItemManifest extends RoomCatalogItem {
   itemHeight: number; parts: (IndoorArtFrame & { rotation?: number })[];
@@ -119,7 +127,7 @@ export class RoomInventoryClient {
     }
     return response.json() as Promise<RoomSnapshot>;
   }
-  async mutate(action: 'purchase' | 'move' | 'store', revision: number, data: { itemId?: number; unitId?: string; tx?: number; ty?: number; rotation?: number }): Promise<RoomSnapshot> {
+  async mutate(action: 'purchase' | 'move' | 'store' | 'sell', revision: number, data: { itemId?: number; unitId?: string; tx?: number; ty?: number; rotation?: number }): Promise<RoomSnapshot> {
     const signature = JSON.stringify({ action, ...data });
     if (this.pending && this.pending.signature !== signature) {
       throw new Error('Verifique a última operação repetindo a mesma colocação ou recarregando o quarto.');

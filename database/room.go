@@ -22,6 +22,7 @@ var errRoomPosition = errors.New("Posição inválida ou ocupada para este item.
 var errRoomOwned = errors.New("Esta unidade não pertence ao seu inventário.")
 var errRoomOperation = errors.New("Identificador de operação já utilizado em outro pedido.")
 var errRoomBusy = errors.New("Não é possível guardar um fogão com comida.")
+var errRoomNotSellable = errors.New("Este item não pode ser vendido.")
 var errCounterBusy = errors.New("Não é possível guardar um balcão com comida.")
 var errKitchenLimit = errors.New("Você já tem o máximo de itens deste tipo permitido no seu nível.")
 
@@ -47,6 +48,7 @@ type roomSnapshot struct {
 	Inventory   []roomUnit           `json:"inventory"`
 	Catalog     []roomcatalog.Item   `json:"catalog"`
 	PlayerState playerstate.Snapshot `json:"playerState"`
+	SellPercent int                  `json:"sellPercent"`
 }
 type roomCommand struct {
 	ItemID    int    `json:"itemId,omitempty"`
@@ -237,7 +239,7 @@ func kitchenLimit(kind string, level int) int {
 }
 
 func snapshotRoom(app core.App, userID string) (roomSnapshot, error) {
-	result := roomSnapshot{RoomID: userID, CanEdit: true, Inventory: []roomUnit{}, Catalog: roomcatalog.Items}
+	result := roomSnapshot{RoomID: userID, CanEdit: true, Inventory: []roomUnit{}, Catalog: roomcatalog.Items, SellPercent: roomcatalog.SellPercent}
 	room, err := app.FindFirstRecordByData("player_rooms", "user", userID)
 	if err != nil {
 		return result, err
@@ -373,7 +375,7 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 				return errRoomPosition
 			}
 			// A stove keeps cooking while it moves (the dish goes with it); it cannot be stored.
-			if stoveID := unit.GetString("stove_id"); stoveID != "" && action == "store" {
+			if stoveID := unit.GetString("stove_id"); stoveID != "" && (action == "store" || action == "sell") {
 				_, err := tx.FindFirstRecordByData("stove_cooking", "stove", stoveID)
 				if err == nil {
 					return errRoomBusy
@@ -382,7 +384,7 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 					return err
 				}
 			}
-			if item.Kind == "counter" && action == "store" {
+			if item.Kind == "counter" && (action == "store" || action == "sell") {
 				_, err := tx.FindFirstRecordByData("room_food", "counter", unit.Id)
 				if err == nil {
 					return errCounterBusy
@@ -392,7 +394,35 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 				}
 			}
 		}
-		if action == "store" {
+		sold := false
+		if action == "sell" {
+			price := roomcatalog.SellGold(item)
+			if price <= 0 {
+				return errRoomNotSellable
+			}
+			state, err := tx.FindFirstRecordByData(playerstate.Collection, "user", userID)
+			if err != nil {
+				return err
+			}
+			state.Set("gold", state.GetInt64("gold")+price)
+			if err := tx.Save(state); err != nil {
+				return err
+			}
+			// The stove's cooking slot goes with it; the checks above guarantee it is idle.
+			if stoveID := unit.GetString("stove_id"); stoveID != "" {
+				stove, err := tx.FindRecordById("player_stoves", stoveID)
+				if err != nil {
+					return err
+				}
+				if err := tx.Delete(stove); err != nil {
+					return err
+				}
+			}
+			if err := tx.Delete(unit); err != nil {
+				return err
+			}
+			sold = true
+		} else if action == "store" {
 			unit.Set("placed", false)
 		} else {
 			x, y, rotation := *command.TX, *command.TY, *command.Rotation
@@ -438,10 +468,12 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 			unit.Set("ty", y)
 			unit.Set("rotation", rotation)
 		}
-		if err := tx.Save(unit); err != nil {
+		if sold {
+			// Nothing left to save or sync.
+		} else if err := tx.Save(unit); err != nil {
 			return err
 		}
-		if stoveID := unit.GetString("stove_id"); stoveID != "" {
+		if stoveID := unit.GetString("stove_id"); stoveID != "" && !sold {
 			stove, err := tx.FindRecordById("player_stoves", stoveID)
 			if err != nil {
 				return err
@@ -517,7 +549,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 		}
 		return r.JSON(http.StatusOK, snapshot)
 	})
-	for _, operation := range []string{"purchase", "move", "store"} {
+	for _, operation := range []string{"purchase", "move", "store", "sell"} {
 		action := operation
 		group.POST("/"+action, func(r *core.RequestEvent) error {
 			user := sessionRecord(r)
@@ -534,7 +566,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 				return r.BadRequestError("Pedido inválido.", nil)
 			}
 			if err := decoder.Decode(new(any)); err != io.EOF || command.Revision == nil || *command.Revision < 1 || !requestKeyPattern.MatchString(command.RequestID) ||
-				(action != "store" && (command.TX == nil || command.TY == nil || command.Rotation == nil)) ||
+				(action != "store" && action != "sell" && (command.TX == nil || command.TY == nil || command.Rotation == nil)) ||
 				(action == "purchase" && (command.ItemID <= 0 || command.UnitID != "")) || (action != "purchase" && (command.UnitID == "" || command.ItemID != 0)) {
 				return r.BadRequestError("Pedido inválido.", nil)
 			}
@@ -551,7 +583,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 					return r.NotFoundError(err.Error(), nil)
 				case errors.Is(err, errRoomPosition):
 					return r.BadRequestError(err.Error(), nil)
-				case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit):
+				case errors.Is(err, errRoomNotSellable), errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit):
 					return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 				default:
 					return r.InternalServerError("Não foi possível salvar esta operação.", err)
