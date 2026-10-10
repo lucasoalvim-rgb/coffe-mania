@@ -171,7 +171,11 @@ async function boot(): Promise<void> {
       console.warn('[avatar] indisponível, usando o placeholder branco', error);
       return [];
     });
-    const npcAvatarSource = await createNpcAvatarSource(npcAppearancePolicy);
+    // Without a second WebGL context the café still opens: customers use the placeholder body.
+    const npcAvatarSource = await createNpcAvatarSource(npcAppearancePolicy).catch((error) => {
+      console.warn('[avatar] fonte de clientes indisponível, usando o placeholder', error);
+      return undefined;
+    });
 
     // Expõe os atlas apenas em desenvolvimento para diagnóstico do renderizador.
     if (import.meta.env.DEV) Object.assign(window, { __avatarBake: avatars[0], __avatarBakes: avatars });
@@ -191,7 +195,7 @@ async function boot(): Promise<void> {
       artProvider,
       avatars,
       placeholderAvatar,
-      npcAvatarSource,
+      ...(npcAvatarSource ? { npcAvatarSource } : {}),
       outsideNpcs: true,
       ...(actionBarTexture ? { actionBarTexture } : {}),
       ...(storeBarTexture && roomSnapshot.canEdit !== false ? { storeBarTexture } : {}),
