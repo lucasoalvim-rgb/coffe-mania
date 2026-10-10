@@ -1,8 +1,12 @@
 # Changelog
 
-Notas das mudanças em desenvolvimento, ainda sem atribuição de versão. A versão só é atualizada por quem mantém o projeto ao preparar uma release. O campo npm `version` usa hífen no último componente por compatibilidade com SemVer.
+Notas das mudanças em desenvolvimento, ainda sem atribuição de versão. A numeração desta distribuição independente começa em `0.1.0`. O campo npm `version` usa SemVer.
 
 Seções usadas: **Adicionado**, **Alterado**, **Corrigido**, **Removido** e **Observações** (limites conhecidos e o que ficou para depois).
+
+## [0.1.0] — Início do versionamento independente
+
+- A distribuição do fork passa a usar sua própria linha de versões, separada da numeração do projeto original.
 
 ## Em desenvolvimento — Relógio dos cards do Livro de Receitas (2026-10-08)
 
