@@ -682,5 +682,9 @@ export class AvatarRenderer {
   destroy(): void {
     this.texture.dispose();
     this.renderer.dispose();
+    // dispose() frees Three's resources but keeps the browser's WebGL context alive until
+    // garbage collection; browsers allow only a handful, and creating the next renderer
+    // fails with "Error creating WebGL context" when they are exhausted.
+    this.renderer.forceContextLoss();
   }
 }

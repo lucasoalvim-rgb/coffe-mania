@@ -1,7 +1,13 @@
-import { CLIP_SHOW_OBJECTS, bakedDirections, clipFrames, resolveDirection } from './clips';
+import { CLIP, CLIP_SHOW_OBJECTS, bakedDirections, clipFrames, resolveDirection } from './clips';
 import type { AvatarRenderer } from './AvatarRenderer';
 
-/** Renderiza o avatar 3D uma vez em um atlas usado pelo mundo 2D. As direções 0..4 são renderizadas; 5..7 usam espelhamento. */
+/** sids de Bip01_R_Hand e Bip01_L_Hand no Collada. */
+const RIGHT_HAND_BONE = 'Bone10';
+const LEFT_HAND_BONE = 'Bone13';
+
+/** Renderiza o avatar 3D em atlas 2D. Clipes simétricos espelham 5..7;
+ * o transporte preserva as oito vistas para manter a mão direita.
+ */
 
 export interface BakedCell {
   clip: number;
@@ -10,6 +16,10 @@ export interface BakedCell {
   /** Posição no atlas, em pixels. */
   x: number;
   y: number;
+  /** Apoio da mão direita neste quadro, em pixels da célula. */
+  carryingHand?: { x: number; y: number };
+  /** Mão oposta usada quando um clipe simétrico, como colocar, é espelhado. */
+  carryingLeftHand?: { x: number; y: number };
 }
 
 /** Sprite data can come from a saved atlas, without a renderer or canvas. */
@@ -133,6 +143,13 @@ function* bakeAvatarSteps(renderer: AvatarRenderer, options: BakeOptions): Gener
       context.drawImage(renderer.canvas, 0, 0, renderer.canvas.width, renderer.canvas.height, x, y, cell, cell);
 
       const celula: BakedCell = { ...pedido, x, y };
+      if (pedido.clip === CLIP.WAITOR_WALK || pedido.clip === CLIP.COOKING) {
+        const hands = renderer.projectBones([RIGHT_HAND_BONE, LEFT_HAND_BONE], pedido.frame);
+        const hand = hands[RIGHT_HAND_BONE];
+        if (hand) celula.carryingHand = { x: (hand[0] + 1) * cell / 2, y: (1 - hand[1]) * cell / 2 };
+        const leftHand = hands[LEFT_HAND_BONE];
+        if (leftHand) celula.carryingLeftHand = { x: (leftHand[0] + 1) * cell / 2, y: (1 - leftHand[1]) * cell / 2 };
+      }
       cells.push(celula);
       index.set(cellKey(pedido.clip, pedido.direction, pedido.frame), celula);
       yield;
@@ -170,8 +187,7 @@ export interface FrameLookup {
 }
 
 /**
- * Célula para um clipe, direção e frame, resolvendo o espelhamento das direções
- * 5, 6 e 7.
+ * Prefere uma vista própria; usa espelhamento de 5..7 nos clipes simétricos.
  */
 export function lookupFrame(
   baked: AvatarAtlas,
@@ -179,6 +195,8 @@ export function lookupFrame(
   direction: number,
   frame: number,
 ): FrameLookup | undefined {
+  const direct = baked.index.get(cellKey(clip, direction, frame));
+  if (direct) return { cell: direct, mirrored: false };
   const { source, mirrored } = resolveDirection(direction);
   const cell = baked.index.get(cellKey(clip, source, frame));
   return cell ? { cell, mirrored } : undefined;

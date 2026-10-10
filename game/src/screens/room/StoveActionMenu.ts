@@ -1,95 +1,92 @@
-import { Container, Graphics, Rectangle, Text, TextStyle } from 'pixi.js';
+import { Container, Rectangle, Sprite, Text, TextStyle, Texture } from 'pixi.js';
 
-import { FONT_FAMILY } from '../../core/font-tokens';
+const BUTTON_WIDTH = 440;
+const BUTTON_HEIGHT = 62;
+const BUTTON_GAP = 2;
 
-const BUTTON_WIDTH = 400;
-const BUTTON_HEIGHT = 72;
-const BUTTON_GAP = 4;
-const INK = 0x603a1e;
+export type StoveActionIcon = 'speed' | 'instant' | 'recover' | 'discard' | 'info';
 
-type ButtonState = 'rest' | 'hover' | 'pressed';
-type IconKind = 'clock' | 'cancel';
+export interface StoveAction {
+  icon: StoveActionIcon;
+  label: string;
+  granas?: number;
+  onTap?: () => void;
+  disabled?: boolean;
+  /** Arte compartilhada com o painel de temperos ou a barra inferior. */
+  texture?: Texture;
+}
 
-/** Ações contextuais do fogão, com as mesmas três camadas dos painéis de cor. */
+export interface StoveActionTextures {
+  row: Texture;
+  sponge: Texture;
+}
+
+/** Moldura e ícones RGBA; legendas e áreas de clique continuam independentes. */
 export class StoveActionMenu {
-  static readonly HEIGHT = BUTTON_HEIGHT * 2 + BUTTON_GAP;
   readonly view = new Container();
-  private readonly timerLabel: Text;
-  private remainingSeconds = 0;
-  private timeRevealed = false;
+  private signature = '';
+  private rows = 0;
 
-  constructor(onRefresh: () => void, onCancel: () => void) {
+  constructor(actions: readonly StoveAction[], private readonly textures?: StoveActionTextures) {
     this.view.label = 'stove-action-menu';
-    this.timerLabel = this.addButton(0, 'clock', 'Ver tempo', () => {
-      this.timeRevealed = true;
-      this.updateTimerLabel();
-      onRefresh();
-    });
-    this.addButton(BUTTON_HEIGHT + BUTTON_GAP, 'cancel', 'Cancelar', onCancel);
+    this.setActions(actions);
   }
 
-  setRemaining(ms: number): void {
-    this.remainingSeconds = Math.max(0, Math.ceil(ms / 1000));
-    this.updateTimerLabel();
+  get height(): number { return this.rows * BUTTON_HEIGHT + Math.max(0, this.rows - 1) * BUTTON_GAP; }
+
+  /** Atualiza compra/uso por SSE sem recriar o alvo do mouse a cada quadro. */
+  setActions(actions: readonly StoveAction[]): boolean {
+    const signature = JSON.stringify(actions.map(({ icon, label, granas, disabled, texture }) => [icon, label, granas, disabled, texture?.uid]));
+    if (signature === this.signature) return false;
+    this.signature = signature; this.rows = actions.length;
+    this.view.removeChildren().forEach((child) => child.destroy({ children: true }));
+    actions.forEach((action, index) => this.addButton(index * (BUTTON_HEIGHT + BUTTON_GAP), action));
+    return true;
   }
 
-  private updateTimerLabel(): void {
-    if (!this.timeRevealed) return;
-    this.timerLabel.text = `Faltam ${String(Math.floor(this.remainingSeconds / 60)).padStart(2, '0')}:${String(this.remainingSeconds % 60).padStart(2, '0')}`;
-  }
-
-  private addButton(y: number, iconKind: IconKind, caption: string, onTap: () => void): Text {
+  private addButton(y: number, action: StoveAction): void {
     const button = new Container();
-    button.label = `stove-action-${iconKind}`;
-    button.y = y;
-    button.eventMode = 'static';
-    button.cursor = 'pointer';
-    button.hitArea = new Rectangle(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
+    button.label = 'stove-action-' + action.icon; button.y = y;
+    const enabled = !action.disabled && Boolean(action.onTap);
+    button.eventMode = 'static'; button.cursor = enabled ? 'pointer' : 'default';
+    button.hitArea = new Rectangle(-40, 0, BUTTON_WIDTH + 40, BUTTON_HEIGHT);
+    button.alpha = action.disabled ? 0.55 : 1;
 
-    const frame = new Graphics();
-    frame.eventMode = 'none';
-    const draw = (state: ButtonState) => {
-      frame.clear();
-      frame.roundRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, 12).fill(0x68401e);
-      frame.roundRect(4, 4, BUTTON_WIDTH - 8, BUTTON_HEIGHT - 8, 10).fill(0xb7863b);
-      frame.roundRect(9, 9, BUTTON_WIDTH - 18, BUTTON_HEIGHT - 18, 8)
-        .fill(state === 'rest' ? 0xffffff : state === 'hover' ? 0xffefae : 0xf7d47a);
-    };
-    draw('rest');
+    const frame = new Sprite(this.textures?.row ?? Texture.WHITE);
+    frame.label = 'stove-action-frame'; frame.eventMode = 'none';
+    frame.width = BUTTON_WIDTH; frame.height = BUTTON_HEIGHT;
 
-    const icon = new Graphics();
-    icon.eventMode = 'none';
-    if (iconKind === 'clock') {
-      icon.circle(38, BUTTON_HEIGHT / 2, 17).stroke({ color: INK, width: 4 });
-      icon.moveTo(38, BUTTON_HEIGHT / 2 - 11).lineTo(38, BUTTON_HEIGHT / 2)
-        .lineTo(47, BUTTON_HEIGHT / 2 + 5).stroke({ color: INK, width: 3.5, cap: 'round', join: 'round' });
-    } else {
-      icon.moveTo(26, 24).lineTo(50, 48).moveTo(50, 24).lineTo(26, 48)
-        .stroke({ color: INK, width: 4.5, cap: 'round' });
-    }
+    const art = action.texture ?? (action.icon === 'discard' ? this.textures?.sponge : undefined) ?? Texture.EMPTY;
+    const icon = new Sprite(art); icon.label = 'stove-action-icon-' + action.icon;
+    icon.eventMode = 'none'; icon.anchor.set(0.5);
+    icon.scale.set(Math.min((action.icon === 'discard' ? 70 : 106) / art.width, 76 / art.height));
+    icon.position.set(14, BUTTON_HEIGHT / 2);
 
     const label = new Text({
-      text: caption,
-      style: new TextStyle({ fontFamily: [FONT_FAMILY, 'sans-serif'], fontSize: 29, fontWeight: '600', fill: INK }),
+      text: action.label,
+      style: new TextStyle({ fontFamily: ['Arial', 'sans-serif'], fontSize: 26, fontWeight: '400', fill: 0x70675d, padding: 2 }),
     });
-    label.eventMode = 'none';
-    label.anchor.set(0, 0.5);
-    label.position.set(74, BUTTON_HEIGHT / 2);
-    button.on('pointerover', () => draw('hover'));
-    button.on('pointerout', () => draw('rest'));
-    button.on('pointerdown', () => draw('pressed'));
-    button.on('pointerup', () => draw('hover'));
-    button.on('pointerupoutside', () => draw('rest'));
-    button.on('pointertap', (event) => {
-      event.stopPropagation();
-      onTap();
-    });
+    label.eventMode = 'none'; label.anchor.set(0.5);
+    label.position.set(action.granas === undefined ? 255 : 216, BUTTON_HEIGHT / 2);
+    label.scale.set(Math.min(1, (action.granas === undefined ? 340 : 265) / label.width));
     button.addChild(frame, icon, label);
+
+    if (action.granas !== undefined) {
+      const price = new Text({ text: String(action.granas), style: new TextStyle({
+        fontFamily: ['Arial', 'sans-serif'], fontSize: 26, fontWeight: '700', fill: 0x2f8f3a,
+      }) });
+      price.eventMode = 'none'; price.anchor.set(1, 0.5);
+      price.position.set(BUTTON_WIDTH - 20, BUTTON_HEIGHT / 2); button.addChild(price);
+    }
+
+    button.on('pointerover', () => { if (enabled) frame.tint = 0xfff2d9; });
+    button.on('pointerout', () => { frame.tint = 0xffffff; });
+    button.on('pointerdown', (event) => { event.stopPropagation(); if (enabled) frame.tint = 0xefd7b4; });
+    button.on('pointerup', () => { frame.tint = 0xffffff; });
+    button.on('pointerupoutside', () => { frame.tint = 0xffffff; });
+    button.on('pointertap', (event) => { event.stopPropagation(); if (enabled) action.onTap?.(); });
     this.view.addChild(button);
-    return label;
   }
 
-  destroy(): void {
-    this.view.destroy({ children: true });
-  }
+  destroy(): void { this.view.destroy({ children: true }); }
 }

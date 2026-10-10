@@ -18,6 +18,7 @@ type playerSession struct {
 	PlayerID    string `json:"playerId"`
 	DisplayName string `json:"displayName"`
 	Email       string `json:"email"`
+	DevTools    bool   `json:"devTools"`
 }
 
 func sessionRecord(e *core.RequestEvent) *core.Record {
@@ -37,7 +38,7 @@ func sessionView(record *core.Record) playerSession {
 	if name == "" {
 		name = strings.Split(record.Email(), "@")[0]
 	}
-	return playerSession{PlayerID: record.Id, DisplayName: name, Email: record.Email()}
+	return playerSession{PlayerID: record.Id, DisplayName: name, Email: record.Email(), DevTools: devToolsEnabled()}
 }
 
 func setSessionCookie(e *core.RequestEvent, token string, maxAge int) {

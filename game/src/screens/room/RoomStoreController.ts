@@ -1,7 +1,7 @@
 import { Container, Graphics, Sprite, type FederatedPointerEvent } from 'pixi.js';
 import type { ArtProvider } from '../../game/indoor-art';
 import { rotatedArt } from '../../game/indoor-art';
-import { RoomInventoryClient, type RoomCatalogItem, type RoomSnapshot } from '../../game/room-inventory';
+import { RoomInventoryClient, sellGold, type RoomCatalogItem, type RoomSnapshot } from '../../game/room-inventory';
 import type { RoomModel, RoomItem } from '../../world/RoomModel';
 import { DEPTH_BIAS_WALLPAPER, FLOOR_DRAW_PRIORITY, screenToTile, tileToScreen, wallDepth, type Tile } from '../../world/iso';
 import { wallGeometry } from '../../world/wallGeometry';
@@ -48,8 +48,14 @@ export class RoomStoreController {
   private dragging?: number;
   private cardDragStart?: { x: number; y: number };
   private cardDragMoved = false;
+  /** Tile onde o móvel foi pego neste pressionar: soltar em outro tile é um arrasto e coloca lá. */
+  private pickOrigin?: Tile;
+  /** Botão pressionado com piso/papel selecionado: cada tile novo sob o mouse compra e pinta. */
+  private painting?: number;
   private pointer?: { x: number; y: number };
   private overUI = false;
+  /** Holding a piece over the cash register: it follows the mouse as an icon, ready to sell. */
+  private overRegister = false;
   private cursorImage?: Sprite;
   private busy = false;
   private inventory = false;
@@ -64,6 +70,10 @@ export class RoomStoreController {
     apply(snapshot: RoomSnapshot): void; alpha(unitId: string, alpha: number): void;
     canPlace?(item: RoomCatalogItem, tile: Tile, rotation: number, unitId?: string): boolean;
     isOverUI?(event: FederatedPointerEvent): boolean;
+    /** Asks the player; true when the sale is confirmed. */
+    confirmSell?(item: RoomCatalogItem, gold: number): Promise<boolean>;
+    /** A purchase happened at a tile: the room shows the gold effect there. */
+    onTransaction?(event: { item: RoomCatalogItem; tile: Tile; rotation: number; gold: number }): void;
   }) {
     this.snapshot = options.snapshot;
     this.preview.label = 'store-placement-preview'; this.preview.eventMode = 'none';
@@ -80,7 +90,7 @@ export class RoomStoreController {
   }
   onOpen(): void {
     this.store?.selectCategory('floor'); this.refreshEntries();
-    this.message('Alt + arraste: mover. Shift + clique: girar. Ctrl + clique: guardar.');
+    this.message('Clique num móvel para movê-lo. Shift + clique: girar. Ctrl + clique: guardar. Segurando um móvel: V ou a caixa registradora vende.');
   }
   onClose(): void {
     this.clearPreview();
@@ -93,7 +103,7 @@ export class RoomStoreController {
   private refreshEntries(): void {
     const category = this.store?.selectedCategory;
     const categoryFor = (item: RoomCatalogItem): string => item.type === 0 ? 'floor' : item.type === 1 ? 'wallpaper' : item.type === 2 ? 'door'
-      : ({ stove: 'stove', table: 'table', chair: 'chair', window: 'flower-window', panel: 'flower-window', bush: 'flower', letterbox: 'flower', decor: 'flower', wall: 'wallpaper', door: 'door' } as const)[item.kind];
+      : ({ stove: 'stove', counter: 'counter', table: 'table', chair: 'chair', window: 'flower-window', panel: 'flower-window', bush: 'flower', letterbox: 'flower', decor: 'flower', wall: 'wallpaper', door: 'door' } as const)[item.kind];
     const texture = (item: RoomCatalogItem) => {
       const frame = this.options.art.art.get(item.classname)?.frames[0]; return frame ? this.options.art.textureFor(frame.file) : undefined;
     };
@@ -122,8 +132,9 @@ export class RoomStoreController {
     if (this.busy) return Boolean(this.selection);
     const selected = Boolean(this.selection);
     if (this.selection?.unit) this.options.alpha(this.selection.unit.unitId, 1);
-    this.selection = undefined; this.tile = undefined; this.dragging = undefined;
-    this.cardDragStart = undefined; this.cardDragMoved = false; this.pointer = undefined; this.overUI = false;
+    this.selection = undefined; this.tile = undefined; this.dragging = undefined; this.painting = undefined; this.pickOrigin = undefined;
+    this.cardDragStart = undefined; this.cardDragMoved = false; this.pointer = undefined; this.overUI = false; this.overRegister = false;
+    this.store?.setRegisterActive(false);
     this.clearPreview(); this.cursorImage?.destroy(); this.cursorImage = undefined;
     return selected;
   }
@@ -152,6 +163,11 @@ export class RoomStoreController {
       if (tile.tx === 0) this.rotation = 0; else if (tile.ty === 0) this.rotation = 1;
     } else if (item.kind === 'door') {
       if (tile.tx === 1) this.rotation = 0; else if (tile.ty === 1) this.rotation = 1;
+    } else {
+      // Móveis e pisos seguem o grid dentro da sala, mesmo com o ponteiro fora dela.
+      const sx = this.rotation % 2 ? item.sizeY : item.sizeX, sy = this.rotation % 2 ? item.sizeX : item.sizeY;
+      const maxX = Math.max(1, this.options.model.tilesX - sx), maxY = Math.max(1, this.options.model.tilesY - sy);
+      return { tx: Math.min(maxX, Math.max(1, tile.tx)), ty: Math.min(maxY, Math.max(1, tile.ty)) };
     }
     return tile;
   }
@@ -161,24 +177,38 @@ export class RoomStoreController {
     this.pointer = { x: event.global.x, y: event.global.y };
     if (this.cardDragStart && Math.hypot(this.pointer.x - this.cardDragStart.x, this.pointer.y - this.cardDragStart.y) >= 6) this.cardDragMoved = true;
     this.overUI = this.options.isOverUI?.(event) ?? this.store.containsGlobalPoint(event.global);
-    this.tile = this.overUI ? undefined : this.pickTile(event);
+    const overRegister = Boolean(this.selection.unit) && this.store.containsRegisterPoint(event.global);
+    if (overRegister !== this.overRegister) {
+      this.overRegister = overRegister; this.store.setRegisterActive(overRegister);
+      const { item } = this.selection;
+      if (overRegister) this.message(`${item.name}: clique na caixa registradora ou aperte V para vender por ${sellGold(item, this.snapshot)} ouro.`);
+    }
+    const previous = this.tile;
+    // Sobre a barra da loja a prévia fica no último tile; fora dela segue o grid.
+    if (!this.overUI) this.tile = this.pickTile(event);
     this.drawPreview();
+    if (this.painting === event.pointerId && this.tile && (!previous || previous.tx !== this.tile.tx || previous.ty !== this.tile.ty)) {
+      void this.commit();
+    }
   }
   private drawPreview(): void {
     this.clearPreview();
     if (!this.selection) return;
     const { item, unit } = this.selection, tile = this.tile;
     if (unit?.placed) this.options.alpha(unit.unitId, 0);
-    if (this.overUI || !tile || !this.validPlacement(item, tile, this.rotation, unit?.unitId)) {
-      if (!this.overUI && tile && this.options.model.inside(tile.tx, tile.ty)) {
-        this.indicator.addChild(new Graphics().poly(tileDiamond(tile.tx, tile.ty))
-          .fill({ color: 0xef4444, alpha: 0.35 }).stroke({ color: 0xdc2626, width: 3 }));
-      }
-      this.showCursorImage(); return;
-    }
+    // Over the cash register the piece leaves the floor and follows the mouse as an icon.
+    if (this.overRegister) { this.showCursorImage(); return; }
+    // Só antes de chegar à sala (vindo do card da loja) o item aparece como ícone no ponteiro.
+    if (!tile) { this.showCursorImage(); return; }
+    const valid = this.validPlacement(item, tile, this.rotation, unit?.unitId);
     const origin = tileToScreen(tile.tx, tile.ty);
-    const indicator = new Graphics().poly(tileDiamond(tile.tx, tile.ty)).fill({ color: 0x4ade80, alpha: .35 }).stroke({ color: 0x16a34a, width: 3 });
-    indicator.label = 'store-placement-indicator'; this.indicator.addChild(indicator);
+    const sx = this.rotation % 2 ? item.sizeY : item.sizeX, sy = this.rotation % 2 ? item.sizeX : item.sizeY;
+    for (let dy = 0; dy < (item.type < 2 ? 1 : sy); dy++) for (let dx = 0; dx < (item.type < 2 ? 1 : sx); dx++) {
+      if (!this.options.model.inside(tile.tx + dx, tile.ty + dy)) continue;
+      const indicator = new Graphics().poly(tileDiamond(tile.tx + dx, tile.ty + dy))
+        .fill({ color: valid ? 0x4ade80 : 0xef4444, alpha: .35 }).stroke({ color: valid ? 0x16a34a : 0xdc2626, width: 3 });
+      indicator.label = 'store-placement-indicator'; this.indicator.addChild(indicator);
+    }
     const entry = this.options.art.art.get(item.classname);
     if (!entry) return;
     const rotated = rotatedArt(entry, this.rotation), texture = this.options.art.textureFor(rotated.frame.file);
@@ -202,7 +232,9 @@ export class RoomStoreController {
     } else if (item.kind === 'door') {
       this.previewDoor = new DoorView(placement, rotated.frame, texture, entry.door); ghost = this.previewDoor.view;
     } else ghost = createArtView(placement, rotated.frame, texture);
-    ghost.alpha = .45; ghost.eventMode = 'none'; ghost.label = 'store-placement-ghost'; this.preview.addChild(ghost);
+    ghost.alpha = valid ? .6 : .5; ghost.eventMode = 'none'; ghost.label = 'store-placement-ghost';
+    if (!valid && 'tint' in ghost) (ghost as Sprite).tint = 0xff8a80;
+    this.preview.addChild(ghost);
     // The world sorts its direct children: the wrapper must share the item's depth.
     this.preview.zIndex = ghost.zIndex;
     inheritRoomDepth(this.preview, ghost);
@@ -238,20 +270,59 @@ export class RoomStoreController {
     if (!unit || !item || (item.kind === 'wall' && item.type !== 1)) return false;
     this.select({ item, unit }); this.dragging = event.pointerId; this.hover(event); event.stopPropagation(); return true;
   }
-  endDrag(event: FederatedPointerEvent): boolean {
-    if (this.dragging !== event.pointerId) return false;
-    this.hover(event);
-    const clickOnly = this.cardDragStart && !this.cardDragMoved;
-    this.dragging = undefined; this.cardDragStart = undefined; this.cardDragMoved = false;
-    if (!clickOnly) void this.commit();
+  /**
+   * Pressionar na sala, como no clone de referência: com algo selecionado, coloca no tile da prévia
+   * (piso e papel continuam pintando enquanto o botão segue pressionado); sem nada, pega o móvel
+   * clicado. Devolve true quando consumiu o pressionar (a câmera não arrasta).
+   */
+  pointerDown(event: FederatedPointerEvent, unitId?: string): boolean {
+    if (!this.store?.isOpen || event.button !== 0 || event.ctrlKey || event.shiftKey) return false;
+    // Um mesmo pressionar chega por mais de um ouvinte (sprite do móvel e o do fogão/piso):
+    // só o primeiro age, senão o móvel recém-pego seria solto no mesmo tile.
+    const press = `${event.pointerId}:${event.timeStamp}`;
+    if (press === this.lastPress && (this.lastPressConsumed || !unitId || this.lastPressUnit)) return this.lastPressConsumed;
+    this.lastPress = press;
+    this.lastPressUnit = Boolean(unitId);
+    this.lastPressConsumed = this.handlePress(event, unitId);
+    return this.lastPressConsumed;
+  }
+  private lastPress?: string;
+  private lastPressUnit = false;
+  private lastPressConsumed = false;
+  private handlePress(event: FederatedPointerEvent, unitId?: string): boolean {
+    if (event.altKey) return this.beginDrag(event, unitId);
+    if (this.busy) return Boolean(this.selection);
+    if (this.selection) {
+      this.hover(event);
+      if (this.overUI) return false;
+      if (this.selection.item.type <= 1 && !this.selection.unit) this.painting = event.pointerId;
+      void this.commit();
+      return true;
+    }
+    if (!this.pickUp(event, unitId)) return false;
+    this.dragging = event.pointerId;
+    this.pickOrigin = this.tile;
     return true;
   }
-  tap(event: FederatedPointerEvent): void {
-    if (!this.store?.isOpen || this.busy || this.dragging !== undefined || !this.selection || event.altKey) return;
-    this.hover(event); void this.commit();
+  endDrag(event: FederatedPointerEvent): boolean {
+    if (this.painting === event.pointerId) { this.painting = undefined; return true; }
+    if (this.dragging !== event.pointerId) return false;
+    this.hover(event);
+    const clickOnly = this.cardDragStart ? !this.cardDragMoved
+      : this.pickOrigin ? this.tile?.tx === this.pickOrigin.tx && this.tile?.ty === this.pickOrigin.ty : false;
+    this.dragging = undefined; this.cardDragStart = undefined; this.cardDragMoved = false; this.pickOrigin = undefined;
+    // Dropped on the cash register: ask to sell (the piece keeps following the mouse if declined).
+    if (this.overRegister && this.selection?.unit && !clickOnly) { void this.sell(); return true; }
+    // Clique sem arrastar: o item continua no mouse até o próximo clique.
+    if (!clickOnly && this.tile && !this.overUI) void this.commit();
+    return true;
   }
+  /** Colocar acontece no pressionar (`pointerDown`); o tap que vem depois não repete a ação. */
+  tap(_event: FederatedPointerEvent): void {}
   interact(event: FederatedPointerEvent, unitId?: string): boolean {
-    if (!this.store?.isOpen || (!event.ctrlKey && !event.shiftKey) || event.altKey) return false;
+    if (!this.store?.isOpen || event.altKey) return false;
+    // Pegar e colocar já aconteceram no pressionar.
+    if (!event.ctrlKey && !event.shiftKey) return Boolean(this.selection) || this.busy;
     event.stopPropagation();
     if (this.busy || this.dragging !== undefined) return true;
     const unit = this.snapshot.inventory.find((unit) => unit.unitId === unitId && unit.placed);
@@ -261,22 +332,76 @@ export class RoomStoreController {
     this.rotation = event.ctrlKey ? unit.rotation : (unit.rotation + 1) % 4;
     void this.commit(Boolean(event.ctrlKey)); return true;
   }
+  /**
+   * Clique simples num móvel colocado (sem nada selecionado): ele passa a seguir o mouse e o próximo
+   * clique o coloca. Pisos e papéis de parede ficam de fora: são trocados colocando outro por cima.
+   */
+  private pickUp(event: FederatedPointerEvent, unitId?: string): boolean {
+    if (this.selection || this.busy || this.dragging !== undefined) return false;
+    const unit = this.snapshot.inventory.find((unit) => unit.unitId === unitId && unit.placed);
+    const item = this.snapshot.catalog.find((item) => item.id === unit?.itemId);
+    if (!unit || !item || item.type < 2 || item.kind === 'wall') return false;
+    event.stopPropagation();
+    // Cadeira com cliente sentado (ou a caminho) e a mesa dele não podem sair do lugar.
+    if (!(this.options.canPlace?.(item, { tx: unit.tx, ty: unit.ty }, unit.rotation, unit.unitId) ?? true)) {
+      this.message(`${item.name} está sendo usado por um cliente agora.`);
+      return true;
+    }
+    this.select({ item, unit });
+    this.hover(event);
+    this.message(`${item.name}: clique onde quer colocar. R: girar. V: vender. Delete: guardar. Esc: cancelar.`);
+    return true;
+  }
   key(event: KeyboardEvent): boolean {
     if (!this.store?.isOpen || !this.selection) return false;
     if (event.key === 'Escape') { this.cancel(); return true; }
     if (event.key.toLowerCase() === 'r') { this.rotation = (this.rotation + 1) % 4; this.drawPreview(); return true; }
     if (event.key === 'Delete' && this.selection.unit) { void this.commit(true); return true; }
+    if (event.key.toLowerCase() === 'v' && this.selection.unit) { void this.sell(); return true; }
     return false;
+  }
+  /** Sells the piece in hand after the player confirms the price. */
+  async sell(): Promise<void> {
+    const selection = this.selection;
+    if (!selection?.unit || this.busy || !this.store?.isOpen) return;
+    const { item, unit } = selection;
+    const gold = sellGold(item, this.snapshot);
+    if (gold <= 0) { this.message(`${item.name} não pode ser vendido.`); return; }
+    this.busy = true;
+    this.cursorView.visible = false;
+    let confirmed = false;
+    try { confirmed = await (this.options.confirmSell?.(item, gold) ?? Promise.resolve(true)); }
+    finally { this.busy = false; }
+    if (this.destroyed || this.selection !== selection) return;
+    if (!confirmed) { this.drawPreview(); this.message(`${item.name}: clique onde quer colocar. V: vender. Esc: cancelar.`); return; }
+    this.busy = true;
+    this.message('Vendendo…');
+    try {
+      const snapshot = await this.options.client.mutate('sell', this.snapshot.revision, { unitId: unit.unitId });
+      if (this.destroyed) return;
+      this.snapshot = snapshot; this.options.apply(snapshot); this.busy = false; this.cancel(); this.refreshEntries();
+      // A sale just removes the piece after the confirmation; the gold effect is for purchases.
+      this.message(`${item.name} vendido por ${gold} ouro.`);
+    } catch (error) {
+      if (this.destroyed) return;
+      const message = error instanceof Error ? error.message : 'Não foi possível vender.';
+      try { const snapshot = await this.options.client.refresh(); if (this.destroyed) return; this.snapshot = snapshot; this.options.apply(snapshot); this.refreshEntries(); } catch { /* The next action refreshes. */ }
+      this.busy = false;
+      if (this.selection) this.drawPreview();
+      this.message(message);
+    }
   }
   private async commit(store = false): Promise<void> {
     const selection = this.selection;
     if (!selection || this.busy) return;
     if (!store && (this.overUI || !this.tile || !this.validPlacement(selection.item, this.tile, this.rotation, selection.unit?.unitId))) {
-      this.cancel();
-      this.message(selection.unit ? 'Movimento cancelado: posição inválida.' : 'Colocação cancelada: posição inválida.'); return;
+      // Continua no mouse: o jogador só escolhe outro lugar (Esc cancela).
+      if (this.painting === undefined) this.message('Não dá para colocar aqui. Escolha outro lugar ou aperte Esc.');
+      return;
     }
     this.busy = true;
     const action = store ? 'store' : selection.unit ? 'move' : 'purchase';
+    const target = this.tile ? { ...this.tile } : undefined;
     this.message('Salvando…');
     try {
       const snapshot = await this.options.client.mutate(action, this.snapshot.revision, {
@@ -284,14 +409,32 @@ export class RoomStoreController {
         ...(!store ? { ...this.tile!, rotation: this.rotation } : {}),
       });
       if (this.destroyed) return;
+      // Pisos e papéis de parede continuam no mouse: cada clique compra e coloca mais um.
+      const keepPainting = action === 'purchase' && selection.item.type <= 1;
+      const { tile, pointer, rotation, painting } = this;
       this.snapshot = snapshot; this.options.apply(snapshot); this.busy = false; this.cancel(); this.refreshEntries();
+      if (action === 'purchase' && target) {
+        this.options.onTransaction?.({ item: selection.item, tile: target, rotation, gold: -selection.item.priceGold });
+      }
+      if (keepPainting) {
+        this.selection = { item: selection.item, texture: selection.texture };
+        this.tile = tile; this.pointer = pointer; this.rotation = rotation; this.painting = painting;
+        this.drawPreview();
+        this.message(`${selection.item.name} comprado por ${selection.item.priceGold} ouro. Clique ou arraste para colocar mais; Esc para parar.`);
+        // Enquanto salvava, o mouse pode ter entrado em outro tile com o botão pressionado.
+        if (painting !== undefined && tile && target && (tile.tx !== target.tx || tile.ty !== target.ty)) void this.commit();
+        return;
+      }
       this.message(action === 'purchase' ? `${selection.item.name} comprado por ${selection.item.priceGold} ouro.` : store ? 'Item guardado no inventário.' : 'Posição salva.');
     } catch (error) {
       if (this.destroyed) return;
       const message = error instanceof Error ? error.message : 'Não foi possível salvar.';
       // Revisions and balances come from the server, including after a conflicting tab.
       try { const snapshot = await this.options.client.refresh(); if (this.destroyed) return; this.snapshot = snapshot; this.options.apply(snapshot); this.refreshEntries(); } catch { /* Keep the pending placement available for retry. */ }
-      this.busy = false; this.cancel(); this.message(message);
+      this.busy = false; this.painting = undefined;
+      // Recusa do servidor (ouro, limite, alguém no caminho): a peça continua no mouse.
+      if (this.selection) this.drawPreview();
+      this.message(message);
     }
   }
   private validPlacement(item: RoomCatalogItem, tile: Tile, rotation: number, unitId?: string): boolean {

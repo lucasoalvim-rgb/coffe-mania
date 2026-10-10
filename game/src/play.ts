@@ -34,6 +34,8 @@ import { resolveSession } from './game/session';
 import { loadPlayerState } from './game/player-state';
 import { loadNpcAppearancePolicy } from './game/npc-appearance';
 import { CookingClient } from './game/cooking';
+import { loadSpiceScreenTextures } from './game/spices';
+import { loadDevMode, saveDevMode } from './game/dev-tools';
 import { subscribePlayerState } from './game/player-state-realtime';
 import { RoomRealtime } from './game/room-realtime';
 import { loadBitterMode, saveBitterMode } from './game/zoom-preferences';
@@ -108,7 +110,7 @@ async function boot(): Promise<void> {
     const roomSnapshot = await roomClient.refresh();
 
     // Catálogo fornece comportamento e pegada; manifesto fornece geometria visual.
-    const [playerState, cookingSnapshot, art, actionBarTexture, actionBarButtons, actionBarIcons, npcEmotionTextures, topBarsTextures, cookTextures, wardrobeTextures, storeBarTexture, storeBarIcons, npcAppearancePolicy, placeholderAvatar, storeTopButtonTexture, storeToolbarTextures] = await Promise.all([
+    const [playerState, cookingSnapshot, art, actionBarTexture, actionBarButtons, actionBarIcons, npcEmotionTextures, topBarsTextures, cookTextures, wardrobeTextures, storeBarTexture, storeBarIcons, npcAppearancePolicy, placeholderAvatar, storeTopButtonTexture, storeToolbarTextures, spiceTextures] = await Promise.all([
       loadPlayerState(),
       cookingClient.refresh(),
       loadIndoorArt().catch((error) => {
@@ -161,6 +163,7 @@ async function boot(): Promise<void> {
         console.warn('[store-toolbar-icons] indisponíveis', error);
         return undefined;
       }),
+      loadSpiceScreenTextures(),
     ]);
 
     // Only the player is baked at boot. NPC looks are generated per spawn.
@@ -168,7 +171,11 @@ async function boot(): Promise<void> {
       console.warn('[avatar] indisponível, usando o placeholder branco', error);
       return [];
     });
-    const npcAvatarSource = await createNpcAvatarSource(npcAppearancePolicy);
+    // Without a second WebGL context the café still opens: customers use the placeholder body.
+    const npcAvatarSource = await createNpcAvatarSource(npcAppearancePolicy).catch((error) => {
+      console.warn('[avatar] fonte de clientes indisponível, usando o placeholder', error);
+      return undefined;
+    });
 
     // Expõe os atlas apenas em desenvolvimento para diagnóstico do renderizador.
     if (import.meta.env.DEV) Object.assign(window, { __avatarBake: avatars[0], __avatarBakes: avatars });
@@ -179,6 +186,7 @@ async function boot(): Promise<void> {
       playerState,
       cookingClient,
       cookingSnapshot,
+      spiceTextures,
       model,
       roomSnapshot,
       ...(roomSnapshot.canEdit !== false ? { roomClient } : {}),
@@ -187,7 +195,7 @@ async function boot(): Promise<void> {
       artProvider,
       avatars,
       placeholderAvatar,
-      npcAvatarSource,
+      ...(npcAvatarSource ? { npcAvatarSource } : {}),
       outsideNpcs: true,
       ...(actionBarTexture ? { actionBarTexture } : {}),
       ...(storeBarTexture && roomSnapshot.canEdit !== false ? { storeBarTexture } : {}),
@@ -207,10 +215,15 @@ async function boot(): Promise<void> {
       ...(topBarsTextures ? { topBarsTextures } : {}),
       ...(cookTextures ? { cookTextures } : {}),
       ...(wardrobeTextures ? { wardrobeTextures } : {}),
+      ...(session.devTools ? { devMode: {
+        get: () => loadDevMode(session.playerId),
+        set: (enabled: boolean) => saveDevMode(session.playerId, enabled),
+      } } : {}),
       onWardrobeVisibilityChange: (open) => {
         fullscreen.setWardrobeOpen(open);
       },
     });
+    room.bindWheelElement(app.canvas);
     screens.show(room);
     const stopPlayerState = subscribePlayerState((state) => room.setPlayerState(state));
     room.view.once('destroyed', stopPlayerState);

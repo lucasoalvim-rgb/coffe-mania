@@ -16,6 +16,11 @@
       "manifest": "delicate_bush/item.json"
     },
     {
+      "id": 3020069,
+      "classname": "starter_counter",
+      "manifest": "starter_counter/item.json"
+    },
+    {
       "id": 3030010,
       "classname": "white_cloth_table",
       "manifest": "white_cloth_table/item.json"
@@ -64,6 +69,11 @@
       "id": 3300000,
       "classname": "letter_box",
       "manifest": "letter_box/item.json"
+    },
+    {
+      "id": 3400001,
+      "classname": "young_wizard",
+      "manifest": "young_wizard/item.json"
     },
     {
       "id": 9000001,

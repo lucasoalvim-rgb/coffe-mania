@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Asset Studio — Coffe Mania 0.0.4.19</title>
+  <title>Asset Studio — Coffe Mania 0.1.0</title>
   <meta name="color-scheme" content="dark">
   <link rel="stylesheet" href="desktop.css">
 </head>
@@ -80,6 +80,16 @@
         <div class="row"><button id="saveProject" disabled>Salvar projeto</button><button id="openProject">Abrir projeto</button></div>
         <input id="projectFile" type="file" accept=".json,application/json" hidden>
         <p class="muted">O projeto guarda a imagem e os ajustes. Exportar aqui não altera os arquivos do jogo.</p>
+      </section>
+      <section>
+        <h2>5. Encaixe no tile</h2>
+        <label>Plano de referência <select id="fitPlane"><option value="base">Base no chão — cantos esquerdo, frontal e direito</option><option value="top">Tampo — cantos esquerdo, traseiro e direito</option></select></label>
+        <label>Modo <select id="fitMode"><option value="angle">Corrigir ângulo — 26,565°, verticais preservadas</option><option value="uniform">Escala uniforme — sem distorção</option><option value="translate">Só mover — 1:1, sem reamostrar</option></select></label>
+        <button id="fitDetect" disabled>Detectar cantos da arte</button>
+        <button id="fitApply" style="margin-top:8px" disabled>Encaixar na pegada</button>
+        <button id="fitClear" style="margin-top:8px" disabled>Remover correção de ângulo</button>
+        <div id="fitInfo" class="data-readout">Importe uma imagem e detecte os cantos.</div>
+        <p class="muted">A detecção lê a silhueta: laranja = base, ciano = tampo. Arraste os pontos para corrigir pés, sombras ou saliências. Use o tampo em balcões cujo corpo é mais estreito que o tampo; a frente da base continua apoiada na frente do tile. Escala uniforme e Só mover não mudam o ângulo da arte; Corrigir ângulo leva as arestas a 26,565° com uma escala vertical comum e ajusta cada face visível na horizontal, sem inclinar as verticais.</p>
       </section>
     </aside>
     <div class="stage">
@@ -214,6 +224,7 @@
   <script src="vendor/lucide-icons.js"></script>
   <script src="desktop-ui.js"></script>
   <script src="cutter-geometry.js"></script>
+  <script src="fit-geometry.js"></script>
   <script src="context-menu.js"></script>
   <script src="editor.js"></script>
   <script src="cutter.js"></script>

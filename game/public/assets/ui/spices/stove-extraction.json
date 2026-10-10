@@ -1,0 +1,50 @@
+{
+  "sponge": {
+    "source": "exec-d73d7519-8edb-4617-a162-1123c7156dd9.png",
+    "crop": [
+      260,
+      242,
+      913,
+      1137
+    ],
+    "keptAlphaComponents": 3,
+    "size": [
+      382,
+      520
+    ],
+    "mode": "RGBA",
+    "resampling": "Lanczos"
+  },
+  "stove-menu-row": {
+    "source": "exec-a1006267-696e-4333-920a-aa6208d90231.png",
+    "crop": [
+      91,
+      256,
+      2026,
+      508
+    ],
+    "keptAlphaComponents": 1,
+    "size": [
+      888,
+      132
+    ],
+    "mode": "RGBA",
+    "resampling": "Lanczos"
+  },
+  "spoiled-callout": {
+    "source": "exec-846edeab-1f2a-43df-8075-725d8d43419a.png",
+    "crop": [
+      79,
+      109,
+      2010,
+      607
+    ],
+    "keptAlphaComponents": 1,
+    "size": [
+      1128,
+      304
+    ],
+    "mode": "RGBA",
+    "resampling": "Lanczos"
+  }
+}

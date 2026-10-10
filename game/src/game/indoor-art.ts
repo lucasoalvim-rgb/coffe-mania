@@ -28,6 +28,8 @@ export interface IndoorArtEntry {
   sizeFromArt?: { sizeX: number; sizeY: number };
   /** Altura do móvel acima do piso do tile. */
   itemHeight: number;
+  /** Quadros do item animado (mesma geometria do primeiro frame), em ordem, a `fps` quadros por segundo; a folha tem `resolution` pixels por pixel da sala. */
+  animation?: { fps: number; files: string[]; resolution: number };
 }
 
 /** Cenário urbano externo, alinhado à origem isométrica da sala. */

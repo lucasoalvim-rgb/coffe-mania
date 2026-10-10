@@ -2,9 +2,13 @@
 export interface ResourceValue {
   current: number;
   maximum: number;
+  /** Where the bar starts. Experience is cumulative, so its bar starts at the level's requirement. */
+  minimum?: number;
 }
 
 export interface PlayerState {
+  /** Estoque privado, atualizado pelo snapshot/SSE do PocketBase. */
+  spiceInventory?: Record<string, number>;
   /** Versioned JSON string; empty/absent means the catalogue's default avatar. */
   appearance?: string;
   cafeName: string;
@@ -18,8 +22,9 @@ export interface PlayerState {
 }
 
 export function resourcePercentage(value: ResourceValue): number {
-  if (!Number.isFinite(value.current) || !Number.isFinite(value.maximum) || value.maximum <= 0) return 0;
-  return Math.min(100, Math.max(0, value.current * 100 / value.maximum));
+  const minimum = value.minimum ?? 0;
+  if (!Number.isFinite(value.current) || !Number.isFinite(value.maximum) || !Number.isFinite(minimum) || value.maximum <= minimum) return 0;
+  return Math.min(100, Math.max(0, (value.current - minimum) * 100 / (value.maximum - minimum)));
 }
 
 /** Unloaded HUDs are hidden; this only keeps isolated screens deterministic. */
@@ -27,7 +32,7 @@ export function emptyPlayerState(): PlayerState {
   return {
     cafeName: '',
     cash: 0, gold: 0, level: 1,
-    experience: { current: 0, maximum: 1 },
+    experience: { current: 0, maximum: 7 },
     energy: { current: 0, maximum: 50 },
     crates: { current: 0, maximum: 4 },
     satisfaction: { current: 0, maximum: 105 },

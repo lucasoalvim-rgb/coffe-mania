@@ -16,7 +16,7 @@ import { resolveLook, type Look } from './wardrobe';
 
 /** Shared actors walk, sit and eat; humans can also prepare dishes. */
 export const ROOM_CLIPS: readonly number[] = [CLIP.IDLE, CLIP.WALK, CLIP.SIT, CLIP.EAT];
-export const PLAYER_ROOM_CLIPS: readonly number[] = [...ROOM_CLIPS, CLIP.COOKING];
+export const PLAYER_ROOM_CLIPS: readonly number[] = [...ROOM_CLIPS, CLIP.WAITOR_WALK, CLIP.COOKING];
 
 /** Lado da célula do atlas assado, em pixels. 256px garante alta nitidez com assets 2x. */
 export const DEFAULT_CELL = 256;

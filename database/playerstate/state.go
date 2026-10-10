@@ -18,18 +18,22 @@ const DefaultCafeName = "Coffe Mania"
 type Resource struct {
 	Current float64 `json:"current"`
 	Maximum float64 `json:"maximum"`
+	// Minimum is where the bar starts; experience is cumulative, so its bar starts at
+	// the current level's requirement.
+	Minimum float64 `json:"minimum,omitempty"`
 }
 
 type Snapshot struct {
-	Appearance   string   `json:"appearance"`
-	CafeName     string   `json:"cafeName"`
-	Cash         int64    `json:"cash"`
-	Gold         int64    `json:"gold"`
-	Level        int      `json:"level"`
-	Experience   Resource `json:"experience"`
-	Energy       Resource `json:"energy"`
-	Crates       Resource `json:"crates"`
-	Satisfaction Resource `json:"satisfaction"`
+	SpiceInventory map[string]int64 `json:"spiceInventory"`
+	Appearance     string           `json:"appearance"`
+	CafeName       string           `json:"cafeName"`
+	Cash           int64            `json:"cash"`
+	Gold           int64            `json:"gold"`
+	Level          int              `json:"level"`
+	Experience     Resource         `json:"experience"`
+	Energy         Resource         `json:"energy"`
+	Crates         Resource         `json:"crates"`
+	Satisfaction   Resource         `json:"satisfaction"`
 }
 
 // Initial resources for newly provisioned players.
@@ -38,23 +42,32 @@ func NewRecord(collection *core.Collection, userID string) *core.Record {
 	record.Load(map[string]any{
 		"cafe_name": DefaultCafeName,
 		"user":      userID, "cash": 1000, "gold": 100, "level": 1,
-		"experience_current": 2500, "experience_max": 10000,
+		"experience_current": 0, "experience_max": RequiredXP(2),
 		"energy_current": 50, "energy_max": 50,
 		"crates_current": 4, "crates_max": 4,
-		"satisfaction_current_tenths": 800, "satisfaction_max_tenths": 1050,
+		"satisfaction_current_tenths": DefaultPopularityTenths, "satisfaction_max_tenths": MaxPopularityTenths,
 	})
 	return record
 }
 
 func View(record *core.Record) Snapshot {
-	resource := func(current, maximum string, divisor float64) Resource {
-		return Resource{record.GetFloat(current) / divisor, record.GetFloat(maximum) / divisor}
+	stock := map[string]int64{}
+	_ = record.UnmarshalJSONField("spice_inventory", &stock)
+	if stock == nil {
+		stock = map[string]int64{}
 	}
+	resource := func(current, maximum string, divisor float64) Resource {
+		return Resource{Current: record.GetFloat(current) / divisor, Maximum: record.GetFloat(maximum) / divisor}
+	}
+	experience := resource("experience_current", "experience_max", 1)
+	level := record.GetInt("level")
+	experience.Minimum = float64(RequiredXP(min(level, MaxLevel()-1)))
 	return Snapshot{
-		Appearance: record.GetString("appearance"),
-		CafeName:   record.GetString("cafe_name"),
-		Cash:       record.GetInt64("cash"), Gold: record.GetInt64("gold"), Level: record.GetInt("level"),
-		Experience:   resource("experience_current", "experience_max", 1),
+		SpiceInventory: stock,
+		Appearance:     record.GetString("appearance"),
+		CafeName:       record.GetString("cafe_name"),
+		Cash:           record.GetInt64("cash"), Gold: record.GetInt64("gold"), Level: record.GetInt("level"),
+		Experience:   experience,
 		Energy:       resource("energy_current", "energy_max", 1),
 		Crates:       resource("crates_current", "crates_max", 1),
 		Satisfaction: resource("satisfaction_current_tenths", "satisfaction_max_tenths", 10),

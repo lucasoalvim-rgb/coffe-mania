@@ -14,6 +14,8 @@ export interface StoreActions {
   onInventoryToggle(): void;
   onDragStart?(entry: StoreEntry, event: FederatedPointerEvent): void;
   onDragEnd?(event: FederatedPointerEvent): void;
+  /** The cash register was clicked: sell the piece being held. */
+  onSell?(): void;
 }
 
 /** Visible silhouette of cafe_action_bar.png, excluding its transparent canvas. */
@@ -109,7 +111,17 @@ export class StoreActionBar {
     const settingsX = barWidth - 62;
     const confirmX = settingsX - SETTINGS_BUTTON_SIZE / 2 - CLOSE_BUTTON_SIZE / 2 - HEADER_BUTTON_GAP;
     const topExtent = Math.max(CLOSE_BUTTON_SIZE * 0.55, topTabHeight + TOP_TAB_LIFT);
-    content.hitArea = new Rectangle(0, -topExtent, barWidth, barHeight + topExtent);
+    // Acima do corpo da barra só contam as abas e os botões que sobem dela: o resto da faixa mostra
+    // a sala e precisa deixar o clique passar (pegar e colocar móveis na parte de baixo da sala).
+    const body = new Rectangle(0, 0, barWidth, barHeight);
+    content.hitArea = {
+      contains: (x: number, y: number) => {
+        if (body.contains(x, y)) return true;
+        if (y >= 0 || y < -topExtent) return false;
+        return content.children.some((child) => child.eventMode === 'static' && child.visible && Boolean(child.hitArea?.contains(
+          (x - child.x) / (child.scale.x || 1), (y - child.y) / (child.scale.y || 1))));
+      },
+    };
     content.eventMode = 'static';
     for (const name of ['pointerdown', 'pointerup', 'pointertap', 'wheel'] as const) {
       content.on(name, (event) => event.stopPropagation());
@@ -250,8 +262,9 @@ export class StoreActionBar {
     close.position.set(confirmX, 8);
     content.addChild(close);
     if (storeToolbarTextures) {
-      const register = this.createButton(storeToolbarTextures.cashRegister, CLOSE_BUTTON_SIZE * 0.81, () => {});
+      const register = this.createButton(storeToolbarTextures.cashRegister, CLOSE_BUTTON_SIZE * 0.81, () => this.actions?.onSell?.());
       register.label = 'store-cash-register-icon';
+      this.register = register;
       register.position.set(confirmX - close.width / 2 - register.width / 2 - 8, 8);
       content.addChild(register);
     }
@@ -361,6 +374,20 @@ export class StoreActionBar {
 
   get isOpen(): boolean { return this.view.visible; }
   get selectedCategory(): string | undefined { return this.categoryNames[this.categoryIndex]; }
+
+  private register?: Container;
+
+  /** The cash register icon, where a held piece is sold. */
+  containsRegisterPoint(global: { x: number; y: number }): boolean {
+    if (!this.isOpen || !this.register) return false;
+    const bounds = this.register.getBounds();
+    return global.x >= bounds.x && global.y >= bounds.y && global.x <= bounds.x + bounds.width && global.y <= bounds.y + bounds.height;
+  }
+
+  /** Highlights the register while a piece is held over it. */
+  setRegisterActive(active: boolean): void {
+    this.register?.scale.set(active ? 1.2 : 1);
+  }
 
   containsGlobalPoint(global: { x: number; y: number }): boolean {
     if (!this.isOpen) return false;

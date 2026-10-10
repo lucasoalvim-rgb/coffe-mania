@@ -4,19 +4,44 @@
   "name": "Fogão",
   "type": 3,
   "kind": "stove",
-  "priceGold": 0,
-  "purchasable": false,
+  "priceGold": 200,
+  "purchasable": true,
   "legacyClassName": "Stove01",
   "sizeX": 1,
   "sizeY": 1,
-  "itemHeight": 47,
+  "itemHeight": 31,
   "parts": [
     {
-      "file": "starter_stove.png",
+      "file": "rotation-0.png",
       "width": 160,
-      "height": 127,
+      "height": 110,
       "left": -80,
-      "top": -47
+      "top": -30,
+      "rotation": 0
+    },
+    {
+      "file": "rotation-1.png",
+      "width": 160,
+      "height": 110,
+      "left": -80,
+      "top": -30,
+      "rotation": 1
+    },
+    {
+      "file": "rotation-2.png",
+      "width": 160,
+      "height": 111,
+      "left": -80,
+      "top": -31,
+      "rotation": 2
+    },
+    {
+      "file": "rotation-3.png",
+      "width": 160,
+      "height": 111,
+      "left": -80,
+      "top": -31,
+      "rotation": 3
     }
   ]
 }

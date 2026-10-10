@@ -5,6 +5,7 @@ import { STAGE_WIDTH } from '../../core/stage';
 import { emptyPlayerState, resourcePercentage, type PlayerState } from '../../game/player-state';
 import { ProgressBar } from '../loading/ProgressBar';
 import { COLORS, type RoundedRect } from '../loading/layout';
+import { CurrencyHud, type HudCurrency } from './CurrencyHud';
 
 /** O front recorta o preenchimento; os limites cobrem todo o vazado sem sair do back. */
 export const TOP_BAR_SLOTS: readonly RoundedRect[] = [
@@ -44,14 +45,17 @@ export interface TopBarsTextures {
   back: Texture;
   front: Texture;
   icons: Texture;
+  currencyAdd?: Texture;
   energyIcons?: { normal: Texture; bonus: Texture };
 }
 
-/** Base, cinco preenchimentos e moldura frontal, nessa ordem de desenho. */
+/** Moedas modulares e três recursos com as molduras do atlas. */
 export class TopBars {
   readonly view = new Container();
 
   private readonly bars: ProgressBar[];
+  private readonly currencies: CurrencyHud;
+  private readonly resourceTextures: readonly Texture[];
   private readonly labels: Text[];
   private readonly blueLevelLabel: Text;
   private values: number[] = [];
@@ -60,17 +64,25 @@ export class TopBars {
   private normalEnergyTexture!: Texture;
   private readonly bonusEnergyTexture?: Texture;
 
-  constructor(textures: TopBarsTextures, state?: PlayerState) {
+  constructor(textures: TopBarsTextures, state?: PlayerState, onAddCurrency?: (currency: HudCurrency) => void) {
     this.bonusEnergyTexture = textures.energyIcons?.bonus;
     this.view.label = 'room-top-bars';
     this.view.x = (STAGE_WIDTH - textures.back.width) / 2;
 
-    const back = new Sprite(textures.back);
+    // As duas moedas têm sua própria moldura contínua; só os recursos usam o atlas.
+    const resourceFrame = new Rectangle(700, 0, textures.back.width - 700, textures.back.height);
+    this.resourceTextures = [
+      new Texture({ source: textures.back.source, frame: resourceFrame }),
+      new Texture({ source: textures.front.source, frame: resourceFrame }),
+    ];
+    const back = new Sprite(this.resourceTextures[0]);
+    back.x = resourceFrame.x;
     back.label = 'room-top-bars-back';
     back.eventMode = 'none';
     this.view.addChild(back);
 
-    this.bars = TOP_BAR_SLOTS.map((rect, index) => {
+    this.bars = TOP_BAR_SLOTS.slice(2).map((rect, resourceIndex) => {
+      const index = resourceIndex + 2;
       const bar = new ProgressBar({
         rect,
         palette: TOP_BAR_PALETTES[index],
@@ -84,12 +96,18 @@ export class TopBars {
       return bar;
     });
 
-    const front = new Sprite(textures.front);
+    const front = new Sprite(this.resourceTextures[1]);
+    front.x = resourceFrame.x;
     front.label = 'room-top-bars-front';
     front.eventMode = 'none';
     this.view.addChild(front);
 
+    this.currencies = new CurrencyHud(onAddCurrency, textures.currencyAdd);
+    this.currencies.view.position.set(265, 35);
+    this.view.addChild(this.currencies.view);
+
     TOP_BAR_ICON_FRAMES.forEach((frame, index) => {
+      if (index < 2) return;
       const icon = new Sprite(index === 3 && textures.energyIcons ? textures.energyIcons.normal : new Texture({
         source: textures.icons.source,
         frame: new Rectangle(frame.x, frame.y, frame.width, frame.height),
@@ -97,7 +115,7 @@ export class TopBars {
       const slot = TOP_BAR_SLOTS[index];
       icon.label = `room-top-bar-icon-${index + 1}`;
       icon.anchor.set(0.5);
-      icon.height = index === 0 ? ICON_HEIGHT * 1.15 : index === 1 ? ICON_HEIGHT : ICON_HEIGHT * 1.15 * 1.2 * 1.15;
+      icon.height = ICON_HEIGHT * 1.15 * 1.2 * 1.15;
       icon.scale.x = icon.scale.y;
       icon.position.set(slot.left + ICON_BORDER_OFFSET, slot.top + slot.height / 2);
       icon.eventMode = 'none';
@@ -108,25 +126,23 @@ export class TopBars {
       this.view.addChild(icon);
     });
 
-    this.labels = TOP_BAR_SLOTS.map((slot, index) => {
+    this.labels = TOP_BAR_SLOTS.slice(2).map((slot, resourceIndex) => {
+      const index = resourceIndex + 2;
       const label = new Text({
         text: '0',
         style: new TextStyle({
           fontFamily: [FONT_FAMILY, 'sans-serif'],
-          fontSize: index < 2 ? 30 : 21,
+          fontSize: 21,
           fontWeight: String(FONT_WEIGHT) as TextStyle['fontWeight'],
           fill: 0xffffff,
           stroke: { color: LABEL_STROKES[index], width: 6, join: 'round' },
-          align: index < 2 ? 'left' : 'center',
+          align: 'center',
           padding: 6,
         }),
       });
       label.label = `room-top-bar-label-${index + 1}`;
-      label.anchor.set(index < 2 ? 0 : 0.5, 0.5);
-      label.position.set(
-        index < 2 ? slot.left + 34 : slot.left + slot.width / 2,
-        index < 2 ? slot.top + slot.height / 2 : slot.top + slot.height,
-      );
+      label.anchor.set(0.5, 0.5);
+      label.position.set(slot.left + slot.width / 2, slot.top + slot.height);
       label.eventMode = 'none';
       this.view.addChild(label);
       return label;
@@ -158,7 +174,7 @@ export class TopBars {
   }
 
   get labelTexts(): readonly string[] {
-    return this.labels.map((label) => label.text);
+    return [...this.currencies.labelTexts, ...this.labels.map((label) => label.text)];
   }
 
   get blueLevel(): number {
@@ -167,6 +183,7 @@ export class TopBars {
 
   containsGlobalPoint(global: { x: number; y: number }): boolean {
     if (!this.view.visible || !this.view.renderable) return false;
+    if (this.currencies.containsGlobalPoint(global)) return true;
     const point = this.view.toLocal(global);
     if (TOP_BARS_VISIBLE_FRAME.contains(point.x, point.y)) return true;
     return this.view.children.some((child) => {
@@ -181,8 +198,9 @@ export class TopBars {
   setState(state: PlayerState, immediate = false): void {
     this.view.visible = true;
     this.values = [100, 100, ...[state.experience, state.energy, state.crates].map(resourcePercentage)];
-    this.bars.forEach((bar, index) => bar.setProgress(this.values[index], immediate));
-    const texts = [String(state.cash), String(state.gold), String(state.experience.current),
+    this.currencies.setValues(state.cash, state.gold);
+    this.bars.forEach((bar, index) => bar.setProgress(this.values[index + 2], immediate));
+    const texts = [String(state.experience.current),
       `${state.energy.current}/${state.energy.maximum}`, `${state.crates.current}/${state.crates.maximum}`];
     this.labels.forEach((label, index) => { label.text = texts[index]; });
     this.blueLevelValue = state.level;
@@ -203,6 +221,9 @@ export class TopBars {
 
   destroy(): void {
     this.bars.forEach((bar) => bar.releaseMask());
+    this.currencies.destroy();
     this.view.destroy({ children: true });
+    // Os recortes pertencem ao HUD; as fontes dos atlas continuam compartilhadas.
+    this.resourceTextures.forEach((texture) => texture.destroy());
   }
 }

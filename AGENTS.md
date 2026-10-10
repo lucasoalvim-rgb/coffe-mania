@@ -1,4 +1,4 @@
-# Coffe Mania 0.0.4.19 — instruções para agentes de IA
+# Coffe Mania — instruções para agentes de IA
 
 Este documento reúne contexto técnico, referências, comandos e critérios de verificação para continuar o desenvolvimento. O README.md da raiz fica reservado aos textos do responsável pelo projeto; não o preencha automaticamente.
 
@@ -26,7 +26,7 @@ No Discord do projeto existem imagens dos assets em PNG. Esses arquivos precisam
 
 Use o Asset Studio em tools/asset-positioner/ para esse processamento:
 
-- Posicionador: apoio no chão, pegada, tamanho, offsets e exportação PNG/JSON.
+- Posicionador: apoio no chão, pegada, tamanho, offsets e exportação PNG/JSON. A seção Encaixe no tile mede o ângulo da arte e alinha base ou tampo ao losango; Corrigir ângulo leva as arestas a 26,565° sem tombar as verticais. `npm run assets:fit` faz o mesmo relatório e a mesma correção nos itens cadastrados.
 - Image Cutter: seleção e recorte pela máscara isométrica, inclusive itens altos.
 - Twister: conversão de paredes e pisos entre projeção isométrica e textura retangular.
 
@@ -79,6 +79,8 @@ npm run dev
 ```
 
 O launcher compila os dois serviços Go, inicia o PocketBase, inicia o servidor WebSocket e abre o servidor Vite. A primeira compilação pode demorar enquanto o Go baixa suas dependências.
+
+Durante o `npm run dev`, o launcher vigia `database/`, `game-server/` e `shared/` (arquivos `.go` e `.json`) e os manifestos de `game/public/assets/items/` e `foods/`. Uma mudança em manifesto roda a sincronização do catálogo; uma mudança no código Go ou nos catálogos recompila ao lado, salva os quartos e reinicia só os dois servidores (o Vite continua). Se a compilação falhar, os servidores atuais continuam rodando. Os catálogos ficam embutidos nos binários, então sem esse reinício o menu de construção e as receitas continuariam com a versão antiga. Portas fora do padrão usam binários próprios em `.runtime/bin/` (`coffe-database-<porta>`), para uma cópia ou um teste isolado não sobrescrever o executável de outra.
 
 - Jogo: http://localhost:5173/
 - PocketBase: http://127.0.0.1:8090/_/
@@ -143,9 +145,13 @@ Cada item fica em `game/public/assets/items/<classname>/`, com imagens e `item.j
 npm run assets:room
 ```
 
-O comando valida os manifestos e sincroniza os catálogos do cliente e de `shared/roomcatalog/`. Reinicie os serviços para recompilar o catálogo incorporado ao Go. Aparência e texturas do avatar ficam em `game/public/assets/avatar/`; os catálogos de validação do servidor ficam em `database/appearance/` e `database/npcappearance/`.
+O comando valida os manifestos e sincroniza os catálogos do cliente e de `shared/roomcatalog/`. Ele também valida as receitas de `game/public/assets/foods/<id>/` (`recipe.json`, `stage_1.png` no fogão e `stage_2.png` pronto) e gera `foods/catalog.json` e `shared/recipecatalog/catalog.json`. Custo, tempo, porções, lucro e XP são regras do servidor; registre a fonte de cada número em `source`. Reinicie os serviços para recompilar o catálogo incorporado ao Go. Aparência e texturas do avatar ficam em `game/public/assets/avatar/`; os catálogos de validação do servidor ficam em `database/appearance/` e `database/npcappearance/`.
 
-`npm run typecheck` verifica os tipos. `npm run build` gera o cliente em `game/dist/`, mas não é necessário para o modo dev. A versão do jogo é `0.0.4.19` em `VERSION`, nos campos `gameVersion`, em `shared/buildinfo/version.go` e em `game/src/core/version.ts`. O campo npm `version` usa `0.0.4-19` por compatibilidade com SemVer.
+`npm run typecheck` verifica os tipos. `npm run build` gera o cliente em `game/dist/`, mas não é necessário para o modo dev. A versão publicada do jogo é mantida em `VERSION`, nos campos `gameVersion`, em `shared/buildinfo/version.go` e em `game/src/core/version.ts`. O campo npm `version` usa hífen no último componente por compatibilidade com SemVer.
+
+### Versionamento e changelog
+
+Pull requests de contribuição não alteram a versão do jogo nem os títulos do Asset Studio. Quem mantém o projeto atualiza os arquivos de versão em conjunto ao preparar uma release e registra nela as mudanças do `CHANGELOG.md`, usando as seções Adicionado, Alterado, Corrigido, Removido e Observações. O título do `README.md` é do responsável pelo projeto: avise-o em vez de editar.
 
 ## Ferramentas de assets
 

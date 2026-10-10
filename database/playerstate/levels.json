@@ -1,0 +1,1305 @@
+{
+ "source": "ripped/game-config.xml.txt, <levels>: requiredXp é o XP acumulado para alcançar o nível; rewardCoins são caféOuros dados ao alcançá-lo. O arquivo foi adulterado; a curva é crescente e coerente com relatos de jogadores (nível 60 como teto em 2010, níveis acima de 125 em 2011).",
+ "levels": [
+  {
+   "level": 1,
+   "requiredXp": 0,
+   "rewardGold": 5000
+  },
+  {
+   "level": 2,
+   "requiredXp": 7,
+   "rewardGold": 700
+  },
+  {
+   "level": 3,
+   "requiredXp": 40,
+   "rewardGold": 700
+  },
+  {
+   "level": 4,
+   "requiredXp": 95,
+   "rewardGold": 700
+  },
+  {
+   "level": 5,
+   "requiredXp": 165,
+   "rewardGold": 700
+  },
+  {
+   "level": 6,
+   "requiredXp": 285,
+   "rewardGold": 700
+  },
+  {
+   "level": 7,
+   "requiredXp": 405,
+   "rewardGold": 700
+  },
+  {
+   "level": 8,
+   "requiredXp": 585,
+   "rewardGold": 900
+  },
+  {
+   "level": 9,
+   "requiredXp": 765,
+   "rewardGold": 900
+  },
+  {
+   "level": 10,
+   "requiredXp": 995,
+   "rewardGold": 900
+  },
+  {
+   "level": 11,
+   "requiredXp": 1350,
+   "rewardGold": 900
+  },
+  {
+   "level": 12,
+   "requiredXp": 1695,
+   "rewardGold": 900
+  },
+  {
+   "level": 13,
+   "requiredXp": 2055,
+   "rewardGold": 900
+  },
+  {
+   "level": 14,
+   "requiredXp": 2425,
+   "rewardGold": 900
+  },
+  {
+   "level": 15,
+   "requiredXp": 2790,
+   "rewardGold": 900
+  },
+  {
+   "level": 16,
+   "requiredXp": 3340,
+   "rewardGold": 900
+  },
+  {
+   "level": 17,
+   "requiredXp": 4020,
+   "rewardGold": 900
+  },
+  {
+   "level": 18,
+   "requiredXp": 4695,
+   "rewardGold": 900
+  },
+  {
+   "level": 19,
+   "requiredXp": 5365,
+   "rewardGold": 1000
+  },
+  {
+   "level": 20,
+   "requiredXp": 6035,
+   "rewardGold": 1200
+  },
+  {
+   "level": 21,
+   "requiredXp": 6920,
+   "rewardGold": 1300
+  },
+  {
+   "level": 22,
+   "requiredXp": 7820,
+   "rewardGold": 1500
+  },
+  {
+   "level": 23,
+   "requiredXp": 8755,
+   "rewardGold": 1700
+  },
+  {
+   "level": 24,
+   "requiredXp": 9690,
+   "rewardGold": 1800
+  },
+  {
+   "level": 25,
+   "requiredXp": 10635,
+   "rewardGold": 1800
+  },
+  {
+   "level": 26,
+   "requiredXp": 12065,
+   "rewardGold": 1800
+  },
+  {
+   "level": 27,
+   "requiredXp": 13545,
+   "rewardGold": 1800
+  },
+  {
+   "level": 28,
+   "requiredXp": 15065,
+   "rewardGold": 1800
+  },
+  {
+   "level": 29,
+   "requiredXp": 16575,
+   "rewardGold": 2000
+  },
+  {
+   "level": 30,
+   "requiredXp": 18115,
+   "rewardGold": 2200
+  },
+  {
+   "level": 31,
+   "requiredXp": 19700,
+   "rewardGold": 2500
+  },
+  {
+   "level": 32,
+   "requiredXp": 21285,
+   "rewardGold": 2800
+  },
+  {
+   "level": 33,
+   "requiredXp": 23185,
+   "rewardGold": 3100
+  },
+  {
+   "level": 34,
+   "requiredXp": 25080,
+   "rewardGold": 3500
+  },
+  {
+   "level": 35,
+   "requiredXp": 26980,
+   "rewardGold": 3800
+  },
+  {
+   "level": 36,
+   "requiredXp": 29260,
+   "rewardGold": 4200
+  },
+  {
+   "level": 37,
+   "requiredXp": 31865,
+   "rewardGold": 4600
+  },
+  {
+   "level": 38,
+   "requiredXp": 34465,
+   "rewardGold": 5100
+  },
+  {
+   "level": 39,
+   "requiredXp": 37070,
+   "rewardGold": 3000
+  },
+  {
+   "level": 40,
+   "requiredXp": 39675,
+   "rewardGold": 3000
+  },
+  {
+   "level": 41,
+   "requiredXp": 42605,
+   "rewardGold": 3000
+  },
+  {
+   "level": 42,
+   "requiredXp": 45535,
+   "rewardGold": 3000
+  },
+  {
+   "level": 43,
+   "requiredXp": 48460,
+   "rewardGold": 3000
+  },
+  {
+   "level": 44,
+   "requiredXp": 51390,
+   "rewardGold": 3000
+  },
+  {
+   "level": 45,
+   "requiredXp": 54320,
+   "rewardGold": 5000
+  },
+  {
+   "level": 46,
+   "requiredXp": 57575,
+   "rewardGold": 5000
+  },
+  {
+   "level": 47,
+   "requiredXp": 60830,
+   "rewardGold": 5000
+  },
+  {
+   "level": 48,
+   "requiredXp": 64085,
+   "rewardGold": 5000
+  },
+  {
+   "level": 49,
+   "requiredXp": 67340,
+   "rewardGold": 5000
+  },
+  {
+   "level": 50,
+   "requiredXp": 70920,
+   "rewardGold": 5000
+  },
+  {
+   "level": 51,
+   "requiredXp": 75695,
+   "rewardGold": 5000
+  },
+  {
+   "level": 52,
+   "requiredXp": 80470,
+   "rewardGold": 5000
+  },
+  {
+   "level": 53,
+   "requiredXp": 85675,
+   "rewardGold": 5000
+  },
+  {
+   "level": 54,
+   "requiredXp": 90885,
+   "rewardGold": 5000
+  },
+  {
+   "level": 55,
+   "requiredXp": 96090,
+   "rewardGold": 5000
+  },
+  {
+   "level": 56,
+   "requiredXp": 101300,
+   "rewardGold": 5000
+  },
+  {
+   "level": 57,
+   "requiredXp": 106505,
+   "rewardGold": 5000
+  },
+  {
+   "level": 58,
+   "requiredXp": 111715,
+   "rewardGold": 5000
+  },
+  {
+   "level": 59,
+   "requiredXp": 116920,
+   "rewardGold": 5000
+  },
+  {
+   "level": 60,
+   "requiredXp": 122130,
+   "rewardGold": 10000
+  },
+  {
+   "level": 61,
+   "requiredXp": 130295,
+   "rewardGold": 5000
+  },
+  {
+   "level": 62,
+   "requiredXp": 138465,
+   "rewardGold": 5000
+  },
+  {
+   "level": 63,
+   "requiredXp": 146635,
+   "rewardGold": 5000
+  },
+  {
+   "level": 64,
+   "requiredXp": 154805,
+   "rewardGold": 5000
+  },
+  {
+   "level": 65,
+   "requiredXp": 162975,
+   "rewardGold": 5000
+  },
+  {
+   "level": 66,
+   "requiredXp": 173865,
+   "rewardGold": 5000
+  },
+  {
+   "level": 67,
+   "requiredXp": 185665,
+   "rewardGold": 5000
+  },
+  {
+   "level": 68,
+   "requiredXp": 197460,
+   "rewardGold": 5000
+  },
+  {
+   "level": 69,
+   "requiredXp": 209260,
+   "rewardGold": 5000
+  },
+  {
+   "level": 70,
+   "requiredXp": 221060,
+   "rewardGold": 15000
+  },
+  {
+   "level": 71,
+   "requiredXp": 235810,
+   "rewardGold": 5000
+  },
+  {
+   "level": 72,
+   "requiredXp": 250560,
+   "rewardGold": 5000
+  },
+  {
+   "level": 73,
+   "requiredXp": 265305,
+   "rewardGold": 5000
+  },
+  {
+   "level": 74,
+   "requiredXp": 280055,
+   "rewardGold": 5000
+  },
+  {
+   "level": 75,
+   "requiredXp": 294805,
+   "rewardGold": 5000
+  },
+  {
+   "level": 76,
+   "requiredXp": 312505,
+   "rewardGold": 5000
+  },
+  {
+   "level": 77,
+   "requiredXp": 330200,
+   "rewardGold": 5000
+  },
+  {
+   "level": 78,
+   "requiredXp": 347900,
+   "rewardGold": 5000
+  },
+  {
+   "level": 79,
+   "requiredXp": 365595,
+   "rewardGold": 5000
+  },
+  {
+   "level": 80,
+   "requiredXp": 383295,
+   "rewardGold": 20000
+  },
+  {
+   "level": 81,
+   "requiredXp": 403945,
+   "rewardGold": 5000
+  },
+  {
+   "level": 82,
+   "requiredXp": 424590,
+   "rewardGold": 5000
+  },
+  {
+   "level": 83,
+   "requiredXp": 445240,
+   "rewardGold": 5000
+  },
+  {
+   "level": 84,
+   "requiredXp": 465885,
+   "rewardGold": 5000
+  },
+  {
+   "level": 85,
+   "requiredXp": 488125,
+   "rewardGold": 5000
+  },
+  {
+   "level": 86,
+   "requiredXp": 513535,
+   "rewardGold": 5000
+  },
+  {
+   "level": 87,
+   "requiredXp": 538950,
+   "rewardGold": 5000
+  },
+  {
+   "level": 88,
+   "requiredXp": 564365,
+   "rewardGold": 5000
+  },
+  {
+   "level": 89,
+   "requiredXp": 589775,
+   "rewardGold": 5000
+  },
+  {
+   "level": 90,
+   "requiredXp": 615190,
+   "rewardGold": 25000
+  },
+  {
+   "level": 91,
+   "requiredXp": 645895,
+   "rewardGold": 5000
+  },
+  {
+   "level": 92,
+   "requiredXp": 676605,
+   "rewardGold": 5000
+  },
+  {
+   "level": 93,
+   "requiredXp": 707315,
+   "rewardGold": 5000
+  },
+  {
+   "level": 94,
+   "requiredXp": 738020,
+   "rewardGold": 5000
+  },
+  {
+   "level": 95,
+   "requiredXp": 768730,
+   "rewardGold": 5000
+  },
+  {
+   "level": 96,
+   "requiredXp": 804730,
+   "rewardGold": 5000
+  },
+  {
+   "level": 97,
+   "requiredXp": 840735,
+   "rewardGold": 5000
+  },
+  {
+   "level": 98,
+   "requiredXp": 876735,
+   "rewardGold": 5000
+  },
+  {
+   "level": 99,
+   "requiredXp": 912735,
+   "rewardGold": 5000
+  },
+  {
+   "level": 100,
+   "requiredXp": 948740,
+   "rewardGold": 30000
+  },
+  {
+   "level": 101,
+   "requiredXp": 984795,
+   "rewardGold": 6000
+  },
+  {
+   "level": 102,
+   "requiredXp": 1020900,
+   "rewardGold": 6000
+  },
+  {
+   "level": 103,
+   "requiredXp": 1057055,
+   "rewardGold": 6000
+  },
+  {
+   "level": 104,
+   "requiredXp": 1093260,
+   "rewardGold": 6000
+  },
+  {
+   "level": 105,
+   "requiredXp": 1129515,
+   "rewardGold": 6000
+  },
+  {
+   "level": 106,
+   "requiredXp": 1165820,
+   "rewardGold": 6000
+  },
+  {
+   "level": 107,
+   "requiredXp": 1202175,
+   "rewardGold": 6000
+  },
+  {
+   "level": 108,
+   "requiredXp": 1238580,
+   "rewardGold": 6000
+  },
+  {
+   "level": 109,
+   "requiredXp": 1275035,
+   "rewardGold": 6000
+  },
+  {
+   "level": 110,
+   "requiredXp": 1311540,
+   "rewardGold": 30000
+  },
+  {
+   "level": 111,
+   "requiredXp": 1348095,
+   "rewardGold": 6000
+  },
+  {
+   "level": 112,
+   "requiredXp": 1384700,
+   "rewardGold": 6000
+  },
+  {
+   "level": 113,
+   "requiredXp": 1421355,
+   "rewardGold": 6000
+  },
+  {
+   "level": 114,
+   "requiredXp": 1458060,
+   "rewardGold": 6000
+  },
+  {
+   "level": 115,
+   "requiredXp": 1494815,
+   "rewardGold": 6000
+  },
+  {
+   "level": 116,
+   "requiredXp": 1531620,
+   "rewardGold": 6000
+  },
+  {
+   "level": 117,
+   "requiredXp": 1568475,
+   "rewardGold": 6000
+  },
+  {
+   "level": 118,
+   "requiredXp": 1605380,
+   "rewardGold": 6000
+  },
+  {
+   "level": 119,
+   "requiredXp": 1642335,
+   "rewardGold": 6000
+  },
+  {
+   "level": 120,
+   "requiredXp": 1679340,
+   "rewardGold": 30000
+  },
+  {
+   "level": 121,
+   "requiredXp": 1716395,
+   "rewardGold": 6000
+  },
+  {
+   "level": 122,
+   "requiredXp": 1753500,
+   "rewardGold": 6000
+  },
+  {
+   "level": 123,
+   "requiredXp": 1790655,
+   "rewardGold": 6000
+  },
+  {
+   "level": 124,
+   "requiredXp": 1827860,
+   "rewardGold": 6000
+  },
+  {
+   "level": 125,
+   "requiredXp": 1865115,
+   "rewardGold": 6000
+  },
+  {
+   "level": 126,
+   "requiredXp": 1902420,
+   "rewardGold": 6000
+  },
+  {
+   "level": 127,
+   "requiredXp": 1939775,
+   "rewardGold": 6000
+  },
+  {
+   "level": 128,
+   "requiredXp": 1977180,
+   "rewardGold": 6000
+  },
+  {
+   "level": 129,
+   "requiredXp": 2014635,
+   "rewardGold": 6000
+  },
+  {
+   "level": 130,
+   "requiredXp": 2052140,
+   "rewardGold": 40000
+  },
+  {
+   "level": 131,
+   "requiredXp": 2089695,
+   "rewardGold": 6000
+  },
+  {
+   "level": 132,
+   "requiredXp": 2127300,
+   "rewardGold": 6000
+  },
+  {
+   "level": 133,
+   "requiredXp": 2164955,
+   "rewardGold": 6000
+  },
+  {
+   "level": 134,
+   "requiredXp": 2202660,
+   "rewardGold": 6000
+  },
+  {
+   "level": 135,
+   "requiredXp": 2240415,
+   "rewardGold": 6000
+  },
+  {
+   "level": 136,
+   "requiredXp": 2278220,
+   "rewardGold": 6000
+  },
+  {
+   "level": 137,
+   "requiredXp": 2316075,
+   "rewardGold": 6000
+  },
+  {
+   "level": 138,
+   "requiredXp": 2353980,
+   "rewardGold": 6000
+  },
+  {
+   "level": 139,
+   "requiredXp": 2391935,
+   "rewardGold": 6000
+  },
+  {
+   "level": 140,
+   "requiredXp": 2429940,
+   "rewardGold": 40000
+  },
+  {
+   "level": 141,
+   "requiredXp": 2467995,
+   "rewardGold": 6000
+  },
+  {
+   "level": 142,
+   "requiredXp": 2506100,
+   "rewardGold": 6000
+  },
+  {
+   "level": 143,
+   "requiredXp": 2544255,
+   "rewardGold": 6000
+  },
+  {
+   "level": 144,
+   "requiredXp": 2582460,
+   "rewardGold": 6000
+  },
+  {
+   "level": 145,
+   "requiredXp": 2620715,
+   "rewardGold": 6000
+  },
+  {
+   "level": 146,
+   "requiredXp": 2659020,
+   "rewardGold": 6000
+  },
+  {
+   "level": 147,
+   "requiredXp": 2697375,
+   "rewardGold": 6000
+  },
+  {
+   "level": 148,
+   "requiredXp": 2735780,
+   "rewardGold": 6000
+  },
+  {
+   "level": 149,
+   "requiredXp": 2774235,
+   "rewardGold": 6000
+  },
+  {
+   "level": 150,
+   "requiredXp": 2812740,
+   "rewardGold": 60000
+  },
+  {
+   "level": 151,
+   "requiredXp": 2851295,
+   "rewardGold": 6000
+  },
+  {
+   "level": 152,
+   "requiredXp": 2889900,
+   "rewardGold": 6000
+  },
+  {
+   "level": 153,
+   "requiredXp": 2928555,
+   "rewardGold": 6000
+  },
+  {
+   "level": 154,
+   "requiredXp": 2967260,
+   "rewardGold": 6000
+  },
+  {
+   "level": 155,
+   "requiredXp": 3006015,
+   "rewardGold": 6000
+  },
+  {
+   "level": 156,
+   "requiredXp": 3044820,
+   "rewardGold": 6000
+  },
+  {
+   "level": 157,
+   "requiredXp": 3083675,
+   "rewardGold": 6000
+  },
+  {
+   "level": 158,
+   "requiredXp": 3122580,
+   "rewardGold": 6000
+  },
+  {
+   "level": 159,
+   "requiredXp": 3161535,
+   "rewardGold": 6000
+  },
+  {
+   "level": 160,
+   "requiredXp": 3200540,
+   "rewardGold": 60000
+  },
+  {
+   "level": 161,
+   "requiredXp": 3239595,
+   "rewardGold": 6000
+  },
+  {
+   "level": 162,
+   "requiredXp": 3278700,
+   "rewardGold": 6000
+  },
+  {
+   "level": 163,
+   "requiredXp": 3317855,
+   "rewardGold": 6000
+  },
+  {
+   "level": 164,
+   "requiredXp": 3357060,
+   "rewardGold": 6000
+  },
+  {
+   "level": 165,
+   "requiredXp": 3396315,
+   "rewardGold": 6000
+  },
+  {
+   "level": 166,
+   "requiredXp": 3435620,
+   "rewardGold": 6000
+  },
+  {
+   "level": 167,
+   "requiredXp": 3474975,
+   "rewardGold": 6000
+  },
+  {
+   "level": 168,
+   "requiredXp": 3514380,
+   "rewardGold": 6000
+  },
+  {
+   "level": 169,
+   "requiredXp": 3553835,
+   "rewardGold": 6000
+  },
+  {
+   "level": 170,
+   "requiredXp": 3593340,
+   "rewardGold": 60000
+  },
+  {
+   "level": 171,
+   "requiredXp": 3632895,
+   "rewardGold": 6000
+  },
+  {
+   "level": 172,
+   "requiredXp": 3672500,
+   "rewardGold": 6000
+  },
+  {
+   "level": 173,
+   "requiredXp": 3712155,
+   "rewardGold": 6000
+  },
+  {
+   "level": 174,
+   "requiredXp": 3751860,
+   "rewardGold": 6000
+  },
+  {
+   "level": 175,
+   "requiredXp": 3791615,
+   "rewardGold": 6000
+  },
+  {
+   "level": 176,
+   "requiredXp": 3831420,
+   "rewardGold": 6000
+  },
+  {
+   "level": 177,
+   "requiredXp": 3871275,
+   "rewardGold": 6000
+  },
+  {
+   "level": 178,
+   "requiredXp": 3911180,
+   "rewardGold": 6000
+  },
+  {
+   "level": 179,
+   "requiredXp": 3951135,
+   "rewardGold": 6000
+  },
+  {
+   "level": 180,
+   "requiredXp": 3991140,
+   "rewardGold": 60000
+  },
+  {
+   "level": 181,
+   "requiredXp": 4031195,
+   "rewardGold": 6000
+  },
+  {
+   "level": 182,
+   "requiredXp": 4071300,
+   "rewardGold": 6000
+  },
+  {
+   "level": 183,
+   "requiredXp": 4111455,
+   "rewardGold": 6000
+  },
+  {
+   "level": 184,
+   "requiredXp": 4151660,
+   "rewardGold": 6000
+  },
+  {
+   "level": 185,
+   "requiredXp": 4191915,
+   "rewardGold": 6000
+  },
+  {
+   "level": 186,
+   "requiredXp": 4232220,
+   "rewardGold": 6000
+  },
+  {
+   "level": 187,
+   "requiredXp": 4272575,
+   "rewardGold": 6000
+  },
+  {
+   "level": 188,
+   "requiredXp": 4312980,
+   "rewardGold": 6000
+  },
+  {
+   "level": 189,
+   "requiredXp": 4353435,
+   "rewardGold": 6000
+  },
+  {
+   "level": 190,
+   "requiredXp": 4393940,
+   "rewardGold": 6000
+  },
+  {
+   "level": 191,
+   "requiredXp": 4434495,
+   "rewardGold": 6000
+  },
+  {
+   "level": 192,
+   "requiredXp": 4475100,
+   "rewardGold": 6000
+  },
+  {
+   "level": 193,
+   "requiredXp": 4515755,
+   "rewardGold": 6000
+  },
+  {
+   "level": 194,
+   "requiredXp": 4556460,
+   "rewardGold": 6000
+  },
+  {
+   "level": 195,
+   "requiredXp": 4597215,
+   "rewardGold": 6000
+  },
+  {
+   "level": 196,
+   "requiredXp": 4638020,
+   "rewardGold": 6000
+  },
+  {
+   "level": 197,
+   "requiredXp": 4678875,
+   "rewardGold": 6000
+  },
+  {
+   "level": 198,
+   "requiredXp": 4719780,
+   "rewardGold": 6000
+  },
+  {
+   "level": 199,
+   "requiredXp": 4760735,
+   "rewardGold": 6000
+  },
+  {
+   "level": 200,
+   "requiredXp": 4801740,
+   "rewardGold": 60000
+  },
+  {
+   "level": 201,
+   "requiredXp": 4842795,
+   "rewardGold": 6000
+  },
+  {
+   "level": 202,
+   "requiredXp": 4883900,
+   "rewardGold": 6000
+  },
+  {
+   "level": 203,
+   "requiredXp": 4925055,
+   "rewardGold": 6000
+  },
+  {
+   "level": 204,
+   "requiredXp": 4966260,
+   "rewardGold": 6000
+  },
+  {
+   "level": 205,
+   "requiredXp": 5007515,
+   "rewardGold": 6000
+  },
+  {
+   "level": 206,
+   "requiredXp": 5048820,
+   "rewardGold": 6000
+  },
+  {
+   "level": 207,
+   "requiredXp": 5090175,
+   "rewardGold": 6000
+  },
+  {
+   "level": 208,
+   "requiredXp": 5131580,
+   "rewardGold": 6000
+  },
+  {
+   "level": 209,
+   "requiredXp": 5173035,
+   "rewardGold": 6000
+  },
+  {
+   "level": 210,
+   "requiredXp": 5214540,
+   "rewardGold": 60000
+  },
+  {
+   "level": 211,
+   "requiredXp": 5256095,
+   "rewardGold": 6000
+  },
+  {
+   "level": 212,
+   "requiredXp": 5297700,
+   "rewardGold": 6000
+  },
+  {
+   "level": 213,
+   "requiredXp": 5339355,
+   "rewardGold": 6000
+  },
+  {
+   "level": 214,
+   "requiredXp": 5381060,
+   "rewardGold": 6000
+  },
+  {
+   "level": 215,
+   "requiredXp": 5422815,
+   "rewardGold": 6000
+  },
+  {
+   "level": 216,
+   "requiredXp": 5464620,
+   "rewardGold": 6000
+  },
+  {
+   "level": 217,
+   "requiredXp": 5506475,
+   "rewardGold": 6000
+  },
+  {
+   "level": 218,
+   "requiredXp": 5548380,
+   "rewardGold": 6000
+  },
+  {
+   "level": 219,
+   "requiredXp": 5590335,
+   "rewardGold": 6000
+  },
+  {
+   "level": 220,
+   "requiredXp": 5632340,
+   "rewardGold": 60000
+  },
+  {
+   "level": 221,
+   "requiredXp": 5674395,
+   "rewardGold": 6000
+  },
+  {
+   "level": 222,
+   "requiredXp": 5716500,
+   "rewardGold": 6000
+  },
+  {
+   "level": 223,
+   "requiredXp": 5758655,
+   "rewardGold": 6000
+  },
+  {
+   "level": 224,
+   "requiredXp": 5800860,
+   "rewardGold": 6000
+  },
+  {
+   "level": 225,
+   "requiredXp": 5843115,
+   "rewardGold": 6000
+  },
+  {
+   "level": 226,
+   "requiredXp": 5885420,
+   "rewardGold": 6000
+  },
+  {
+   "level": 227,
+   "requiredXp": 5927775,
+   "rewardGold": 6000
+  },
+  {
+   "level": 228,
+   "requiredXp": 5970180,
+   "rewardGold": 6000
+  },
+  {
+   "level": 229,
+   "requiredXp": 6012635,
+   "rewardGold": 6000
+  },
+  {
+   "level": 230,
+   "requiredXp": 6055140,
+   "rewardGold": 60000
+  },
+  {
+   "level": 231,
+   "requiredXp": 6097695,
+   "rewardGold": 6000
+  },
+  {
+   "level": 232,
+   "requiredXp": 6140300,
+   "rewardGold": 6000
+  },
+  {
+   "level": 233,
+   "requiredXp": 6182955,
+   "rewardGold": 6000
+  },
+  {
+   "level": 234,
+   "requiredXp": 6225660,
+   "rewardGold": 6000
+  },
+  {
+   "level": 235,
+   "requiredXp": 6268415,
+   "rewardGold": 6000
+  },
+  {
+   "level": 236,
+   "requiredXp": 6311220,
+   "rewardGold": 6000
+  },
+  {
+   "level": 237,
+   "requiredXp": 6354075,
+   "rewardGold": 6000
+  },
+  {
+   "level": 238,
+   "requiredXp": 6396980,
+   "rewardGold": 6000
+  },
+  {
+   "level": 239,
+   "requiredXp": 6439935,
+   "rewardGold": 6000
+  },
+  {
+   "level": 240,
+   "requiredXp": 6482940,
+   "rewardGold": 60000
+  },
+  {
+   "level": 241,
+   "requiredXp": 6525995,
+   "rewardGold": 6000
+  },
+  {
+   "level": 242,
+   "requiredXp": 6569100,
+   "rewardGold": 6000
+  },
+  {
+   "level": 243,
+   "requiredXp": 6612255,
+   "rewardGold": 6000
+  },
+  {
+   "level": 244,
+   "requiredXp": 6655460,
+   "rewardGold": 6000
+  },
+  {
+   "level": 245,
+   "requiredXp": 6698715,
+   "rewardGold": 6000
+  },
+  {
+   "level": 246,
+   "requiredXp": 6742020,
+   "rewardGold": 6000
+  },
+  {
+   "level": 247,
+   "requiredXp": 6785375,
+   "rewardGold": 6000
+  },
+  {
+   "level": 248,
+   "requiredXp": 6828780,
+   "rewardGold": 6000
+  },
+  {
+   "level": 249,
+   "requiredXp": 6872235,
+   "rewardGold": 6000
+  },
+  {
+   "level": 250,
+   "requiredXp": 6915740,
+   "rewardGold": 60000
+  },
+  {
+   "level": 251,
+   "requiredXp": 6959295,
+   "rewardGold": 6000
+  },
+  {
+   "level": 252,
+   "requiredXp": 7002900,
+   "rewardGold": 6000
+  },
+  {
+   "level": 253,
+   "requiredXp": 7046555,
+   "rewardGold": 6000
+  },
+  {
+   "level": 254,
+   "requiredXp": 7090260,
+   "rewardGold": 6000
+  },
+  {
+   "level": 255,
+   "requiredXp": 7134015,
+   "rewardGold": 6000
+  },
+  {
+   "level": 256,
+   "requiredXp": 7177820,
+   "rewardGold": 6000
+  },
+  {
+   "level": 257,
+   "requiredXp": 7221675,
+   "rewardGold": 6000
+  },
+  {
+   "level": 258,
+   "requiredXp": 7265580,
+   "rewardGold": 6000
+  },
+  {
+   "level": 259,
+   "requiredXp": 7309535,
+   "rewardGold": 6000
+  },
+  {
+   "level": 260,
+   "requiredXp": 7353540,
+   "rewardGold": 60000
+  }
+ ]
+}

@@ -57,6 +57,19 @@ func ByID(id int) (Item, bool) {
 	return Item{}, false
 }
 
+// SellPercent is the share of the purchase price a sold item returns in caféOuros: "cerca
+// de 30%" per the support FAQ and a 2011-04-19 player comment. Players kept asking for half.
+const SellPercent = 30
+
+// SellGold is what selling one unit pays; 0 means the item cannot be sold (starter pieces,
+// structure and one-gold floors and wallpapers).
+func SellGold(item Item) int64 {
+	if !item.Purchasable || Layer(item) == "structure" {
+		return 0
+	}
+	return item.PriceGold * SellPercent / 100
+}
+
 func Layer(item Item) string {
 	if item.Type == 0 {
 		return "floor"

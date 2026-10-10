@@ -21,7 +21,13 @@ var errRoomGold = errors.New("Ouro insuficiente.")
 var errRoomPosition = errors.New("Posição inválida ou ocupada para este item.")
 var errRoomOwned = errors.New("Esta unidade não pertence ao seu inventário.")
 var errRoomOperation = errors.New("Identificador de operação já utilizado em outro pedido.")
-var errRoomBusy = errors.New("Não é possível mover um fogão durante o preparo.")
+var errRoomBusy = errors.New("Não é possível guardar um fogão com comida.")
+var errRoomNotSellable = errors.New("Este item não pode ser vendido.")
+var errCounterBusy = errors.New("Não é possível guardar um balcão com comida.")
+var errKitchenLimit = errors.New("Você já tem o máximo de itens deste tipo permitido no seu nível.")
+
+const starterCounterItemID = 3020069
+
 var requestKeyPattern = regexp.MustCompile(`^[a-zA-Z0-9_-]{16,80}$`)
 
 type roomUnit struct {
@@ -42,6 +48,7 @@ type roomSnapshot struct {
 	Inventory   []roomUnit           `json:"inventory"`
 	Catalog     []roomcatalog.Item   `json:"catalog"`
 	PlayerState playerstate.Snapshot `json:"playerState"`
+	SellPercent int                  `json:"sellPercent"`
 }
 type roomCommand struct {
 	ItemID    int    `json:"itemId,omitempty"`
@@ -56,7 +63,7 @@ type roomCommand struct {
 // Provision the starter room and its owned inventory units once, without charging gold.
 func ensureRoom(app core.App, userID string) error {
 	if _, err := app.FindFirstRecordByData("player_rooms", "user", userID); err == nil {
-		return nil
+		return ensureStarterCounter(app, userID)
 	} else if !errors.Is(err, sql.ErrNoRows) {
 		return err
 	}
@@ -100,7 +107,8 @@ func ensureRoom(app core.App, userID string) error {
 			}
 			return tx.Save(unit)
 		}
-		starters := [][4]int{{3070000, 6, 2, 3}, {3010000, 4, 1, 1}, {3000011, 0, 2, 0}, {3000011, 0, 6, 0},
+		// The stove and the counter face the dining room (rotation 1): the chef stands in front of the knobs.
+		starters := [][4]int{{3070000, 6, 2, 1}, {starterCounterItemID, 7, 3, 1}, {3010000, 4, 1, 1}, {3000011, 0, 2, 0}, {3000011, 0, 6, 0},
 			{3040001, 2, 3, 0}, {3040001, 2, 5, 0}, {3040001, 5, 5, 0}, {3030010, 3, 3, 0}, {3030010, 3, 5, 0}, {3030010, 6, 5, 0},
 			{3200000, 2, 0, 1}, {3300000, 1, 7, 0}, {3100000, 5, 0, 1}, {3020003, 1, 1, 0}, {3020003, 7, 1, 0}, {3020003, 7, 7, 0}}
 		for _, starter := range starters {
@@ -139,8 +147,99 @@ func ensureRoom(app core.App, userID string) error {
 	})
 }
 
+// Rooms created before counters receive the starter counter once. A stored counter still
+// counts as owned, so selling or storing it never makes a new one appear.
+func ensureStarterCounter(app core.App, userID string) error {
+	if _, err := app.FindFirstRecordByFilter("player_inventory", "user={:user} && item_id={:item}", dbx.Params{"user": userID, "item": starterCounterItemID}); err == nil {
+		return nil
+	} else if !errors.Is(err, sql.ErrNoRows) {
+		return err
+	}
+	item, ok := roomcatalog.ByID(starterCounterItemID)
+	if !ok {
+		return errors.New("starter counter missing")
+	}
+	return app.RunInTransaction(func(tx core.App) error {
+		if _, err := tx.FindFirstRecordByFilter("player_inventory", "user={:user} && item_id={:item}", dbx.Params{"user": userID, "item": starterCounterItemID}); err == nil {
+			return nil
+		} else if !errors.Is(err, sql.ErrNoRows) {
+			return err
+		}
+		room, err := tx.FindFirstRecordByData("player_rooms", "user", userID)
+		if err != nil {
+			return err
+		}
+		units, err := tx.FindRecordsByFilter("player_inventory", "user={:user} && placed=true && layer='object'", "", 0, 0, dbx.Params{"user": userID})
+		if err != nil {
+			return err
+		}
+		busy := map[[2]int]bool{}
+		for _, other := range units {
+			otherItem, ok := roomcatalog.ByID(other.GetInt("item_id"))
+			if !ok {
+				continue
+			}
+			sx, sy := otherItem.SizeX, otherItem.SizeY
+			if other.GetInt("rotation")%2 == 1 {
+				sx, sy = sy, sx
+			}
+			for dy := 0; dy < sy; dy++ {
+				for dx := 0; dx < sx; dx++ {
+					busy[[2]int{other.GetInt("tx") + dx, other.GetInt("ty") + dy}] = true
+				}
+			}
+		}
+		tilesX, tilesY := room.GetInt("tiles_x"), room.GetInt("tiles_y")
+		// Prefer the starter layout's tile; otherwise the free tile farthest from the door wall.
+		candidates := [][2]int{{7, 3}}
+		for y := tilesY - 1; y >= 1; y-- {
+			for x := tilesX - 1; x >= 1; x-- {
+				candidates = append(candidates, [2]int{x, y})
+			}
+		}
+		inventory, err := tx.FindCollectionByNameOrId("player_inventory")
+		if err != nil {
+			return err
+		}
+		unit := core.NewRecord(inventory)
+		unit.Load(map[string]any{"user": userID, "item_id": item.ID, "rotation": 1, "layer": roomcatalog.Layer(item)})
+		for _, tile := range candidates {
+			if !busy[tile] && validRoomPosition(item, tile[0], tile[1], 1, tilesX, tilesY) {
+				unit.Set("placed", true)
+				unit.Set("tx", tile[0])
+				unit.Set("ty", tile[1])
+				break
+			}
+		}
+		if err := tx.Save(unit); err != nil {
+			return err
+		}
+		room.Set("revision", room.GetInt("revision")+1)
+		return tx.Save(room)
+	})
+}
+
+// kitchenLimit is how many stoves or counters a level may own (stored ones included), as in the
+// original: the FAQ ties both to the level; players report 3 of each at level 1, +1 counter at
+// level 5 and +1 stove at level 6. Later steps are not documented yet. 0 means no limit.
+func kitchenLimit(kind string, level int) int {
+	switch kind {
+	case "stove":
+		if level >= 6 {
+			return 4
+		}
+		return 3
+	case "counter":
+		if level >= 5 {
+			return 4
+		}
+		return 3
+	}
+	return 0
+}
+
 func snapshotRoom(app core.App, userID string) (roomSnapshot, error) {
-	result := roomSnapshot{RoomID: userID, CanEdit: true, Inventory: []roomUnit{}, Catalog: roomcatalog.Items}
+	result := roomSnapshot{RoomID: userID, CanEdit: true, Inventory: []roomUnit{}, Catalog: roomcatalog.Items, SellPercent: roomcatalog.SellPercent}
 	room, err := app.FindFirstRecordByData("player_rooms", "user", userID)
 	if err != nil {
 		return result, err
@@ -231,8 +330,36 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 			if err != nil {
 				return err
 			}
+			if limit := kitchenLimit(item.Kind, state.GetInt("level")); limit > 0 {
+				owned, err := tx.FindRecordsByFilter("player_inventory", "user={:user}", "", 0, 0, dbx.Params{"user": userID})
+				if err != nil {
+					return err
+				}
+				count := 0
+				for _, other := range owned {
+					if otherItem, ok := roomcatalog.ByID(other.GetInt("item_id")); ok && otherItem.Kind == item.Kind {
+						count++
+					}
+				}
+				if count >= limit {
+					return errKitchenLimit
+				}
+			}
 			unit = core.NewRecord(collection)
 			unit.Load(map[string]any{"user": userID, "item_id": item.ID, "layer": roomcatalog.Layer(item)})
+			if item.Kind == "stove" {
+				// Each stove unit owns one cooking slot; its position is kept in sync below.
+				stoves, err := tx.FindCollectionByNameOrId("player_stoves")
+				if err != nil {
+					return err
+				}
+				stove := core.NewRecord(stoves)
+				stove.Load(map[string]any{"user": userID, "item_id": item.ID, "tx": *command.TX, "ty": *command.TY})
+				if err := tx.Save(stove); err != nil {
+					return err
+				}
+				unit.Set("stove_id", stove.Id)
+			}
 			state.Set("gold", state.GetInt64("gold")-item.PriceGold)
 			if err := tx.Save(state); err != nil {
 				return err
@@ -247,7 +374,8 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 			if !ok || roomcatalog.Layer(item) == "structure" {
 				return errRoomPosition
 			}
-			if stoveID := unit.GetString("stove_id"); stoveID != "" {
+			// A stove keeps cooking while it moves (the dish goes with it); it cannot be stored.
+			if stoveID := unit.GetString("stove_id"); stoveID != "" && (action == "store" || action == "sell") {
 				_, err := tx.FindFirstRecordByData("stove_cooking", "stove", stoveID)
 				if err == nil {
 					return errRoomBusy
@@ -256,8 +384,45 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 					return err
 				}
 			}
+			if item.Kind == "counter" && (action == "store" || action == "sell") {
+				_, err := tx.FindFirstRecordByData("room_food", "counter", unit.Id)
+				if err == nil {
+					return errCounterBusy
+				}
+				if !errors.Is(err, sql.ErrNoRows) {
+					return err
+				}
+			}
 		}
-		if action == "store" {
+		sold := false
+		if action == "sell" {
+			price := roomcatalog.SellGold(item)
+			if price <= 0 {
+				return errRoomNotSellable
+			}
+			state, err := tx.FindFirstRecordByData(playerstate.Collection, "user", userID)
+			if err != nil {
+				return err
+			}
+			state.Set("gold", state.GetInt64("gold")+price)
+			if err := tx.Save(state); err != nil {
+				return err
+			}
+			// The stove's cooking slot goes with it; the checks above guarantee it is idle.
+			if stoveID := unit.GetString("stove_id"); stoveID != "" {
+				stove, err := tx.FindRecordById("player_stoves", stoveID)
+				if err != nil {
+					return err
+				}
+				if err := tx.Delete(stove); err != nil {
+					return err
+				}
+			}
+			if err := tx.Delete(unit); err != nil {
+				return err
+			}
+			sold = true
+		} else if action == "store" {
 			unit.Set("placed", false)
 		} else {
 			x, y, rotation := *command.TX, *command.TY, *command.Rotation
@@ -303,10 +468,12 @@ func mutateRoom(app core.App, userID, action string, command roomCommand) (roomS
 			unit.Set("ty", y)
 			unit.Set("rotation", rotation)
 		}
-		if err := tx.Save(unit); err != nil {
+		if sold {
+			// Nothing left to save or sync.
+		} else if err := tx.Save(unit); err != nil {
 			return err
 		}
-		if stoveID := unit.GetString("stove_id"); stoveID != "" {
+		if stoveID := unit.GetString("stove_id"); stoveID != "" && !sold {
 			stove, err := tx.FindRecordById("player_stoves", stoveID)
 			if err != nil {
 				return err
@@ -382,7 +549,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 		}
 		return r.JSON(http.StatusOK, snapshot)
 	})
-	for _, operation := range []string{"purchase", "move", "store"} {
+	for _, operation := range []string{"purchase", "move", "store", "sell"} {
 		action := operation
 		group.POST("/"+action, func(r *core.RequestEvent) error {
 			user := sessionRecord(r)
@@ -399,7 +566,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 				return r.BadRequestError("Pedido inválido.", nil)
 			}
 			if err := decoder.Decode(new(any)); err != io.EOF || command.Revision == nil || *command.Revision < 1 || !requestKeyPattern.MatchString(command.RequestID) ||
-				(action != "store" && (command.TX == nil || command.TY == nil || command.Rotation == nil)) ||
+				(action != "store" && action != "sell" && (command.TX == nil || command.TY == nil || command.Rotation == nil)) ||
 				(action == "purchase" && (command.ItemID <= 0 || command.UnitID != "")) || (action != "purchase" && (command.UnitID == "" || command.ItemID != 0)) {
 				return r.BadRequestError("Pedido inválido.", nil)
 			}
@@ -416,7 +583,7 @@ func registerRoomRoutes(e *core.ServeEvent) {
 					return r.NotFoundError(err.Error(), nil)
 				case errors.Is(err, errRoomPosition):
 					return r.BadRequestError(err.Error(), nil)
-				case errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy):
+				case errors.Is(err, errRoomNotSellable), errors.Is(err, errRoomGold), errors.Is(err, errRoomConflict), errors.Is(err, errRoomOperation), errors.Is(err, errRoomBusy), errors.Is(err, errCounterBusy), errors.Is(err, errKitchenLimit):
 					return apis.NewApiError(http.StatusConflict, err.Error(), nil)
 				default:
 					return r.InternalServerError("Não foi possível salvar esta operação.", err)

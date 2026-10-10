@@ -10,6 +10,18 @@ export interface SettingsModalOptions {
   onChange?: (preferences: AudioPreferences) => void;
   getBitterMode?: () => boolean;
   onBitterModeChange?: (enabled: boolean) => void;
+  /** Only offered when the server enables developer tools for this session. */
+  getDevMode?: () => boolean;
+  onDevModeChange?: (enabled: boolean) => void;
+}
+
+interface Checkbox {
+  control: Container;
+  box: Graphics;
+  focus: Graphics;
+  checked: boolean;
+  read: () => boolean | undefined;
+  write: (checked: boolean) => void;
 }
 
 type VolumeChannel = 'musicPercent' | 'effectsPercent';
@@ -25,6 +37,7 @@ interface VolumeSlider {
 
 const PANEL_WIDTH = 920;
 const PANEL_HEIGHT = 820;
+const PANEL_HEIGHT_WITH_DEV = 970;
 const TRACK_WIDTH = 520;
 const DARK_BROWN = 0x603a1e;
 const LIGHT_BROWN = 0xc69a60;
@@ -37,10 +50,7 @@ export class SettingsModal {
   private readonly closeFocus = new Graphics();
   private readonly sliders: VolumeSlider[] = [];
   private readonly texts: Text[] = [];
-  private readonly bitterControl = new Container();
-  private readonly bitterCheckbox = new Graphics();
-  private readonly bitterFocus = new Graphics();
-  private bitterMode = false;
+  private readonly checkboxes: Checkbox[] = [];
   private preferences: AudioPreferences = { ...DEFAULT_AUDIO_PREFERENCES };
   private drag: { slider: VolumeSlider; pointerId: number } | null = null;
   private focusedControl = 0;
@@ -64,17 +74,18 @@ export class SettingsModal {
     }
     backdrop.on('pointertap', (event) => { event.stopPropagation(); this.close(); });
 
+    const panelHeight = options.onDevModeChange ? PANEL_HEIGHT_WITH_DEV : PANEL_HEIGHT;
     this.panel.label = 'settings-modal-panel';
-    this.panel.position.set((STAGE_WIDTH - PANEL_WIDTH) / 2, (STAGE_HEIGHT - PANEL_HEIGHT) / 2);
+    this.panel.position.set((STAGE_WIDTH - PANEL_WIDTH) / 2, (STAGE_HEIGHT - panelHeight) / 2);
     this.panel.eventMode = 'static';
-    this.panel.hitArea = new Rectangle(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+    this.panel.hitArea = new Rectangle(0, 0, PANEL_WIDTH, panelHeight);
     for (const name of ['pointerdown', 'pointerup', 'pointertap', 'wheel'] as const) {
       this.panel.on(name, (event) => event.stopPropagation());
     }
     const frame = new Graphics()
-      .roundRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT, 40).fill(DARK_BROWN)
-      .roundRect(12, 12, PANEL_WIDTH - 24, PANEL_HEIGHT - 24, 28).fill(LIGHT_BROWN)
-      .roundRect(22, 22, PANEL_WIDTH - 44, PANEL_HEIGHT - 44, 18).fill(0xffffff);
+      .roundRect(0, 0, PANEL_WIDTH, panelHeight, 40).fill(DARK_BROWN)
+      .roundRect(12, 12, PANEL_WIDTH - 24, panelHeight - 24, 28).fill(LIGHT_BROWN)
+      .roundRect(22, 22, PANEL_WIDTH - 44, panelHeight - 44, 18).fill(0xffffff);
     frame.eventMode = 'none';
     this.panel.addChild(frame);
 
@@ -92,7 +103,12 @@ export class SettingsModal {
     this.buildCloseButton();
     this.buildSlider('musicPercent', 'Música', 382);
     this.buildSlider('effectsPercent', 'Efeitos sonoros', 522);
-    this.buildBitterControl();
+    this.buildCheckbox('bitter', 628, 'modo bitter', 'modo bitter permite mais zoom, mas pode causar aberrações visuais',
+      () => this.options.getBitterMode?.(), (checked) => this.options.onBitterModeChange?.(checked));
+    if (options.onDevModeChange) {
+      this.buildCheckbox('dev', 800, 'modo dev', 'mostra o botão DEV na barra: recursos, fogões, balcões e clientes direto no servidor',
+        () => this.options.getDevMode?.(), (checked) => this.options.onDevModeChange?.(checked));
+    }
     this.view.addChild(backdrop, this.panel);
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', this.onKeyDown, true);
@@ -106,8 +122,10 @@ export class SettingsModal {
     if (this.disposed || this.isOpen) return;
     this.preferences = sanitizeAudioPreferences(this.options.getPreferences?.() ?? this.preferences);
     this.refreshSliders();
-    this.bitterMode = this.options.getBitterMode?.() ?? this.bitterMode;
-    this.refreshBitterCheckbox();
+    for (const checkbox of this.checkboxes) {
+      checkbox.checked = checkbox.read() ?? checkbox.checked;
+      this.refreshCheckbox(checkbox);
+    }
     this.focusedControl = 0;
     this.keyboardFocus = false;
     this.closeHovered = false;
@@ -182,40 +200,45 @@ export class SettingsModal {
     this.closeButton.scale.set(this.closePressed ? 0.9 : this.closeHovered ? 1.1 : 1);
   }
 
-  private buildBitterControl(): void {
-    this.bitterControl.label = 'settings-bitter-checkbox';
-    this.bitterControl.position.set(200, 628);
-    this.bitterControl.eventMode = 'static';
-    this.bitterControl.cursor = 'pointer';
-    this.bitterControl.hitArea = new Rectangle(-14, -36, 670, 72);
-    this.bitterFocus.roundRect(-14, -36, 670, 72, 14).stroke({ color: 0x01a9fd, width: 4 });
-    this.bitterFocus.eventMode = 'none'; this.bitterCheckbox.eventMode = 'none';
-    this.bitterControl.addChild(this.bitterFocus, this.bitterCheckbox);
-    this.bitterControl.on('pointertap', (event) => {
+  private buildCheckbox(name: string, y: number, title: string, note: string,
+    read: () => boolean | undefined, write: (checked: boolean) => void): void {
+    const control = new Container();
+    const box = new Graphics();
+    const focus = new Graphics();
+    const checkbox: Checkbox = { control, box, focus, checked: read() ?? false, read, write };
+    control.label = `settings-${name}-checkbox`;
+    control.position.set(200, y);
+    control.eventMode = 'static';
+    control.cursor = 'pointer';
+    control.hitArea = new Rectangle(-14, -36, 670, 72);
+    focus.roundRect(-14, -36, 670, 72, 14).stroke({ color: 0x01a9fd, width: 4 });
+    focus.eventMode = 'none'; box.eventMode = 'none';
+    control.addChild(focus, box);
+    control.on('pointertap', (event) => {
       event.stopPropagation();
       if (!this.isOpen) return;
-      this.focusedControl = this.sliders.length + 1; this.keyboardFocus = false;
-      this.toggleBitterMode(); this.syncFocus();
+      this.focusedControl = this.sliders.length + 1 + this.checkboxes.indexOf(checkbox); this.keyboardFocus = false;
+      this.toggleCheckbox(checkbox); this.syncFocus();
     });
-    this.panel.addChild(this.bitterControl);
-    const label = this.addText('modo bitter', 264, 628, 34, 'settings-bitter-label');
+    this.panel.addChild(control);
+    this.checkboxes.push(checkbox);
+    const label = this.addText(title, 264, y, 34, `settings-${name}-label`);
     label.anchor.set(0, .5);
-    const disclaimer = this.addText('modo bitter permite mais zoom, mas pode causar aberrações visuais',
-      200, 676, 26, 'settings-bitter-disclaimer', '400');
+    const disclaimer = this.addText(note, 200, y + 48, 26, `settings-${name}-disclaimer`, '400');
     disclaimer.style.wordWrap = true; disclaimer.style.wordWrapWidth = 650; disclaimer.style.lineHeight = 34;
-    this.refreshBitterCheckbox();
+    this.refreshCheckbox(checkbox);
   }
 
-  private toggleBitterMode(): void {
-    this.bitterMode = !this.bitterMode;
-    this.refreshBitterCheckbox();
-    this.options.onBitterModeChange?.(this.bitterMode);
+  private toggleCheckbox(checkbox: Checkbox): void {
+    checkbox.checked = !checkbox.checked;
+    this.refreshCheckbox(checkbox);
+    checkbox.write(checkbox.checked);
   }
 
-  private refreshBitterCheckbox(): void {
-    this.bitterCheckbox.clear().roundRect(0, -22, 44, 44, 8)
+  private refreshCheckbox(checkbox: Checkbox): void {
+    checkbox.box.clear().roundRect(0, -22, 44, 44, 8)
       .fill(0xffffff).stroke({ color: DARK_BROWN, width: 4 });
-    if (this.bitterMode) this.bitterCheckbox.moveTo(10, -1).lineTo(19, 9).lineTo(35, -12)
+    if (checkbox.checked) checkbox.box.moveTo(10, -1).lineTo(19, 9).lineTo(35, -12)
       .stroke({ color: DARK_BROWN, width: 6, cap: 'round', join: 'round' });
   }
 
@@ -317,7 +340,9 @@ export class SettingsModal {
   private syncFocus(): void {
     this.closeFocus.visible = this.keyboardFocus && this.focusedControl === 0;
     this.sliders.forEach((slider, index) => { slider.focus.visible = this.keyboardFocus && this.focusedControl === index + 1; });
-    this.bitterFocus.visible = this.keyboardFocus && this.focusedControl === this.sliders.length + 1;
+    this.checkboxes.forEach((checkbox, index) => {
+      checkbox.focus.visible = this.keyboardFocus && this.focusedControl === this.sliders.length + 1 + index;
+    });
   }
 
   private readonly cancelDrag = (): void => { this.drag = null; };
@@ -331,16 +356,17 @@ export class SettingsModal {
     } else if (event.key === 'Tab') {
       event.preventDefault();
       this.keyboardFocus = true;
-      const count = this.sliders.length + 2;
+      const count = this.sliders.length + 1 + this.checkboxes.length;
       this.focusedControl = (this.focusedControl + (event.shiftKey ? count - 1 : 1)) % count;
       this.syncFocus();
     } else if (this.focusedControl === 0 && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
       this.close();
-    } else if (this.focusedControl === this.sliders.length + 1) {
-      if (event.key === 'Enter' || event.key === ' ') {
+    } else if (this.focusedControl > this.sliders.length) {
+      const checkbox = this.checkboxes[this.focusedControl - this.sliders.length - 1];
+      if (checkbox && (event.key === 'Enter' || event.key === ' ')) {
         event.preventDefault();
-        if (!event.repeat) this.toggleBitterMode();
+        if (!event.repeat) this.toggleCheckbox(checkbox);
       }
     } else {
       const slider = this.sliders[this.focusedControl - 1];
