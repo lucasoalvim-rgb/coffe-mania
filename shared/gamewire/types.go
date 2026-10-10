@@ -73,11 +73,22 @@ type Actor struct {
 	// Paths/timers are saved only on dormancy; they are never broadcast in hot updates.
 	Path   []Tile `json:"path,omitempty"`
 	Visits int    `json:"visits,omitempty"`
+	// A customer's verdict is applied once: Ate marks a served meal, Judged a recorded visit.
+	Ate    bool `json:"ate,omitempty"`
+	Judged bool `json:"judged,omitempty"`
+}
+
+// Business is the owner's private progress that drives the room: customer frequency
+// follows popularity (in tenths, as persisted) and level.
+type Business struct {
+	Popularity int64 `json:"popularity"`
+	Level      int   `json:"level"`
 }
 type Seed struct {
-	World World    `json:"world"`
-	NPCs  []Actor  `json:"npcs"`
-	Looks []string `json:"looks"`
+	World    World    `json:"world"`
+	NPCs     []Actor  `json:"npcs"`
+	Looks    []string `json:"looks"`
+	Business Business `json:"business"`
 }
 type Sleep struct {
 	NPCs []Actor `json:"npcs"`
@@ -89,9 +100,10 @@ type Operation struct {
 	Body   json.RawMessage `json:"body"`
 }
 type Result struct {
-	Status int             `json:"status"`
-	Body   json.RawMessage `json:"body"`
-	World  *World          `json:"world,omitempty"`
+	Status   int             `json:"status"`
+	Body     json.RawMessage `json:"body"`
+	World    *World          `json:"world,omitempty"`
+	Business *Business       `json:"business,omitempty"`
 }
 type Event struct {
 	Type      string          `json:"type"`

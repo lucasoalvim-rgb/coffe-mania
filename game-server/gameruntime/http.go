@@ -75,8 +75,15 @@ func (s *HTTPStorage) Operate(ctx context.Context, op gamewire.Operation) (gamew
 	err := s.request(ctx, "POST", op.Owner+"/operation", op, &out)
 	return out, err
 }
-func (s *HTTPStorage) Consume(ctx context.Context, id, food string) error {
-	return s.request(ctx, "POST", id+"/consume", map[string]string{"foodId": food}, nil)
+func (s *HTTPStorage) Consume(ctx context.Context, id, food string) (gamewire.Business, error) {
+	var out gamewire.Business
+	err := s.request(ctx, "POST", id+"/consume", map[string]string{"foodId": food}, &out)
+	return out, err
+}
+func (s *HTTPStorage) Dissatisfied(ctx context.Context, id string) (gamewire.Business, error) {
+	var out gamewire.Business
+	err := s.request(ctx, "POST", id+"/dissatisfied", map[string]string{}, &out)
+	return out, err
 }
 
 type Server struct {

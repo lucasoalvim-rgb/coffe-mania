@@ -15,7 +15,7 @@ export interface Recipe {
   profitGold: number;
   /** caféOuros pagos ao iniciar o preparo. */
   costGold: number;
-  /** XP ganho ao iniciar o preparo, como no original. */
+  /** XP total do prato ("Ganha no total N XP"), repartido entre as porções que os clientes comem. */
   xp: number;
   /** Receitas fora do livro só resolvem preparos e porções já salvos. */
   inBook: boolean;

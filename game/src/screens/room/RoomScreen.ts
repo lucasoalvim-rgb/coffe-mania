@@ -2648,7 +2648,9 @@ export class RoomScreen implements Screen {
 
   /** Apply an authenticated snapshot to both HUDs without rebuilding the room. */
   setPlayerState(state: PlayerState): void {
+    const previousLevel = this.playerState?.level;
     this.playerState = state;
+    if (previousLevel !== undefined && state.level > previousLevel) this.showNotice(`Parabéns! Seu café chegou ao nível ${state.level}.`);
     if (this.roomSnapshot) this.roomSnapshot.playerState = state;
     this.topBars?.setState(state);
     this.cookModal?.setPlayerState(state);

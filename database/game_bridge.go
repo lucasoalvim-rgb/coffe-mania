@@ -314,7 +314,11 @@ func registerGameBridge(e *core.ServeEvent) error {
 		if err != nil {
 			return err
 		}
-		return r.JSON(200, gamewire.Seed{World: world, NPCs: npcs, Looks: looks})
+		business, err := ownerBusiness(r.App, owner)
+		if err != nil {
+			return err
+		}
+		return r.JSON(200, gamewire.Seed{World: world, NPCs: npcs, Looks: looks, Business: business})
 	})
 	group.POST("/{owner}/active", func(r *core.RequestEvent) error {
 		var body struct {
@@ -362,9 +366,41 @@ func registerGameBridge(e *core.ServeEvent) error {
 		if err != nil {
 			return err
 		}
-		return r.JSON(200, map[string]bool{"ok": true})
+		business, err := ownerBusiness(r.App, owner)
+		if err != nil {
+			return err
+		}
+		return r.JSON(200, business)
+	})
+	// A customer who leaves without eating (no free chair or no dish on the counters).
+	group.POST("/{owner}/dissatisfied", func(r *core.RequestEvent) error {
+		owner := r.Request.PathValue("owner")
+		err := r.App.RunInTransaction(func(tx core.App) error {
+			state, err := tx.FindFirstRecordByData(playerstate.Collection, "user", owner)
+			if err != nil {
+				return err
+			}
+			playerstate.AdjustPopularity(state, -playerstate.UnsatisfiedCustomerTenths)
+			return tx.Save(state)
+		})
+		if err != nil {
+			return err
+		}
+		business, err := ownerBusiness(r.App, owner)
+		if err != nil {
+			return err
+		}
+		return r.JSON(200, business)
 	})
 	return nil
+}
+
+func ownerBusiness(app core.App, owner string) (gamewire.Business, error) {
+	state, err := playerstate.GetOrCreate(app, owner)
+	if err != nil {
+		return gamewire.Business{}, err
+	}
+	return gamewire.Business{Popularity: state.GetInt64("satisfaction_current_tenths"), Level: state.GetInt("level")}, nil
 }
 
 var errFoodUnavailable = errors.New("food unavailable")
@@ -374,14 +410,20 @@ func foodPortions(food *core.Record) int {
 	return max(1, food.GetInt("portions"))
 }
 
-// consumePortion serves one portion to a customer and pays its profit to the café owner.
+// consumePortion serves one portion to a customer: the owner receives its profit, its share
+// of the dish's XP and the satisfied customer's popularity.
 func consumePortion(tx core.App, owner, foodID string) error {
 	food, err := tx.FindRecordById("room_food", foodID)
 	if err != nil || food.GetString("user") != owner {
 		return errFoodUnavailable
 	}
-	if remaining := foodPortions(food) - 1; remaining > 0 {
-		food.Set("portions", remaining)
+	portions := int64(foodPortions(food))
+	// Rounding up pays every portion while XP remains; the total never exceeds the book's.
+	pool := max(0, food.GetInt64("experience"))
+	experience := (pool + portions - 1) / portions
+	if portions > 1 {
+		food.Set("portions", portions-1)
+		food.Set("experience", pool-experience)
 		err = tx.Save(food)
 	} else {
 		err = tx.Delete(food)
@@ -389,15 +431,15 @@ func consumePortion(tx core.App, owner, foodID string) error {
 	if err != nil {
 		return err
 	}
-	recipe, ok := recipecatalog.ByID(food.GetString("recipe_id"))
-	if !ok || recipe.ProfitGold == 0 {
-		return nil
-	}
 	state, err := tx.FindFirstRecordByData(playerstate.Collection, "user", owner)
 	if err != nil {
 		return err
 	}
-	state.Set("gold", state.GetInt64("gold")+recipe.ProfitGold)
+	if recipe, ok := recipecatalog.ByID(food.GetString("recipe_id")); ok {
+		state.Set("gold", state.GetInt64("gold")+recipe.ProfitGold)
+	}
+	playerstate.GrantExperience(state, experience)
+	playerstate.AdjustPopularity(state, playerstate.SatisfiedCustomerTenths)
 	return tx.Save(state)
 }
 

@@ -24,7 +24,10 @@ type Storage interface {
 	Active(context.Context, string, int) error
 	Sleep(context.Context, string, gamewire.Sleep) error
 	Operate(context.Context, gamewire.Operation) (gamewire.Result, error)
-	Consume(context.Context, string, string) error
+	// Consume serves a portion; Dissatisfied records a customer who left without eating.
+	// Both return the owner's updated business.
+	Consume(context.Context, string, string) (gamewire.Business, error)
+	Dissatisfied(context.Context, string) (gamewire.Business, error)
 }
 type Options struct {
 	Tick, Step, Grace            time.Duration
@@ -48,7 +51,7 @@ func (o Options) defaults() Options {
 		o.MaxHumans = 64
 	}
 	if o.MaxNPCs <= 0 {
-		o.MaxNPCs = 3
+		o.MaxNPCs = 8
 	}
 	return o
 }
@@ -105,6 +108,7 @@ type room struct {
 	peers         map[string]*Peer
 	seats         map[string]string
 	looks         []string
+	business      gamewire.Business
 	tasks         chan task
 	done          chan struct{}
 	stop          chan struct{}
@@ -147,7 +151,7 @@ func (m *Manager) get(ctx context.Context, id string) (*room, error) {
 			delete(m.rooms, id)
 			m.wg.Done()
 		} else {
-			r := &room{manager: m, id: id, epoch: uuid.NewString(), world: seed.World, grid: newGrid(seed.World), actors: map[string]*entity{}, peers: map[string]*Peer{}, seats: map[string]string{}, looks: seed.Looks, tasks: make(chan task, 256), done: make(chan struct{}), stop: make(chan struct{}), idleAt: time.Now(), spawnAt: time.Now().Add(time.Second)}
+			r := &room{manager: m, id: id, epoch: uuid.NewString(), world: seed.World, grid: newGrid(seed.World), actors: map[string]*entity{}, peers: map[string]*Peer{}, seats: map[string]string{}, looks: seed.Looks, business: seed.Business, tasks: make(chan task, 256), done: make(chan struct{}), stop: make(chan struct{}), idleAt: time.Now(), spawnAt: time.Now().Add(time.Second)}
 			r.occupancy = map[Tile]map[string]bool{}
 			r.actorTiles = map[string][]Tile{}
 			r.frozenAt = time.Now()
@@ -290,6 +294,9 @@ func (m *Manager) Operate(ctx context.Context, op gamewire.Operation) (gamewire.
 		}
 		if result.Status >= 200 && result.Status < 300 && result.World != nil {
 			r.updateWorld(*result.World)
+			if result.Business != nil {
+				r.business = *result.Business
+			}
 			if op.Action == "cook_start" {
 				if a := r.actors["human:"+op.User]; a != nil {
 					var body struct {
@@ -518,6 +525,8 @@ func (r *room) sleep(now time.Time) error {
 		}
 		state.ActionRemaining = max(0, a.due.Sub(r.frozenAt).Milliseconds())
 		state.Visits = a.visits
+		state.Ate = a.Ate
+		state.Judged = a.Judged
 		npcs = append(npcs, state)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -643,6 +652,8 @@ func (r *room) status(a *entity, identity bool) gamewire.Actor {
 	v := a.Actor
 	v.Path = nil
 	v.Visits = 0
+	v.Ate = false
+	v.Judged = false
 	v.ActionRemaining = max(0, time.Until(a.due).Milliseconds())
 	if !identity {
 		v.Kind = ""
@@ -1179,9 +1190,9 @@ func (r *room) tick(now time.Time) {
 			count++
 		}
 	}
-	if count < r.manager.options.MaxNPCs && !now.Before(r.spawnAt) {
+	if count < r.customerCap() && !now.Before(r.spawnAt) {
 		r.spawnNPC(now)
-		r.spawnAt = now.Add(time.Duration(4+rand.IntN(4)) * time.Second)
+		r.spawnAt = now.Add(customerInterval(r.business))
 	}
 }
 func line(from, to Tile) []Tile {
@@ -1236,12 +1247,22 @@ func (r *room) spawnNPC(now time.Time) {
 		start.Y = -1
 		turn.Y = -1
 	}
-	look := r.looks[rand.IntN(len(r.looks))]
+	inUse := map[string]bool{}
 	for _, a := range r.actors {
-		if a.Kind == "npc" && a.Appearance == look {
-			return
+		if a.Kind == "npc" {
+			inUse[a.Appearance] = true
 		}
 	}
+	available := []string{}
+	for _, look := range r.looks {
+		if !inUse[look] {
+			available = append(available, look)
+		}
+	}
+	if len(available) == 0 {
+		return
+	}
+	look := available[rand.IntN(len(available))]
 	a := &entity{Actor: gamewire.Actor{ID: "npc:" + uuid.NewString(), Kind: "npc", Name: "Cliente", Appearance: look, X: start.X, Y: start.Y, Outside: true, State: "entering"}}
 	a.path = append(line(start, turn), line(turn, entry)...)
 	a.path = append(a.path, Tile{X: door.X, Y: door.Y})
@@ -1286,9 +1307,11 @@ func (r *room) advanceNPC(a *entity, now time.Time) bool {
 		if index := r.servingFood(); a.TableID != "" && index >= 0 {
 			food := r.world.Foods[index]
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			err := r.manager.store.Consume(ctx, r.id, food.ID)
+			business, err := r.manager.store.Consume(ctx, r.id, food.ID)
 			cancel()
 			if err == nil {
+				r.business = business
+				a.Ate = true
 				if food.Portions > 1 {
 					r.world.Foods[index].Portions--
 				} else {
@@ -1343,7 +1366,7 @@ func (r *room) exitNPC(a *entity, now time.Time) {
 	entry := Tile{X: door.X, Y: door.Y}
 	a.State = "leaving"
 	a.Action = nil
-	r.startEmotion(a, "dissatisfied", now)
+	r.judge(a, now)
 	if (Tile{X: a.X, Y: a.Y}) != entry {
 		if !r.route(a, entry, now) {
 			a.due = now.Add(time.Second)

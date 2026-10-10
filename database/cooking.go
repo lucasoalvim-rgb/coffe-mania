@@ -170,8 +170,7 @@ func startCooking(app core.App, userID, stoveID, recipeID string, now types.Date
 			return errRoomGold
 		}
 		state.Set("gold", state.GetInt64("gold")-recipe.CostGold)
-		// Levels are not simulated yet: experience saturates at the current level's maximum.
-		state.Set("experience_current", min(state.GetInt64("experience_current")+recipe.XP, state.GetInt64("experience_max")))
+		// The recipe's XP goes with the dish to the counter and is paid as customers eat it.
 		if err := txApp.Save(state); err != nil {
 			return err
 		}
@@ -211,14 +210,18 @@ func serveCooking(app core.App, userID, stoveID string, now types.DateTime) erro
 		}
 		recipeID := job.GetString("recipe_id")
 		portions := 1
+		var experience int64
 		if recipe, ok := recipecatalog.ByID(recipeID); ok {
-			portions = recipe.Portions
+			portions, experience = recipe.Portions, recipe.XP
 		}
+		// Spice bonus portions dilute the dish's XP; they never add to the book's total.
+		portions += max(0, job.GetInt("bonus_portions"))
 		food, err := counterForDish(txApp, userID, recipeID)
 		if err != nil {
 			return err
 		}
 		food.Set("portions", food.GetInt("portions")+portions)
+		food.Set("experience", food.GetInt64("experience")+experience)
 		if food.IsNew() {
 			food.Set("job_id", job.Id)
 		}
@@ -274,7 +277,7 @@ func counterForDish(txApp core.App, userID, recipeID string) (*core.Record, erro
 }
 
 // cancelCooking throws the dish away at any stage, as in the original; the stove becomes dirty.
-// The cost and XP paid at the start are not returned.
+// The cost paid at the start is not returned, and the dish's XP is lost with it.
 func cancelCooking(app core.App, userID, stoveID string, now types.DateTime) error {
 	return app.RunInTransaction(func(txApp core.App) error {
 		stove, err := txApp.FindRecordById("player_stoves", stoveID)
