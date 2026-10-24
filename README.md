@@ -1,5 +1,7 @@
 # Coffe Mania — Alpha 0.0.4.19
 
+#Para versões mais recentes, visite o fork o Ziggyszag: https://github.com/ziggyszag/coffe-mania
+
 Este projeto é uma versão feita por fãs com o objetivo de recuperar o jogo **Café Mania**.
 
 Esta versão já contém bases relativamente sólidas para você criar o seu próprio projeto — use da forma que achar melhor — ou, se preferir, contribuir com esta versão para ajudar a alcançar o resultado final.
